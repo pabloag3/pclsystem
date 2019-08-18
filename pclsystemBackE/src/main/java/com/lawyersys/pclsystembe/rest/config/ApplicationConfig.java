@@ -28,7 +28,6 @@ public class ApplicationConfig extends Application {
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(com.lawyersys.pclsystembe.rest.actividades.ActividadesFacadeREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.actividades.EstadosActividadesFacadeREST.class);
-        resources.add(com.lawyersys.pclsystembe.rest.actividades.EstadosUsuariosFacadeREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.actividades.TiposActividadesFacadeREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.usuarios.EmpleadosREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.usuarios.EstadosUsuariosREST.class);
