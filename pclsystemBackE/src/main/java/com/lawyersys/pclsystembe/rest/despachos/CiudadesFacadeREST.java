@@ -40,28 +40,31 @@ public class CiudadesFacadeREST {
     private ABMManagerDespachos abmManager;
 
     @POST
-    @Path("guardar-ciudad")
+    @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
         Ciudades elem = mapper.readValue(entity, Ciudades.class);   
         if ( elem.getNombre()== null ) {
-            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+            throw new FaltaCargarElemento("Error. Cargar nombre de ciudad.");
         }
         abmManager.create(Ciudades.class, elem);
         return Response.ok().build();
     }
 
     @PUT
-    @Path("actualizar-ciudad/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException {
+    @Path("actualizar/{id}")
+    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
-        Ciudades elem = mapper.readValue(entity, Ciudades.class);  
+        Ciudades elem = mapper.readValue(entity, Ciudades.class);
+        if ( elem.getNombre()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar nombre de ciudad.");
+        }
         abmManager.edit(Ciudades.class, elem);
         return Response.ok().build();
     }
 
     @GET
-    @Path("traer-ciudad/{id}")
+    @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         Ciudades entity = null;
         entity = (Ciudades) abmManager.find("Ciudades", id);
@@ -71,7 +74,7 @@ public class CiudadesFacadeREST {
     }
 
     @GET
-    @Path("listar-ciudades")
+    @Path("listar")
     public Response findAll() throws JsonProcessingException {
         List<Ciudades> elem = (List<Ciudades>) (Object) abmManager.findAll("Ciudades");
         ObjectMapper mapper = new ObjectMapper();

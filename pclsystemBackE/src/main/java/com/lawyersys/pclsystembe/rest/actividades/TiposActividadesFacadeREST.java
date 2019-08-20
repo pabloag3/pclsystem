@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -42,7 +40,7 @@ public class TiposActividadesFacadeREST {
     private ABMManagerActividades abmManager;
 
     @POST
-    @Path("guardar-tipo-actividad")
+    @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
         TiposActividades elem = mapper.readValue(entity, TiposActividades.class);   
@@ -54,10 +52,13 @@ public class TiposActividadesFacadeREST {
     }
 
     @PUT
-    @Path("actualizar-tipo-actividad/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException {
+    @Path("actualizar/{id}")
+    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
-        TiposActividades elem = mapper.readValue(entity, TiposActividades.class);  
+        TiposActividades elem = mapper.readValue(entity, TiposActividades.class);
+        if ( elem.getDescripcion()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+        }
         abmManager.edit(TiposActividades.class, elem);
         return Response.ok().build();
     }
@@ -69,7 +70,7 @@ public class TiposActividadesFacadeREST {
 //    }
 
     @GET
-    @Path("traer-tipo-actividad/{id}")
+    @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         TiposActividades entity = null;
         entity = (TiposActividades) abmManager.find("TiposActividades", id);
@@ -79,7 +80,7 @@ public class TiposActividadesFacadeREST {
     }
 
     @GET
-    @Path("listar-tipos-actividades")
+    @Path("listar")
     public Response findAll() throws JsonProcessingException {
         List<TiposActividades> elem = (List<TiposActividades>) (Object) abmManager.findAll("TiposActividades");
         ObjectMapper mapper = new ObjectMapper();

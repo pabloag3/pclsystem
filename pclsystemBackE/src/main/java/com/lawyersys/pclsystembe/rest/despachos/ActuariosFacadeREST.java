@@ -40,28 +40,37 @@ public class ActuariosFacadeREST {
     private ABMManagerDespachos abmManager;
 
     @POST
-    @Path("guardar-actuario")
+    @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
         Actuarios elem = mapper.readValue(entity, Actuarios.class);   
         if ( elem.getNombre()== null ) {
-            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+            throw new FaltaCargarElemento("Error. Cargar nombre.");
+        }
+        if ( elem.getApellido()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar apellido.");
         }
         abmManager.create(Actuarios.class, elem);
         return Response.ok().build();
     }
 
     @PUT
-    @Path("actualizar-actuario/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException {
+    @Path("actualizar/{id}")
+    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
-        Actuarios elem = mapper.readValue(entity, Actuarios.class);  
+        Actuarios elem = mapper.readValue(entity, Actuarios.class);
+        if ( elem.getNombre()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar nombre.");
+        }
+        if ( elem.getApellido()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar apellido.");
+        }
         abmManager.edit(Actuarios.class, elem);
         return Response.ok().build();
     }
 
     @GET
-    @Path("traer-actuario/{id}")
+    @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         Actuarios entity = null;
         entity = (Actuarios) abmManager.find("Actuarios", id);
@@ -71,7 +80,7 @@ public class ActuariosFacadeREST {
     }
 
     @GET
-    @Path("listar-actuarios")
+    @Path("listar")
     public Response findAll() throws JsonProcessingException {
         List<Actuarios> elem = (List<Actuarios>) (Object) abmManager.findAll("Actuarios");
         ObjectMapper mapper = new ObjectMapper();

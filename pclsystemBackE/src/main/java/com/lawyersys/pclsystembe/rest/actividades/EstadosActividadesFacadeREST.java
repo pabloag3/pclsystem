@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -31,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestBody;
  */
 @Stateless
 @Path("estadosactividades")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class EstadosActividadesFacadeREST {
 
     public EstadosActividadesFacadeREST() {
@@ -40,7 +40,7 @@ public class EstadosActividadesFacadeREST {
     private ABMManagerActividades abmManager;
 
     @POST
-    @Path("guardar-estado-actividad")
+    @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
         EstadosActividades elem = mapper.readValue(entity, EstadosActividades.class);   
@@ -52,10 +52,13 @@ public class EstadosActividadesFacadeREST {
     }
 
     @PUT
-    @Path("actualizar-estado-actividad/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException {
+    @Path("actualizar/{id}")
+    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
-        EstadosActividades elem = mapper.readValue(entity, EstadosActividades.class);  
+        EstadosActividades elem = mapper.readValue(entity, EstadosActividades.class);
+        if ( elem.getTipoEstado()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+        }
         abmManager.edit(EstadosActividades.class, elem);
         return Response.ok().build();
     }
@@ -67,7 +70,7 @@ public class EstadosActividadesFacadeREST {
 //    }
 
     @GET
-    @Path("traer-estado-actividad/{id}")
+    @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         EstadosActividades entity = null;
         entity = (EstadosActividades) abmManager.find("EstadosActividades", id);
@@ -77,7 +80,7 @@ public class EstadosActividadesFacadeREST {
     }
 
     @GET
-    @Path("listar-estados-actividades")
+    @Path("listar")
     public Response findAll() throws JsonProcessingException {
         List<EstadosActividades> elem = (List<EstadosActividades>) (Object) abmManager.findAll("EstadosActividades");
         ObjectMapper mapper = new ObjectMapper();

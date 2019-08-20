@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -42,29 +40,68 @@ public class EmpleadosREST {
     }
 
     @POST
-    @Path("guardar-empleado")
+    @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
         Empleados elem = mapper.readValue(entity, Empleados.class);   
         if ( elem.getCedula() == null ) {
             throw new FaltaCargarElemento("Error. Cargar cedula.");
         }
+        if ( elem.getNombre() == null ) {
+            throw new FaltaCargarElemento("Error. Cargar nombre.");
+        }
+        if ( elem.getApellido() == null ) {
+            throw new FaltaCargarElemento("Error. Cargar apellido.");
+        }
+        if ( elem.getRuc() == null ) {
+            throw new FaltaCargarElemento("Error. Cargar ruc.");
+        }
+        if ( elem.getFechaNacimiento()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar fecha de nacimiento.");
+        }
+        if ( elem.getTelefono()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar telefono.");
+        }
+        if ( elem.getDireccion()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar direccion.");
+        }
         abmManager.create(Empleados.class, elem);
         return Response.ok().build();
     }
 
     @PUT
-    @Path("actualizar-empleado/{id}")
+    @Path("actualizar/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response edit(@RequestBody() String entity) throws IOException {
+    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
-        Empleados emp = mapper.readValue(entity, Empleados.class);  
-        abmManager.edit(Empleados.class, emp);
+        Empleados elem = mapper.readValue(entity, Empleados.class);  
+        if ( elem.getCedula() == null ) {
+            throw new FaltaCargarElemento("Error. Cargar cedula.");
+        }
+        if ( elem.getNombre() == null ) {
+            throw new FaltaCargarElemento("Error. Cargar nombre.");
+        }
+        if ( elem.getApellido() == null ) {
+            throw new FaltaCargarElemento("Error. Cargar apellido.");
+        }
+        if ( elem.getRuc() == null ) {
+            throw new FaltaCargarElemento("Error. Cargar ruc.");
+        }
+        if ( elem.getFechaNacimiento()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar fecha de nacimiento.");
+        }
+        if ( elem.getTelefono()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar telefono.");
+        }
+        if ( elem.getDireccion()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar direccion.");
+        }
+        abmManager.edit(Empleados.class, elem);
         return Response.ok().build();
     }
 
     @GET
-    @Path("traer-empleado/{id}")
+    @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         Empleados entity = null;
         entity = (Empleados) abmManager.find("Empleados", id);
@@ -74,7 +111,7 @@ public class EmpleadosREST {
     }
 
     @GET
-    @Path("listar-empleados")
+    @Path("listar")
     public Response findAll() throws JsonProcessingException {
         List<Empleados> elem = (List<Empleados>) (Object) abmManager.findAll("Empleados");
         ObjectMapper mapper = new ObjectMapper();

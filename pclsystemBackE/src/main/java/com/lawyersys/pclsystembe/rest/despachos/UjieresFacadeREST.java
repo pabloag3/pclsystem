@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -42,28 +40,37 @@ public class UjieresFacadeREST {
     private ABMManagerDespachos abmManager;
 
     @POST
-    @Path("guardar-ujier")
+    @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
         Ujieres elem = mapper.readValue(entity, Ujieres.class);   
         if ( elem.getNombre()== null ) {
-            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+            throw new FaltaCargarElemento("Error. Cargar nombre.");
+        }
+        if ( elem.getApellido()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar apellido.");
         }
         abmManager.create(Ujieres.class, elem);
         return Response.ok().build();
     }
 
     @PUT
-    @Path("actualizar-ujier/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException {
+    @Path("actualizar/{id}")
+    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
-        Ujieres elem = mapper.readValue(entity, Ujieres.class);  
+        Ujieres elem = mapper.readValue(entity, Ujieres.class);
+        if ( elem.getNombre()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar nombre.");
+        }
+        if ( elem.getApellido()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar apellido.");
+        }
         abmManager.edit(Ujieres.class, elem);
         return Response.ok().build();
     }
 
     @GET
-    @Path("traer-ujier/{id}")
+    @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         Ujieres entity = null;
         entity = (Ujieres) abmManager.find("Ujieres", id);
@@ -73,7 +80,7 @@ public class UjieresFacadeREST {
     }
 
     @GET
-    @Path("listar-ujier")
+    @Path("listar")
     public Response findAll() throws JsonProcessingException {
         List<Ujieres> elem = (List<Ujieres>) (Object) abmManager.findAll("Ujieres");
         ObjectMapper mapper = new ObjectMapper();

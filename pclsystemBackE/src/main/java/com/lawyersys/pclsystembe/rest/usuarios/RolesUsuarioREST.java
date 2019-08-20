@@ -43,7 +43,7 @@ public class RolesUsuarioREST {
     private ABMManagerUsuarios abmManager;
 
     @POST
-    @Path("guardar-rol")
+    @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
         RolesUsuario elem = mapper.readValue(entity, RolesUsuario.class);   
@@ -55,10 +55,13 @@ public class RolesUsuarioREST {
     }
 
     @PUT
-    @Path("actualizar-rol/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException {
+    @Path("actualizar/{id}")
+    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
         RolesUsuario elem = mapper.readValue(entity, RolesUsuario.class);  
+        if ( elem.getDescripcion()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+        }
         abmManager.edit(RolesUsuario.class, elem);
         return Response.ok().build();
     }
@@ -70,7 +73,7 @@ public class RolesUsuarioREST {
 //    }
 
     @GET
-    @Path("traer-rol/{id}")
+    @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         RolesUsuario entity = null;
         entity = (RolesUsuario) abmManager.find("RolesUsuario", id);
@@ -80,7 +83,7 @@ public class RolesUsuarioREST {
     }
 
     @GET
-    @Path("listar-roles")
+    @Path("listar")
     public Response findAll() throws JsonProcessingException {
         List<RolesUsuario> elem = (List<RolesUsuario>) (Object) abmManager.findAll("RolesUsuario");
         ObjectMapper mapper = new ObjectMapper();
