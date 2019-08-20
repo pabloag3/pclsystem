@@ -10,7 +10,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 
 /**
  *
@@ -24,6 +23,12 @@ public class ABMManagerUsuarios {
 
     public List<Object> findAll(String entidad) {
         Query q = em.createNamedQuery(entidad + ".findAll");
+        return q.getResultList();
+    }
+    
+    public List<Object> findPermisosByRol(int rol) {
+        Query q = em.createNamedQuery("RolesPermisos.findByCodRolPermiso")
+                .setParameter("codRolPermiso", rol);
         return q.getResultList();
     }
     
@@ -48,6 +53,16 @@ public class ABMManagerUsuarios {
         } else if (entidad == "Permisos") {
             Query q = em.createNamedQuery(entidad + ".findByCodPermiso")
                     .setParameter("codPermiso", Integer.parseInt(id));
+            return q.getSingleResult();
+        }
+        return elem;
+    }
+    
+    public Object findByName(String entidad, String usuario) {
+        List<Object> elem = null;
+        if (entidad == "Usuarios") {
+            Query q = em.createNamedQuery(entidad + ".findByUsuario")
+                    .setParameter("usuario", usuario);
             return q.getSingleResult();
         }
         return elem;

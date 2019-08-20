@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawyersys.pclsystembe.abm.ABMManagerUsuarios;
 import com.lawyersys.pclsystembacke.entities.Usuarios;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
+import com.lawyersys.pclsystembe.utilidades.Seguridad;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -56,6 +57,7 @@ public class UsuariosREST {
         if ( elem.getCorreoElectronico() == null ) {
             throw new FaltaCargarElemento("Error. Cargar correo electrónico.");
         }
+        elem.setContrasenha(Seguridad.getMd5(elem.getContrasenha()));
         abmManager.create(Usuarios.class, elem);
         return Response.ok().build();
     }
@@ -77,6 +79,7 @@ public class UsuariosREST {
         if ( elem.getCorreoElectronico() == null ) {
             throw new FaltaCargarElemento("Error. Cargar correo electrónico.");
         }
+        elem.setContrasenha(Seguridad.getMd5(elem.getContrasenha()));
         abmManager.edit(Usuarios.class, elem);
         return Response.ok().build();
     }
@@ -86,6 +89,16 @@ public class UsuariosREST {
     public Response traer(@PathParam("id") String id) throws JsonProcessingException {
         Usuarios entity = null;
         entity = (Usuarios) abmManager.find("Usuarios", id);
+        ObjectMapper mapper = new ObjectMapper();
+        String resp = mapper.writeValueAsString(entity);
+        return Response.ok(resp).build();
+    }
+    
+    @GET
+    @Path("traer-por-nombre/{id}")
+    public Response traerPorNombre(@PathParam("id") String usuario) throws JsonProcessingException {
+        Usuarios entity = null;
+        entity = (Usuarios) abmManager.findByName("Usuarios", usuario);
         ObjectMapper mapper = new ObjectMapper();
         String resp = mapper.writeValueAsString(entity);
         return Response.ok(resp).build();
