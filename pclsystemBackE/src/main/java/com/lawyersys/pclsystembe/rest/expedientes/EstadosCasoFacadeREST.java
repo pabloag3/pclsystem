@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -42,7 +40,7 @@ public class EstadosCasoFacadeREST {
     private ABMManagerExpedientes abmManager;
 
     @POST
-    @Path("guardar-estado-caso")
+    @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
         EstadosCaso elem = mapper.readValue(entity, EstadosCaso.class);   
@@ -54,16 +52,19 @@ public class EstadosCasoFacadeREST {
     }
 
     @PUT
-    @Path("actualizar-estado-caso/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException {
+    @Path("actualizar/{id}")
+    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
-        EstadosCaso elem = mapper.readValue(entity, EstadosCaso.class);  
+        EstadosCaso elem = mapper.readValue(entity, EstadosCaso.class);
+        if ( elem.getDescripcion()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+        }
         abmManager.edit(EstadosCaso.class, elem);
         return Response.ok().build();
     }
 
     @GET
-    @Path("traer-estado-caso/{id}")
+    @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         EstadosCaso entity = null;
         entity = (EstadosCaso) abmManager.find("EstadosCaso", id);
@@ -73,7 +74,7 @@ public class EstadosCasoFacadeREST {
     }
 
     @GET
-    @Path("listar-estados-casos")
+    @Path("listar")
     public Response findAll() throws JsonProcessingException {
         List<EstadosCaso> elem = (List<EstadosCaso>) (Object) abmManager.findAll("EstadosCaso");
         ObjectMapper mapper = new ObjectMapper();

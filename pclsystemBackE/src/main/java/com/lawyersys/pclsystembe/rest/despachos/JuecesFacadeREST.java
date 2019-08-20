@@ -40,28 +40,37 @@ public class JuecesFacadeREST {
     private ABMManagerDespachos abmManager;
 
     @POST
-    @Path("guardar-juez")
+    @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
         Jueces elem = mapper.readValue(entity, Jueces.class);   
         if ( elem.getNombre()== null ) {
-            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+            throw new FaltaCargarElemento("Error. Cargar nombre.");
+        }
+        if ( elem.getApellido()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar apellido.");
         }
         abmManager.create(Jueces.class, elem);
         return Response.ok().build();
     }
 
     @PUT
-    @Path("actualizar-juez/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException {
+    @Path("actualizar/{id}")
+    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
-        Jueces elem = mapper.readValue(entity, Jueces.class);  
+        Jueces elem = mapper.readValue(entity, Jueces.class);
+        if ( elem.getNombre()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar nombre.");
+        }
+        if ( elem.getApellido()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar apellido.");
+        }
         abmManager.edit(Jueces.class, elem);
         return Response.ok().build();
     }
 
     @GET
-    @Path("traer-juez/{id}")
+    @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         Jueces entity = null;
         entity = (Jueces) abmManager.find("Jueces", id);
@@ -71,7 +80,7 @@ public class JuecesFacadeREST {
     }
 
     @GET
-    @Path("listar-jueces")
+    @Path("listar")
     public Response findAll() throws JsonProcessingException {
         List<Jueces> elem = (List<Jueces>) (Object) abmManager.findAll("Jueces");
         ObjectMapper mapper = new ObjectMapper();

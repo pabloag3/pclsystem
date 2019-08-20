@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -42,28 +40,37 @@ public class ClientesFacadeREST {
     private ABMManagerExpedientes abmManager;
 
     @POST
-    @Path("guardar-cliente")
+    @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
         Clientes elem = mapper.readValue(entity, Clientes.class);   
         if ( elem.getNombre()== null ) {
             throw new FaltaCargarElemento("Error. Cargar descripcion.");
         }
+        if ( elem.getTipoCliente() == null ) {
+            throw new FaltaCargarElemento("Error. Cargar tipo de cliente.");
+        }
         abmManager.create(Clientes.class, elem);
         return Response.ok().build();
     }
 
     @PUT
-    @Path("actualizar-cliente/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException {
+    @Path("actualizar/{id}")
+    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
-        Clientes elem = mapper.readValue(entity, Clientes.class);  
+        Clientes elem = mapper.readValue(entity, Clientes.class);
+        if ( elem.getNombre()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+        }
+        if ( elem.getTipoCliente() == null ) {
+            throw new FaltaCargarElemento("Error. Cargar tipo de cliente.");
+        }
         abmManager.edit(Clientes.class, elem);
         return Response.ok().build();
     }
 
     @GET
-    @Path("traer-cliente/{id}")
+    @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         Clientes entity = null;
         entity = (Clientes) abmManager.find("Clientes", id);
@@ -73,7 +80,7 @@ public class ClientesFacadeREST {
     }
 
     @GET
-    @Path("listar-clientes")
+    @Path("listar")
     public Response findAll() throws JsonProcessingException {
         List<Clientes> elem = (List<Clientes>) (Object) abmManager.findAll("Clientes");
         ObjectMapper mapper = new ObjectMapper();

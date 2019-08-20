@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -42,7 +40,7 @@ public class EstadosUsuariosREST{
     }
 
     @POST
-    @Path("guardar-estado-usuario")
+    @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
         EstadosUsuarios elem = mapper.readValue(entity, EstadosUsuarios.class);   
@@ -54,16 +52,19 @@ public class EstadosUsuariosREST{
     }
 
     @PUT
-    @Path("actualizar-estado-usuario/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException {
+    @Path("actualizar/{id}")
+    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
-        EstadosUsuarios elem = mapper.readValue(entity, EstadosUsuarios.class);  
+        EstadosUsuarios elem = mapper.readValue(entity, EstadosUsuarios.class);
+        if ( elem.getDescripcion()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+        }
         abmManager.edit(EstadosUsuarios.class, elem);
         return Response.ok().build();
     }
 
     @GET
-    @Path("traer-estado-usuario/{id}")
+    @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         EstadosUsuarios entity = null;
         entity = (EstadosUsuarios) abmManager.find("EstadosUsuarios", id);
@@ -73,7 +74,7 @@ public class EstadosUsuariosREST{
     }
 
     @GET
-    @Path("listar-estados-usuarios")
+    @Path("listar")
     public Response findAll() throws JsonProcessingException {
         List<EstadosUsuarios> elem;
         elem = (List<EstadosUsuarios>) (Object) abmManager.findAll("EstadosUsuarios");

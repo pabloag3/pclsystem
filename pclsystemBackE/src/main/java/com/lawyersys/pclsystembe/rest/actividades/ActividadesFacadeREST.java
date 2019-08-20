@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -31,6 +29,8 @@ import org.springframework.web.bind.annotation.RequestBody;
  */
 @Stateless
 @Path("actividades")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class ActividadesFacadeREST {
 
     public ActividadesFacadeREST() {
@@ -40,7 +40,7 @@ public class ActividadesFacadeREST {
     private ABMManagerActividades abmManager;
 
     @POST
-    @Path("guardar-actividad")
+    @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
         Actividades elem = mapper.readValue(entity, Actividades.class);   
@@ -55,10 +55,16 @@ public class ActividadesFacadeREST {
     }
 
     @PUT
-    @Path("actualizar-actividad/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException {
+    @Path("actualizar/{id}")
+    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
         Actividades elem = mapper.readValue(entity, Actividades.class);  
+        if ( elem.getDescripcion()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+        }
+        if ( elem.getFecha()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar fecha.");
+        }
         abmManager.edit(Actividades.class, elem);
         return Response.ok().build();
     }
@@ -70,7 +76,7 @@ public class ActividadesFacadeREST {
 //    }
 
     @GET
-    @Path("traer-actividad/{id}")
+    @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         Actividades entity = null;
         entity = (Actividades) abmManager.find("Actividades", id);
@@ -80,7 +86,7 @@ public class ActividadesFacadeREST {
     }
 
     @GET
-    @Path("listar-actividades")
+    @Path("listar")
     public Response findAll() throws JsonProcessingException {
         List<Actividades> elem = (List<Actividades>) (Object) abmManager.findAll("Actividades");
         ObjectMapper mapper = new ObjectMapper();

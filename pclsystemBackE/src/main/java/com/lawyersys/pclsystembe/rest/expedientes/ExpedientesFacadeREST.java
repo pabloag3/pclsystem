@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -42,11 +40,20 @@ public class ExpedientesFacadeREST {
     private ABMManagerExpedientes abmManager;
 
     @POST
-    @Path("guardar-expediente")
+    @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
         Expedientes elem = mapper.readValue(entity, Expedientes.class);   
         if ( elem.getDescripcion()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+        }
+        if ( elem.getCaratula()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar caratula.");
+        }
+        if ( elem.getFecha()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar fecha.");
+        }
+        if ( elem.getNroExpediente() == 0 ) {
             throw new FaltaCargarElemento("Error. Cargar descripcion.");
         }
         abmManager.create(Expedientes.class, elem);
@@ -54,7 +61,7 @@ public class ExpedientesFacadeREST {
     }
 
     @PUT
-    @Path("actualizar-expediente/{id}")
+    @Path("actualizar/{id}")
     public Response edit(@RequestBody() String entity) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         Expedientes elem = mapper.readValue(entity, Expedientes.class);  
@@ -63,7 +70,7 @@ public class ExpedientesFacadeREST {
     }
 
     @GET
-    @Path("traer-expediente/{id}")
+    @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         Expedientes entity = null;
         entity = (Expedientes) abmManager.find("Expedientes", id);
@@ -73,7 +80,7 @@ public class ExpedientesFacadeREST {
     }
 
     @GET
-    @Path("listar-expedientes")
+    @Path("listar")
     public Response findAll() throws JsonProcessingException {
         List<Expedientes> elem = (List<Expedientes>) (Object) abmManager.findAll("Expedientes");
         ObjectMapper mapper = new ObjectMapper();

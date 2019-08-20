@@ -41,7 +41,7 @@ public class DepartamentosFacadeREST {
     private ABMManagerDespachos abmManager;
 
     @POST
-    @Path("guardar-departamento")
+    @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
         Departamentos elem = mapper.readValue(entity, Departamentos.class);   
@@ -53,16 +53,19 @@ public class DepartamentosFacadeREST {
     }
 
     @PUT
-    @Path("actualizar-departamento/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException {
+    @Path("actualizar/{id}")
+    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
-        Departamentos elem = mapper.readValue(entity, Departamentos.class);  
+        Departamentos elem = mapper.readValue(entity, Departamentos.class);
+        if ( elem.getNombre()== null ) {
+            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+        }
         abmManager.edit(Departamentos.class, elem);
         return Response.ok().build();
     }
 
     @GET
-    @Path("traer-departamento/{id}")
+    @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         Departamentos entity = null;
         entity = (Departamentos) abmManager.find("Departamentos", id);
@@ -72,7 +75,7 @@ public class DepartamentosFacadeREST {
     }
 
     @GET
-    @Path("listar-departamentos")
+    @Path("listar")
     public Response findAll() throws JsonProcessingException {
         List<Departamentos> elem = (List<Departamentos>) (Object) abmManager.findAll("Departamentos");
         ObjectMapper mapper = new ObjectMapper();

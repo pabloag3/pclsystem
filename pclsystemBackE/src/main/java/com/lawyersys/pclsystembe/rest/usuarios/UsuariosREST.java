@@ -40,31 +40,49 @@ public class UsuariosREST {
     }
     
     @POST
-    @Path("guardar-usuario")
+    @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento{
         ObjectMapper mapper = new ObjectMapper();
         Usuarios elem = mapper.readValue(entity, Usuarios.class);   
         if ( elem.getCedula() == null ) {
             throw new FaltaCargarElemento("Error. Cargar cedula.");
         }
+        if ( elem.getUsuario() == null ) {
+            throw new FaltaCargarElemento("Error. Cargar usuario.");
+        }
+        if ( elem.getContrasenha() == null ) {
+            throw new FaltaCargarElemento("Error. Cargar contraseña.");
+        }
+        if ( elem.getCorreoElectronico() == null ) {
+            throw new FaltaCargarElemento("Error. Cargar correo electrónico.");
+        }
         abmManager.create(Usuarios.class, elem);
         return Response.ok().build();
     }
 
     @PUT
-    @Path("actualizar-usuario/{id}")
+    @Path("actualizar/{id}")
     public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         ObjectMapper mapper = new ObjectMapper();
         Usuarios elem = mapper.readValue(entity, Usuarios.class);   
         if ( elem.getCedula() == null ) {
             throw new FaltaCargarElemento("Error. Cargar cedula.");
         }
+        if ( elem.getUsuario() == null ) {
+            throw new FaltaCargarElemento("Error. Cargar usuario.");
+        }
+        if ( elem.getContrasenha() == null ) {
+            throw new FaltaCargarElemento("Error. Cargar contraseña.");
+        }
+        if ( elem.getCorreoElectronico() == null ) {
+            throw new FaltaCargarElemento("Error. Cargar correo electrónico.");
+        }
         abmManager.edit(Usuarios.class, elem);
         return Response.ok().build();
     }
 
     @GET
-    @Path("traer-usuario/{id}")
+    @Path("traer/{id}")
     public Response traer(@PathParam("id") String id) throws JsonProcessingException {
         Usuarios entity = null;
         entity = (Usuarios) abmManager.find("Usuarios", id);
@@ -74,7 +92,7 @@ public class UsuariosREST {
     }
 
     @GET
-    @Path("listar-usuarios")
+    @Path("listar")
     public Response traerTodos() throws JsonProcessingException {
         List<Usuarios> elem = (List<Usuarios>) (Object) abmManager.findAll("Usuarios");
         ObjectMapper mapper = new ObjectMapper();
