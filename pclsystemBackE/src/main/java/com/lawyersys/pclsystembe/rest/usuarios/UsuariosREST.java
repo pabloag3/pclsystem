@@ -87,20 +87,9 @@ public class UsuariosREST {
     @GET
     @Path("traer/{id}")
     public Response traer(@PathParam("id") String id) throws JsonProcessingException {
-        Usuarios entity = null;
-        entity = (Usuarios) abmManager.find("Usuarios", id);
+        List<Usuarios> elem = (List<Usuarios>) (Object) abmManager.find("Usuarios", id);
         ObjectMapper mapper = new ObjectMapper();
-        String resp = mapper.writeValueAsString(entity);
-        return Response.ok(resp).build();
-    }
-    
-    @GET
-    @Path("traer-por-nombre/{id}")
-    public Response traerPorNombre(@PathParam("id") String usuario) throws JsonProcessingException {
-        Usuarios entity = null;
-        entity = (Usuarios) abmManager.findByName("Usuarios", usuario);
-        ObjectMapper mapper = new ObjectMapper();
-        String resp = mapper.writeValueAsString(entity);
+        String resp = mapper.writeValueAsString(elem);
         return Response.ok(resp).build();
     }
 

@@ -26,20 +26,20 @@ public class ABMManagerActividades {
         return q.getResultList();
     }
     
-    public Object find(String entidad, String id) {
+    public List<Object> find(String entidad, String id) {
         List<Object> elem = null;
         if (entidad == "TiposActividades") {
             Query q = em.createNamedQuery(entidad + ".findByCodTipoActividad")
                     .setParameter("codTipoActividad", Integer.parseInt(id));
-            return q.getSingleResult();
+            return q.getResultList();
         } else if (entidad == "EstadosActividades") {
             Query q = em.createNamedQuery(entidad + ".findByCodEstado")
                     .setParameter("codEstado", Integer.parseInt(id));
-            return q.getSingleResult();
+            return q.getResultList();
         } else if (entidad == "Actividades") {
             Query q = em.createNamedQuery(entidad + ".findByCodActividad")
                     .setParameter("codActividad", Integer.parseInt(id));
-            return q.getSingleResult();
+            return q.getResultList();
         }
         return elem;
     }

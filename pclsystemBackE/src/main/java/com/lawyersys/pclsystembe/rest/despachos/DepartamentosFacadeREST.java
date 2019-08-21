@@ -5,7 +5,6 @@ package com.lawyersys.pclsystembe.rest.despachos;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawyersys.pclsystembacke.entities.Departamentos;
-import com.lawyersys.pclsystembe.abm.ABMManagerActividades;
 import com.lawyersys.pclsystembe.abm.ABMManagerDespachos;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import java.io.IOException;
@@ -67,10 +66,9 @@ public class DepartamentosFacadeREST {
     @GET
     @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
-        Departamentos entity = null;
-        entity = (Departamentos) abmManager.find("Departamentos", id);
+        List<Departamentos> elem = (List<Departamentos>) (Object) abmManager.find("Departamentos", id);
         ObjectMapper mapper = new ObjectMapper();
-        String resp = mapper.writeValueAsString(entity);
+        String resp = mapper.writeValueAsString(elem);
         return Response.ok(resp).build();
     }
 

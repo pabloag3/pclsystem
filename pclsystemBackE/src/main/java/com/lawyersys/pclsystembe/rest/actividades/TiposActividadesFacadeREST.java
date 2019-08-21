@@ -72,10 +72,9 @@ public class TiposActividadesFacadeREST {
     @GET
     @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
-        TiposActividades entity = null;
-        entity = (TiposActividades) abmManager.find("TiposActividades", id);
+        List<TiposActividades> elem = (List<TiposActividades>) (Object) abmManager.find("TiposActividades", id);
         ObjectMapper mapper = new ObjectMapper();
-        String resp = mapper.writeValueAsString(entity);
+        String resp = mapper.writeValueAsString(elem);
         return Response.ok(resp).build();
     }
 

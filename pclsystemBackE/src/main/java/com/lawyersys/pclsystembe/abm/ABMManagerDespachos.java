@@ -30,36 +30,36 @@ public class ABMManagerDespachos {
         return q.getResultList();
     }
     
-    public Object find(String entidad, String id) {
+    public List<Object> find(String entidad, String id) {
         List<Object> elem = null;
         if (entidad == "Departamentos") {
             Query q = em.createNamedQuery(entidad + ".findByCodDepartamento")
                     .setParameter("codDepartamento", Integer.parseInt(id));
-            return q.getSingleResult();
+            return q.getResultList();
         } else if (entidad == "Ciudades") {
             Query q = em.createNamedQuery(entidad + ".findByCodCiudad")
                     .setParameter("codCiudad", Integer.parseInt(id));
-            return q.getSingleResult();
+            return q.getResultList();
         } else if (entidad == "Actuarios") {
             Query q = em.createNamedQuery(entidad + ".findByCodActuario")
                     .setParameter("codActuario", Integer.parseInt(id));
-            return q.getSingleResult();
+            return q.getResultList();
         } else if (entidad == "Fueros") {
             Query q = em.createNamedQuery(entidad + ".findByCodFuero")
                     .setParameter("codFuero", Integer.parseInt(id));
-            return q.getSingleResult();
+            return q.getResultList();
         } else if (entidad == "Jueces") {
             Query q = em.createNamedQuery(entidad + ".findByCodJuez")
                     .setParameter("codJuez", Integer.parseInt(id));
-            return q.getSingleResult();
+            return q.getResultList();
         } else if (entidad == "Ujieres") {
             Query q = em.createNamedQuery(entidad + ".findByCodUjier")
                     .setParameter("codUjier", Integer.parseInt(id));
-            return q.getSingleResult();
+            return q.getResultList();
         } else if (entidad == "Despachos") {
             Query q = em.createNamedQuery(entidad + ".findByCodDespacho")
                     .setParameter("codDespacho", Integer.parseInt(id));
-            return q.getSingleResult();
+            return q.getResultList();
         }
         return elem;
     }

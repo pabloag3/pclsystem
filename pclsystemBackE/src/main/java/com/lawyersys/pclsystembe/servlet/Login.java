@@ -56,7 +56,7 @@ public class Login extends HttpServlet {
                 response.sendError(response.SC_FORBIDDEN);
             }
             
-            Usuarios usuario = (Usuarios) abmManager.findByName("Usuarios", username);
+            Usuarios usuario = (Usuarios) abmManager.find("Usuarios", username);
             if (usuario == null) {
                 response.sendError(response.SC_FORBIDDEN);
             } else {

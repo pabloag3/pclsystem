@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -75,10 +73,9 @@ public class RolesUsuarioREST {
     @GET
     @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
-        RolesUsuario entity = null;
-        entity = (RolesUsuario) abmManager.find("RolesUsuario", id);
+        List<RolesUsuario> elem = (List<RolesUsuario>) (Object) abmManager.find("RolesUsuario", id);
         ObjectMapper mapper = new ObjectMapper();
-        String resp = mapper.writeValueAsString(entity);
+        String resp = mapper.writeValueAsString(elem);
         return Response.ok(resp).build();
     }
 

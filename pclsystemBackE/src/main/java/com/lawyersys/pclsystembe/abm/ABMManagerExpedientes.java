@@ -29,32 +29,32 @@ public class ABMManagerExpedientes {
         return q.getResultList();
     }
     
-    public Object find(String entidad, String id) {
+    public List<Object> find(String entidad, String id) {
         List<Object> elem = null;
         if (entidad == "Casos") {
             Query q = em.createNamedQuery(entidad + ".findByCodCaso")
                     .setParameter("codCaso", Integer.parseInt(id));
-            return q.getSingleResult();
+            return q.getResultList();
         } else if (entidad == "Clientes") {
             Query q = em.createNamedQuery(entidad + ".findByCodCliente")
                     .setParameter("codCliente", Integer.parseInt(id));
-            return q.getSingleResult();
+            return q.getResultList();
         } else if (entidad == "DetalleExpediente") {
             Query q = em.createNamedQuery(entidad + ".findByCodDetalleExpediente")
                     .setParameter("codDetalleExpediente", Integer.parseInt(id));
-            return q.getSingleResult();
+            return q.getResultList();
         } else if (entidad == "EstadosCaso") {
             Query q = em.createNamedQuery(entidad + ".findByCodEstadoCaso")
                     .setParameter("codEstadoCaso", Integer.parseInt(id));
-            return q.getSingleResult();
+            return q.getResultList();
         } else if (entidad == "Expedientes") {
             Query q = em.createNamedQuery(entidad + ".findByCodExpediente")
                     .setParameter("codExpediente", Integer.parseInt(id));
-            return q.getSingleResult();
+            return q.getResultList();
         } else if (entidad == "TiposActuaciones") {
             Query q = em.createNamedQuery(entidad + ".findByCodTipoActuacion")
                     .setParameter("codTipoActuacion", Integer.parseInt(id));
-            return q.getSingleResult();
+            return q.getResultList();
         }
         return elem;
     }

@@ -32,28 +32,28 @@ public class ABMManagerUsuarios {
         return q.getResultList();
     }
     
-    public Object find(String entidad, String id) {
+    public List<Object> find(String entidad, String id) {
         List<Object> elem = null;
         if (entidad == "Usuarios") {
             Query q = em.createNamedQuery(entidad + ".findByUsuario")
                     .setParameter("usuario", id);
-            return q.getSingleResult();
+            return q.getResultList();
         } else if (entidad == "Empleados") {
             Query q = em.createNamedQuery(entidad + ".findByCedula")
                     .setParameter("cedula", id);
-            return q.getSingleResult();
+            return q.getResultList();
         } else if (entidad == "RolesUsuario") {
             Query q = em.createNamedQuery(entidad + ".findByCodRol")
                     .setParameter("codRol", Integer.parseInt(id));
-            return q.getSingleResult();
+            return q.getResultList();
         } else if (entidad == "EstadosUsuarios") {
             Query q = em.createNamedQuery(entidad + ".findByCodEstado")
                     .setParameter("codEstado", Integer.parseInt(id));
-            return q.getSingleResult();
+            return q.getResultList();
         } else if (entidad == "Permisos") {
             Query q = em.createNamedQuery(entidad + ".findByCodPermiso")
                     .setParameter("codPermiso", Integer.parseInt(id));
-            return q.getSingleResult();
+            return q.getResultList();
         }
         return elem;
     }

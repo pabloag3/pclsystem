@@ -101,10 +101,9 @@ public class DetalleExpedienteFacadeREST {
     @GET
     @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
-        DetalleExpediente entity = null;
-        entity = (DetalleExpediente) abmManager.find("DetalleExpediente", id);
+        List<DetalleExpediente> elem = (List<DetalleExpediente>) (Object) abmManager.find("DetalleExpediente", id);
         ObjectMapper mapper = new ObjectMapper();
-        String resp = mapper.writeValueAsString(entity);
+        String resp = mapper.writeValueAsString(elem);
         return Response.ok(resp).build();
     }
 

@@ -66,18 +66,16 @@ public class EstadosUsuariosREST{
     @GET
     @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
-        EstadosUsuarios entity = null;
-        entity = (EstadosUsuarios) abmManager.find("EstadosUsuarios", id);
+        List<EstadosUsuarios> elem = (List<EstadosUsuarios>) (Object) abmManager.find("EstadosUsuarios", id);
         ObjectMapper mapper = new ObjectMapper();
-        String resp = mapper.writeValueAsString(entity);
+        String resp = mapper.writeValueAsString(elem);
         return Response.ok(resp).build();
     }
 
     @GET
     @Path("listar")
     public Response findAll() throws JsonProcessingException {
-        List<EstadosUsuarios> elem;
-        elem = (List<EstadosUsuarios>) (Object) abmManager.findAll("EstadosUsuarios");
+        List<EstadosUsuarios> elem = (List<EstadosUsuarios>) (Object) abmManager.findAll("EstadosUsuarios");
         ObjectMapper mapper = new ObjectMapper();
         String resp = mapper.writeValueAsString(elem);
         return Response.ok(resp).build();

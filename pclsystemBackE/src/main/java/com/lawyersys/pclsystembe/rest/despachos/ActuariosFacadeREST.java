@@ -72,10 +72,9 @@ public class ActuariosFacadeREST {
     @GET
     @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
-        Actuarios entity = null;
-        entity = (Actuarios) abmManager.find("Actuarios", id);
+        List<Actuarios> elem = (List<Actuarios>) (Object) abmManager.find("Actuarios", id);
         ObjectMapper mapper = new ObjectMapper();
-        String resp = mapper.writeValueAsString(entity);
+        String resp = mapper.writeValueAsString(elem);
         return Response.ok(resp).build();
     }
 
