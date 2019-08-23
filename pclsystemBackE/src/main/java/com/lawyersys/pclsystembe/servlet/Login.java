@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -51,7 +52,7 @@ public class Login extends HttpServlet {
             
             String username = request.getParameter("username");
             String contrasenha = request.getParameter("contrasenha");
-            String key = request.getParameter("sessionKey");
+//            String key = request.getParameter("sessionKey");
             
             HttpSession session = request.getSession();
             
@@ -65,15 +66,20 @@ public class Login extends HttpServlet {
             } else {
                 if (usuario.getContrasenha() == Seguridad.getMd5(contrasenha)) {
                     if (usuario.getCodEstado().getDescripcion() == "HABILITADO" ) {
+                        
+                        String token = UUID.randomUUID().toString().toUpperCase() + "|" + "userid";
+                        
                         rol = usuario.getCodRol().getCodRol();
                         List<Permisos> permisos = (List<Permisos>) (Permisos) abmManager.findPermisosByRol(rol);
-                        session.setAttribute("sessionKey", key);
+                        
+                        session.setAttribute("sessionToken", token);
                         session.setAttribute("usuario", username);
                         session.setAttribute("permisos", permisos);
                         HashMap jsonString = new HashMap();
                         jsonString.put("permisos", permisos);
                         ObjectMapper mapper = new ObjectMapper();
                         String respuesta = mapper.writeValueAsString(jsonString);
+                        
                         response.setContentType("text/plain");
                         response.getWriter().write(respuesta);
                         response.getWriter().close();

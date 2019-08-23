@@ -27,8 +27,13 @@ public class ABMManagerUsuarios {
     }
     
     public List<Object> findPermisosByRol(int rol) {
-        Query q = em.createNamedQuery("Permisos.findByCodRol")
-                .setParameter("codRol", rol);
+//        Query q = em.createNamedQuery("Permisos.findByCodRol")
+//                .setParameter("codRol", rol);
+        Query q = em.createNativeQuery("SELECT p.cod_permiso, p.descripcion\n" 
+                + "FROM public.permisos p\n"
+                + "JOIN roles_permisos rp ON rp.cod_permiso = p.cod_permiso\n"
+                + "WHERE rp.cod_rol = ?1;");
+        q.setParameter(1, rol);
         return q.getResultList();
     }
     
