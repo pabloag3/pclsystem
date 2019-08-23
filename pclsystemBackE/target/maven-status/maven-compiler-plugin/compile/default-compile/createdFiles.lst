@@ -48,6 +48,7 @@ com\lawyersys\pclsystembacke\entities\Casos.class
 com\lawyersys\pclsystembacke\entities\Jueces.class
 com\lawyersys\pclsystembe\rest\despachos\DespachosFacadeREST.class
 com\lawyersys\pclsystembacke\entities\RolesPermisos.class
+com\lawyersys\pclsystembe\utilidades\Seguridad.class
 com\lawyersys\pclsystembe\rest\usuarios\PermisosREST.class
 com\lawyersys\pclsystembe\abm\ABMManagerActividades.class
 com\lawyersys\pclsystembacke\entities\DetalleExpediente.class

@@ -2,6 +2,7 @@
  */
 package com.lawyersys.pclsystembe.servlet;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawyersys.pclsystembacke.entities.Permisos;
 import com.lawyersys.pclsystembacke.entities.RolesPermisos;
 import com.lawyersys.pclsystembacke.entities.RolesUsuario;
@@ -10,6 +11,7 @@ import com.lawyersys.pclsystembe.abm.ABMManagerUsuarios;
 import com.lawyersys.pclsystembe.utilidades.Seguridad;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -49,6 +51,7 @@ public class Login extends HttpServlet {
             
             String username = request.getParameter("username");
             String contrasenha = request.getParameter("contrasenha");
+            String key = request.getParameter("sessionKey");
             
             HttpSession session = request.getSession();
             
@@ -63,9 +66,17 @@ public class Login extends HttpServlet {
                 if (usuario.getContrasenha() == Seguridad.getMd5(contrasenha)) {
                     if (usuario.getCodEstado().getDescripcion() == "HABILITADO" ) {
                         rol = usuario.getCodRol().getCodRol();
-                        List<RolesPermisos> rp = (List<RolesPermisos>) (RolesPermisos) abmManager.findPermisosByRol(rol);
+                        List<Permisos> permisos = (List<Permisos>) (Permisos) abmManager.findPermisosByRol(rol);
+                        session.setAttribute("sessionKey", key);
                         session.setAttribute("usuario", username);
-                        session.setAttribute("permisos", rp);
+                        session.setAttribute("permisos", permisos);
+                        HashMap jsonString = new HashMap();
+                        jsonString.put("permisos", permisos);
+                        ObjectMapper mapper = new ObjectMapper();
+                        String respuesta = mapper.writeValueAsString(jsonString);
+                        response.setContentType("text/plain");
+                        response.getWriter().write(respuesta);
+                        response.getWriter().close();
                     } else {
                         response.sendError(response.SC_FORBIDDEN);
                     }
