@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawyersys.pclsystembe.abm.ABMManagerUsuarios;
 import com.lawyersys.pclsystembacke.entities.Usuarios;
+import com.lawyersys.pclsystembe.utilidades.ErrorManager;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.Seguridad;
 import java.io.IOException;
@@ -43,23 +44,27 @@ public class UsuariosREST {
     @POST
     @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento{
-        ObjectMapper mapper = new ObjectMapper();
-        Usuarios elem = mapper.readValue(entity, Usuarios.class);   
-        if ( elem.getCedula() == null ) {
-            throw new FaltaCargarElemento("Error. Cargar cedula.");
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Usuarios elem = mapper.readValue(entity, Usuarios.class);   
+            if ( elem.getCedula() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar cedula.");
+            }
+            if ( elem.getUsuario() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar usuario.");
+            }
+            if ( elem.getContrasenha() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar contraseña.");
+            }
+            if ( elem.getCorreoElectronico() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar correo electrónico.");
+            }
+            elem.setContrasenha(Seguridad.getMd5(elem.getContrasenha()));
+            abmManager.create(Usuarios.class, elem);
+            return Response.ok().build();
+        } catch (Exception e) {
+            return ErrorManager.tratarError(e);
         }
-        if ( elem.getUsuario() == null ) {
-            throw new FaltaCargarElemento("Error. Cargar usuario.");
-        }
-        if ( elem.getContrasenha() == null ) {
-            throw new FaltaCargarElemento("Error. Cargar contraseña.");
-        }
-        if ( elem.getCorreoElectronico() == null ) {
-            throw new FaltaCargarElemento("Error. Cargar correo electrónico.");
-        }
-        elem.setContrasenha(Seguridad.getMd5(elem.getContrasenha()));
-        abmManager.create(Usuarios.class, elem);
-        return Response.ok().build();
     }
 
     @PUT
