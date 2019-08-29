@@ -7,12 +7,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawyersys.pclsystembacke.entities.Departamentos;
 import com.lawyersys.pclsystembe.abm.ABMManagerDespachos;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
+import com.lawyersys.pclsystembe.utilidades.ErrorManager;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -42,43 +42,59 @@ public class DepartamentosFacadeREST {
     @POST
     @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
-        ObjectMapper mapper = new ObjectMapper();
-        Departamentos elem = mapper.readValue(entity, Departamentos.class);   
-        if ( elem.getNombre()== null ) {
-            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Departamentos elem = mapper.readValue(entity, Departamentos.class);   
+            if ( elem.getNombre()== null ) {
+                throw new FaltaCargarElemento("Error. Cargar descripcion.");
+            }
+            abmManager.create(Departamentos.class, elem);
+            return Response.ok().build();
+        } catch (Exception e) {
+            return ErrorManager.tratarError(e);
         }
-        abmManager.create(Departamentos.class, elem);
-        return Response.ok().build();
     }
 
     @PUT
     @Path("actualizar/{id}")
     public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
-        ObjectMapper mapper = new ObjectMapper();
-        Departamentos elem = mapper.readValue(entity, Departamentos.class);
-        if ( elem.getNombre()== null ) {
-            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Departamentos elem = mapper.readValue(entity, Departamentos.class);
+            if ( elem.getNombre()== null ) {
+                throw new FaltaCargarElemento("Error. Cargar descripcion.");
+            }
+            abmManager.edit(Departamentos.class, elem);
+            return Response.ok().build();
+        } catch (Exception e) {
+            return ErrorManager.tratarError(e);
         }
-        abmManager.edit(Departamentos.class, elem);
-        return Response.ok().build();
     }
 
     @GET
     @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
-        List<Departamentos> elem = (List<Departamentos>) (Object) abmManager.find("Departamentos", id);
-        ObjectMapper mapper = new ObjectMapper();
-        String resp = mapper.writeValueAsString(elem);
-        return Response.ok(resp).build();
+        try {
+            List<Departamentos> elem = (List<Departamentos>) (Object) abmManager.find("Departamentos", id);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.tratarError(e);
+        }
     }
 
     @GET
     @Path("listar")
     public Response findAll() throws JsonProcessingException {
-        List<Departamentos> elem = (List<Departamentos>) (Object) abmManager.findAll("Departamentos");
-        ObjectMapper mapper = new ObjectMapper();
-        String resp = mapper.writeValueAsString(elem);
-        return Response.ok(resp).build();
+        try {
+            List<Departamentos> elem = (List<Departamentos>) (Object) abmManager.findAll("Departamentos");
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.tratarError(e);
+        }
     }
 
 }

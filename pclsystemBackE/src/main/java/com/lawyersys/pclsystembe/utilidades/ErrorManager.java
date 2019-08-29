@@ -2,9 +2,9 @@
  */
 package com.lawyersys.pclsystembe.utilidades;
 
-import java.sql.SQLException;
-import java.util.List;
+import java.io.UncheckedIOException;
 import javax.ws.rs.core.Response;
+import org.postgresql.util.PSQLException;
 
 /**
  *
@@ -13,10 +13,10 @@ import javax.ws.rs.core.Response;
 public class ErrorManager {
 
     public static Response tratarError(Exception e) {
-        if (e instanceof SQLException) {
+        if (e instanceof PSQLException) {
+            return Response.status(Response.Status.EXPECTATION_FAILED).header("Content-Type: text/html; charset=utf-8", "*").build();
+        } else if (e instanceof UncheckedIOException) {
             return Response.status(Response.Status.BAD_REQUEST).header("Content-Type: text/html; charset=utf-8", "*").build();
-        } else if (e instanceof NullPointerException) {
-            return Response.status(Response.Status.CONFLICT).header("Content-Type: text/html; charset=utf-8", "*").build();
         }
         
         return null;

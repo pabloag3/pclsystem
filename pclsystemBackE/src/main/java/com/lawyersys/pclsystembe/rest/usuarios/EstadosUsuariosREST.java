@@ -10,7 +10,6 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -22,6 +21,7 @@ import javax.ws.rs.core.Response;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.lawyersys.pclsystembacke.entities.EstadosUsuarios;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
+import com.lawyersys.pclsystembe.utilidades.ErrorManager;
 
 /**
  *
@@ -42,43 +42,60 @@ public class EstadosUsuariosREST{
     @POST
     @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
-        ObjectMapper mapper = new ObjectMapper();
-        EstadosUsuarios elem = mapper.readValue(entity, EstadosUsuarios.class);   
-        if ( elem.getDescripcion()== null ) {
-            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            EstadosUsuarios elem = mapper.readValue(entity, EstadosUsuarios.class);   
+            if ( elem.getDescripcion()== null ) {
+                throw new FaltaCargarElemento("Error. Cargar descripcion.");
+            }
+            abmManager.create(EstadosUsuarios.class, elem);
+            return Response.ok().build();
+        } catch (Exception e) {
+            return ErrorManager.tratarError(e);
         }
-        abmManager.create(EstadosUsuarios.class, elem);
-        return Response.ok().build();
+        
     }
 
     @PUT
     @Path("actualizar/{id}")
     public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
-        ObjectMapper mapper = new ObjectMapper();
-        EstadosUsuarios elem = mapper.readValue(entity, EstadosUsuarios.class);
-        if ( elem.getDescripcion()== null ) {
-            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            EstadosUsuarios elem = mapper.readValue(entity, EstadosUsuarios.class);
+            if ( elem.getDescripcion()== null ) {
+                throw new FaltaCargarElemento("Error. Cargar descripcion.");
+            }
+            abmManager.edit(EstadosUsuarios.class, elem);
+            return Response.ok().build();
+        } catch (Exception e) {
+            return ErrorManager.tratarError(e);
         }
-        abmManager.edit(EstadosUsuarios.class, elem);
-        return Response.ok().build();
     }
 
     @GET
     @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
-        List<EstadosUsuarios> elem = (List<EstadosUsuarios>) (Object) abmManager.find("EstadosUsuarios", id);
-        ObjectMapper mapper = new ObjectMapper();
-        String resp = mapper.writeValueAsString(elem);
-        return Response.ok(resp).build();
+        try {
+            List<EstadosUsuarios> elem = (List<EstadosUsuarios>) (Object) abmManager.find("EstadosUsuarios", id);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.tratarError(e);
+        }
     }
 
     @GET
     @Path("listar")
     public Response findAll() throws JsonProcessingException {
-        List<EstadosUsuarios> elem = (List<EstadosUsuarios>) (Object) abmManager.findAll("EstadosUsuarios");
-        ObjectMapper mapper = new ObjectMapper();
-        String resp = mapper.writeValueAsString(elem);
-        return Response.ok(resp).build();
+        try {
+            List<EstadosUsuarios> elem = (List<EstadosUsuarios>) (Object) abmManager.findAll("EstadosUsuarios");
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.tratarError(e);
+        }
     }
     
 }

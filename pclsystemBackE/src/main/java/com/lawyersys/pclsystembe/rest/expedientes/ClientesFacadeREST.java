@@ -7,12 +7,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawyersys.pclsystembacke.entities.Clientes;
 import com.lawyersys.pclsystembe.abm.ABMManagerExpedientes;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
+import com.lawyersys.pclsystembe.utilidades.ErrorManager;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -42,50 +42,65 @@ public class ClientesFacadeREST {
     @POST
     @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
-        ObjectMapper mapper = new ObjectMapper();
-        Clientes elem = mapper.readValue(entity, Clientes.class);   
-        if ( elem.getNombre()== null ) {
-            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Clientes elem = mapper.readValue(entity, Clientes.class);   
+            if ( elem.getNombre()== null ) {
+                throw new FaltaCargarElemento("Error. Cargar descripcion.");
+            }
+            if ( elem.getTipoCliente() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar tipo de cliente.");
+            }
+            abmManager.create(Clientes.class, elem);
+            return Response.ok().build();
+        } catch (Exception e) {
+            return ErrorManager.tratarError(e);
         }
-        if ( elem.getTipoCliente() == null ) {
-            throw new FaltaCargarElemento("Error. Cargar tipo de cliente.");
-        }
-        abmManager.create(Clientes.class, elem);
-        return Response.ok().build();
     }
 
     @PUT
     @Path("actualizar/{id}")
     public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
-        ObjectMapper mapper = new ObjectMapper();
-        Clientes elem = mapper.readValue(entity, Clientes.class);
-        if ( elem.getNombre()== null ) {
-            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Clientes elem = mapper.readValue(entity, Clientes.class);
+            if ( elem.getNombre()== null ) {
+                throw new FaltaCargarElemento("Error. Cargar descripcion.");
+            }
+            if ( elem.getTipoCliente() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar tipo de cliente.");
+            }
+            abmManager.edit(Clientes.class, elem);
+            return Response.ok().build();
+        } catch (Exception e) {
+            return ErrorManager.tratarError(e);
         }
-        if ( elem.getTipoCliente() == null ) {
-            throw new FaltaCargarElemento("Error. Cargar tipo de cliente.");
-        }
-        abmManager.edit(Clientes.class, elem);
-        return Response.ok().build();
     }
 
     @GET
     @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
-        List<Clientes> elem = (List<Clientes>) (Object) abmManager.find("Clientes", id);
-        ObjectMapper mapper = new ObjectMapper();
-        String resp = mapper.writeValueAsString(elem);
-        return Response.ok(resp).build();
+        try {
+            List<Clientes> elem = (List<Clientes>) (Object) abmManager.find("Clientes", id);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.tratarError(e);
+        }
     }
 
     @GET
     @Path("listar")
     public Response findAll() throws JsonProcessingException {
-        List<Clientes> elem = (List<Clientes>) (Object) abmManager.findAll("Clientes");
-        ObjectMapper mapper = new ObjectMapper();
-        String resp = mapper.writeValueAsString(elem);
-        return Response.ok(resp).build();
+        try {
+            List<Clientes> elem = (List<Clientes>) (Object) abmManager.findAll("Clientes");
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.tratarError(e);
+        }
     }
-    
     
 }

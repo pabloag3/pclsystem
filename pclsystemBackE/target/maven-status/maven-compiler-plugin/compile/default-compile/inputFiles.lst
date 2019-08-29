@@ -1,69 +1,69 @@
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\usuarios\EmpleadosREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Expedientes.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\RolesUsuario.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\DetalleFacturaPK.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\usuarios\EstadosUsuariosREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Ujieres.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\despachos\FuerosFacadeREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\usuarios\UsuariosREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Empleados.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Ciudades.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\FacturasPK.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\error\FaltaCargarElemento.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\DetalleCuenta.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Pagos.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\abm\ABMManagerActividades.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Actividades.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\TiposActuaciones.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\abm\ABMManagerUsuarios.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\EstadosUsuarios.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\despachos\JuecesFacadeREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\expedientes\DetalleExpedienteFacadeREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\TiposReporte.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Despachos.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Jueces.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\servlet\Login.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\usuarios\PermisosREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\DetalleExpediente.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Permisos.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\expedientes\TiposActuacionesFacadeREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\CuentasPK.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\EstadosActividades.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Usuarios.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\expedientes\ExpedientesFacadeREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\usuarios\RolesUsuarioREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\abm\ABMManagerDespachos.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\DetalleCuentaPK.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\EstadosCaso.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\RecibosPK.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\abm\ABMManagerExpedientes.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\expedientes\EstadosCasoFacadeREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\DetalleFactura.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Actuarios.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\TiposPagos.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Casos.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\PagosPK.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Departamentos.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\despachos\DepartamentosFacadeREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\expedientes\ClientesFacadeREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Facturas.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\actividades\TiposActividadesFacadeREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\actividades\EstadosActividadesFacadeREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\utilidades\ErrorManager.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\despachos\ActuariosFacadeREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\expedientes\CasosFacadeREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\despachos\CiudadesFacadeREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\despachos\DespachosFacadeREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Recibos.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\TiposActividades.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\actividades\ActividadesFacadeREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\config\ApplicationConfig.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\error\UsuarioConRolExistente.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\utilidades\Seguridad.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Reportes.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Cuentas.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\DetalleExpedientePK.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Fueros.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\despachos\UjieresFacadeREST.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Clientes.java
-C:\Users\Pablo Aguilar\Documents\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\RolesPermisos.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\usuarios\UsuariosREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\TiposPagos.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\despachos\JuecesFacadeREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Actividades.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\expedientes\DetalleExpedienteFacadeREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\expedientes\ExpedientesFacadeREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\CuentasPK.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Reportes.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\error\UsuarioConRolExistente.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\RolesPermisos.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\despachos\UjieresFacadeREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\usuarios\RolesUsuarioREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\TiposActuaciones.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\config\ApplicationConfig.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\expedientes\TiposActuacionesFacadeREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\abm\ABMManagerDespachos.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Ujieres.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\TiposActividades.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\despachos\FuerosFacadeREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\DetalleExpedientePK.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\abm\ABMManagerActividades.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\RecibosPK.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\DetalleCuenta.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Ciudades.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\usuarios\EmpleadosREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\EstadosActividades.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\despachos\DepartamentosFacadeREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\DetalleExpediente.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Departamentos.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\EstadosCaso.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\utilidades\Seguridad.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\DetalleFactura.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Clientes.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\abm\ABMManagerUsuarios.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\TiposReporte.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Expedientes.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Actuarios.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Cuentas.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Usuarios.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\RolesUsuario.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\EstadosUsuarios.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Facturas.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\despachos\CiudadesFacadeREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\servlet\Login.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\PagosPK.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Despachos.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Recibos.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\FacturasPK.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\error\FaltaCargarElemento.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Casos.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\despachos\ActuariosFacadeREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Fueros.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Pagos.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\actividades\EstadosActividadesFacadeREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\DetalleCuentaPK.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Jueces.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\despachos\DespachosFacadeREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\DetalleFacturaPK.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\expedientes\CasosFacadeREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\expedientes\ClientesFacadeREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\utilidades\ErrorManager.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Empleados.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\usuarios\PermisosREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\actividades\ActividadesFacadeREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Permisos.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\actividades\TiposActividadesFacadeREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\expedientes\EstadosCasoFacadeREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\abm\ABMManagerExpedientes.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\usuarios\EstadosUsuariosREST.java
