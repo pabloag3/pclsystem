@@ -4,13 +4,10 @@ package com.lawyersys.pclsystembe.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawyersys.pclsystembacke.entities.Permisos;
-import com.lawyersys.pclsystembacke.entities.RolesPermisos;
-import com.lawyersys.pclsystembacke.entities.RolesUsuario;
 import com.lawyersys.pclsystembacke.entities.Usuarios;
 import com.lawyersys.pclsystembe.abm.ABMManagerUsuarios;
 import com.lawyersys.pclsystembe.utilidades.Seguridad;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -45,14 +42,11 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String uri = request.getServletPath();
-        
-        int rol = 0;
-        
+
         if (uri.contains("/login")) {
             
             String username = request.getParameter("username");
             String contrasenha = request.getParameter("contrasenha");
-//            String key = request.getParameter("sessionKey");
             
             HttpSession session = request.getSession();
             
@@ -67,12 +61,12 @@ public class Login extends HttpServlet {
                 if (usuario.getContrasenha() == Seguridad.getMd5(contrasenha)) {
                     if (usuario.getCodEstado().getDescripcion() == "HABILITADO" ) {
                         
-                        String token = UUID.randomUUID().toString().toUpperCase() + "|" + "userid";
+                        String sessionToken = request.getSession().getId();
                         
-                        rol = usuario.getCodRol().getCodRol();
+                        int rol = usuario.getCodRol().getCodRol();
                         List<Permisos> permisos = (List<Permisos>) (Permisos) abmManager.findPermisosByRol(rol);
                         
-                        session.setAttribute("sessionToken", token);
+                        session.setAttribute("sessionToken", sessionToken);
                         session.setAttribute("usuario", username);
                         session.setAttribute("permisos", permisos);
                         HashMap jsonString = new HashMap();
