@@ -8,12 +8,12 @@ import com.lawyersys.pclsystembacke.entities.DetalleExpediente;
 import com.lawyersys.pclsystembacke.entities.DetalleExpedientePK;
 import com.lawyersys.pclsystembe.abm.ABMManagerExpedientes;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
+import com.lawyersys.pclsystembe.utilidades.ErrorManager;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -65,55 +65,71 @@ public class DetalleExpedienteFacadeREST {
     @POST
     @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
-        ObjectMapper mapper = new ObjectMapper();
-        DetalleExpediente elem = mapper.readValue(entity, DetalleExpediente.class);   
-        if ( elem.getDescripcion()== null ) {
-            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            DetalleExpediente elem = mapper.readValue(entity, DetalleExpediente.class);   
+            if ( elem.getDescripcion()== null ) {
+                throw new FaltaCargarElemento("Error. Cargar descripcion.");
+            }
+            if ( elem.getFecha() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar fecha.");
+            }
+            if ( elem.getArchivo() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar archivo.");
+            }
+            abmManager.create(DetalleExpediente.class, elem);
+            return Response.ok().build();
+        } catch (Exception e) {
+            return ErrorManager.tratarError(e);
         }
-        if ( elem.getFecha() == null ) {
-            throw new FaltaCargarElemento("Error. Cargar fecha.");
-        }
-        if ( elem.getArchivo() == null ) {
-            throw new FaltaCargarElemento("Error. Cargar archivo.");
-        }
-        abmManager.create(DetalleExpediente.class, elem);
-        return Response.ok().build();
     }
 
     @PUT
     @Path("actualizar/{id}")
     public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
-        ObjectMapper mapper = new ObjectMapper();
-        DetalleExpediente elem = mapper.readValue(entity, DetalleExpediente.class);  
-        if ( elem.getDescripcion()== null ) {
-            throw new FaltaCargarElemento("Error. Cargar descripcion.");
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            DetalleExpediente elem = mapper.readValue(entity, DetalleExpediente.class);  
+            if ( elem.getDescripcion()== null ) {
+                throw new FaltaCargarElemento("Error. Cargar descripcion.");
+            }
+            if ( elem.getFecha() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar fecha.");
+            }
+            if ( elem.getArchivo() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar archivo.");
+            }
+            abmManager.edit(DetalleExpediente.class, elem);
+            return Response.ok().build();
+        } catch (Exception e) {
+            return ErrorManager.tratarError(e);
         }
-        if ( elem.getFecha() == null ) {
-            throw new FaltaCargarElemento("Error. Cargar fecha.");
-        }
-        if ( elem.getArchivo() == null ) {
-            throw new FaltaCargarElemento("Error. Cargar archivo.");
-        }
-        abmManager.edit(DetalleExpediente.class, elem);
-        return Response.ok().build();
     }
 
     @GET
     @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
-        List<DetalleExpediente> elem = (List<DetalleExpediente>) (Object) abmManager.find("DetalleExpediente", id);
-        ObjectMapper mapper = new ObjectMapper();
-        String resp = mapper.writeValueAsString(elem);
-        return Response.ok(resp).build();
+        try {
+            List<DetalleExpediente> elem = (List<DetalleExpediente>) (Object) abmManager.find("DetalleExpediente", id);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.tratarError(e);
+        }
     }
 
     @GET
     @Path("listar")
     public Response findAll() throws JsonProcessingException {
-        List<DetalleExpediente> elem = (List<DetalleExpediente>) (Object) abmManager.findAll("DetalleExpediente");
-        ObjectMapper mapper = new ObjectMapper();
-        String resp = mapper.writeValueAsString(elem);
-        return Response.ok(resp).build();
+        try {
+            List<DetalleExpediente> elem = (List<DetalleExpediente>) (Object) abmManager.findAll("DetalleExpediente");
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.tratarError(e);
+        }
     }
     
     

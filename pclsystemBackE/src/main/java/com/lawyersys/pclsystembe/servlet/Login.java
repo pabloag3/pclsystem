@@ -2,15 +2,15 @@
  */
 package com.lawyersys.pclsystembe.servlet;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawyersys.pclsystembacke.entities.Permisos;
-import com.lawyersys.pclsystembacke.entities.RolesPermisos;
-import com.lawyersys.pclsystembacke.entities.RolesUsuario;
 import com.lawyersys.pclsystembacke.entities.Usuarios;
 import com.lawyersys.pclsystembe.abm.ABMManagerUsuarios;
 import com.lawyersys.pclsystembe.utilidades.Seguridad;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,9 +42,7 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String uri = request.getServletPath();
-        
-        int rol = 0;
-        
+
         if (uri.contains("/login")) {
             
             String username = request.getParameter("username");
@@ -62,10 +60,23 @@ public class Login extends HttpServlet {
             } else {
                 if (usuario.getContrasenha() == Seguridad.getMd5(contrasenha)) {
                     if (usuario.getCodEstado().getDescripcion() == "HABILITADO" ) {
-                        rol = usuario.getCodRol().getCodRol();
-                        List<RolesPermisos> rp = (List<RolesPermisos>) (RolesPermisos) abmManager.findPermisosByRol(rol);
+                        
+                        String sessionToken = request.getSession().getId();
+                        
+                        int rol = usuario.getCodRol().getCodRol();
+                        List<Permisos> permisos = (List<Permisos>) (Permisos) abmManager.findPermisosByRol(rol);
+                        
+                        session.setAttribute("sessionToken", sessionToken);
                         session.setAttribute("usuario", username);
-                        session.setAttribute("permisos", rp);
+                        session.setAttribute("permisos", permisos);
+                        HashMap jsonString = new HashMap();
+                        jsonString.put("permisos", permisos);
+                        ObjectMapper mapper = new ObjectMapper();
+                        String respuesta = mapper.writeValueAsString(jsonString);
+                        
+                        response.setContentType("text/plain");
+                        response.getWriter().write(respuesta);
+                        response.getWriter().close();
                     } else {
                         response.sendError(response.SC_FORBIDDEN);
                     }
