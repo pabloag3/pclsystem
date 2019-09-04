@@ -85,6 +85,7 @@ public class Login extends HttpServlet {
 
                         session.setAttribute("usuario", username);
                         session.setAttribute("permisos", permisos);
+                        session.setAttribute("UUID", uuid);
 //                        jsonString.put("usuarioId", usuario.getCodUsuario());
 //                        jsonString.put("usuarioCedula", usuario.getCedula().getCedula());
 //                        jsonString.put("usuarioCodRol", usuario.getCodRol().getCodRol());
