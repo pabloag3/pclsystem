@@ -2,19 +2,18 @@
  */
 package com.lawyersys.pclsystembe.servlet;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawyersys.pclsystembacke.entities.Permisos;
 import com.lawyersys.pclsystembacke.entities.Usuarios;
 import com.lawyersys.pclsystembe.abm.ABMManagerUsuarios;
 import com.lawyersys.pclsystembe.utilidades.Seguridad;
+import io.jsonwebtoken.Header;
+//import com.sun.javafx.scene.traversal.Algorithm;
 import java.io.IOException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -25,6 +24,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  *
@@ -74,27 +77,34 @@ public class Login extends HttpServlet {
                 if (usuario.getContrasenha().equals(Seguridad.getMd5(contrasenha))) {
                     if (usuario.getCodEstado().getDescripcion().equals("HABILITADO") ) {
                         
-                        // se usa HS256
-                        Algorithm algorithm = Algorithm.HMAC256("pclsystembacke");
-                        String sessionToken = JWT.create().withIssuer(usuario.getDescripcion()).sign(algorithm);
+                        String uuid = UUID.randomUUID().toString();
                         
                         int rol = usuario.getCodRol().getCodRol();
                         List<Permisos> permisos = (List<Permisos>) (Object) abmManager.findPermisosByRol(rol);
-                        
-                        session.setAttribute("sessionToken", sessionToken);
+//                        HashMap jsonString = new HashMap();
+
                         session.setAttribute("usuario", username);
                         session.setAttribute("permisos", permisos);
-                        HashMap jsonString = new HashMap();
-                        jsonString.put("usuarioId", usuario.getCodUsuario());
-                        jsonString.put("usuarioCedula", usuario.getCedula().getCedula());
-                        jsonString.put("usuarioCodRol", usuario.getCodRol().getCodRol());
-                        jsonString.put("permisos", permisos);
-                        jsonString.put("tokenId", sessionToken);
-                        ObjectMapper mapper = new ObjectMapper();
-                        String respuesta = mapper.writeValueAsString(jsonString);
+//                        jsonString.put("usuarioId", usuario.getCodUsuario());
+//                        jsonString.put("usuarioCedula", usuario.getCedula().getCedula());
+//                        jsonString.put("usuarioCodRol", usuario.getCodRol().getCodRol());
+//                        jsonString.put("permisos", permisos);
+//                        jsonString.put("tokenId", sessionToken);
+//                        ObjectMapper mapper = new ObjectMapper();
+//                        String respuesta = mapper.writeValueAsString(jsonString);
+
+                        Header header = Jwts.header().setType("JWT"); // defino el tipo de cabecera JWT
+                        String jwtToken = Jwts.builder().setHeader((Map<String, Object>) header)
+                                .setSubject(username)
+                                .setId(uuid)
+                                .setIssuedAt(new Date())
+                                .claim("usuarioCedula", usuario.getCedula().getCedula())
+                                .claim("permisos", permisos)
+                                .signWith(SignatureAlgorithm.HS256, "pclsystembacke".getBytes("UTF-8"))
+                                .compact();
                         
                         response.setContentType("text/plain");
-                        response.getWriter().write(respuesta);
+                        response.getWriter().write(jwtToken);
                         response.getWriter().close();
                     } else {
                         System.out.println("no habilitado");
