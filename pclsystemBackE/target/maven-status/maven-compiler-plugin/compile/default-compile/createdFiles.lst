@@ -1,3 +1,4 @@
+com\lawyersys\pclsystembe\servlet\SessionFilter.class
 com\lawyersys\pclsystembacke\entities\DetalleExpedientePK.class
 com\lawyersys\pclsystembacke\entities\Reportes.class
 com\lawyersys\pclsystembacke\entities\Actuarios.class
@@ -51,6 +52,7 @@ com\lawyersys\pclsystembe\rest\despachos\DespachosFacadeREST.class
 com\lawyersys\pclsystembacke\entities\RolesPermisos.class
 com\lawyersys\pclsystembe\utilidades\Seguridad.class
 com\lawyersys\pclsystembe\rest\usuarios\PermisosREST.class
+.netbeans_automatic_build
 com\lawyersys\pclsystembe\abm\ABMManagerActividades.class
 com\lawyersys\pclsystembacke\entities\DetalleExpediente.class
 com\lawyersys\pclsystembacke\entities\DetalleFacturaPK.class
