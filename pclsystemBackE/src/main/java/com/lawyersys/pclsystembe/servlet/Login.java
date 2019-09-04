@@ -66,7 +66,7 @@ public class Login extends HttpServlet {
                         String sessionToken = request.getSession().getId();
                         
                         int rol = usuario.getCodRol().getCodRol();
-                        List<Permisos> permisos = (List<Permisos>) (Permisos) abmManager.findPermisosByRol(rol);
+                        List<Permisos> permisos = (List<Permisos>) (Object) abmManager.findPermisosByRol(rol);
                         
                         session.setAttribute("sessionToken", sessionToken);
                         session.setAttribute("usuario", username);
