@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author tatoa
  */
-@WebServlet(name = "Login", urlPatterns = {"/Login"})
+//@WebServlet(name = "Login", urlPatterns = {"/Login"})
 public class Login extends HttpServlet {
 
     @EJB
@@ -43,7 +43,7 @@ public class Login extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String uri = request.getServletPath();
 
-        if (uri.contains("/login")) {
+        if (uri.contains("Login")) {
             
             String username = request.getParameter("username");
             String contrasenha = request.getParameter("contrasenha");
@@ -54,12 +54,14 @@ public class Login extends HttpServlet {
                 response.sendError(response.SC_FORBIDDEN);
             }
             
-            Usuarios usuario = (Usuarios) abmManager.find("Usuarios", username);
+            List<Usuarios> elem = (List<Usuarios>) (Object) abmManager.find("Usuarios", username);
+            Usuarios usuario = elem.get(0);
             if (usuario == null) {
                 response.sendError(response.SC_FORBIDDEN);
+                System.out.println("usuario no existe");
             } else {
-                if (usuario.getContrasenha() == Seguridad.getMd5(contrasenha)) {
-                    if (usuario.getCodEstado().getDescripcion() == "HABILITADO" ) {
+                if (usuario.getContrasenha().equals(Seguridad.getMd5(contrasenha))) {
+                    if (usuario.getCodEstado().getDescripcion().equals("HABILITADO") ) {
                         
                         String sessionToken = request.getSession().getId();
                         
@@ -78,10 +80,12 @@ public class Login extends HttpServlet {
                         response.getWriter().write(respuesta);
                         response.getWriter().close();
                     } else {
+                        System.out.println("no habilitado");
                         response.sendError(response.SC_FORBIDDEN);
                     }
                 } else {
-                    response.sendError(response.SC_FORBIDDEN);
+                    System.out.println("mala contrasenha");
+                    response.sendError(response.SC_NOT_ACCEPTABLE);
                 }
             }
         } else if (uri.contains("/deslogueo")) {
