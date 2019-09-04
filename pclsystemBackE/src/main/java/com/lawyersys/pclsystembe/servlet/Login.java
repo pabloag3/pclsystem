@@ -2,18 +2,25 @@
  */
 package com.lawyersys.pclsystembe.servlet;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawyersys.pclsystembacke.entities.Permisos;
 import com.lawyersys.pclsystembacke.entities.Usuarios;
 import com.lawyersys.pclsystembe.abm.ABMManagerUsuarios;
 import com.lawyersys.pclsystembe.utilidades.Seguridad;
 import java.io.IOException;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,9 +46,13 @@ public class Login extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, NoSuchAlgorithmException {
         response.setContentType("text/html;charset=UTF-8");
         String uri = request.getServletPath();
+        
+        KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+        kpg.initialize(1024);
+        KeyPair kp = kpg.generateKeyPair();
 
         if (uri.contains("Login")) {
             
@@ -49,7 +60,7 @@ public class Login extends HttpServlet {
             String contrasenha = request.getParameter("contrasenha");
             
             HttpSession session = request.getSession();
-            
+
             if ( username == null || username == "" || contrasenha == null || contrasenha == "" ) {
                 response.sendError(response.SC_FORBIDDEN);
             }
@@ -63,7 +74,9 @@ public class Login extends HttpServlet {
                 if (usuario.getContrasenha().equals(Seguridad.getMd5(contrasenha))) {
                     if (usuario.getCodEstado().getDescripcion().equals("HABILITADO") ) {
                         
-                        String sessionToken = request.getSession().getId();
+                        // se usa HS256
+                        Algorithm algorithm = Algorithm.HMAC256("pclsystembacke");
+                        String sessionToken = JWT.create().withIssuer(usuario.getDescripcion()).sign(algorithm);
                         
                         int rol = usuario.getCodRol().getCodRol();
                         List<Permisos> permisos = (List<Permisos>) (Object) abmManager.findPermisosByRol(rol);
@@ -72,7 +85,11 @@ public class Login extends HttpServlet {
                         session.setAttribute("usuario", username);
                         session.setAttribute("permisos", permisos);
                         HashMap jsonString = new HashMap();
+                        jsonString.put("usuarioId", usuario.getCodUsuario());
+                        jsonString.put("usuarioCedula", usuario.getCedula().getCedula());
+                        jsonString.put("usuarioCodRol", usuario.getCodRol().getCodRol());
                         jsonString.put("permisos", permisos);
+                        jsonString.put("tokenId", sessionToken);
                         ObjectMapper mapper = new ObjectMapper();
                         String respuesta = mapper.writeValueAsString(jsonString);
                         
@@ -93,6 +110,7 @@ public class Login extends HttpServlet {
             session.invalidate();
         }   
     }
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -106,7 +124,11 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -120,7 +142,11 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
