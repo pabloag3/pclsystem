@@ -28,6 +28,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Map;
 import java.util.UUID;
+import org.codehaus.jettison.json.JSONObject;
 
 /**
  *
@@ -101,11 +102,17 @@ public class Login extends HttpServlet {
                                 .setIssuedAt(new Date())
                                 .claim("usuarioCedula", usuario.getCedula().getCedula())
                                 .claim("permisos", permisos)
+                                .claim("codRol", usuario.getCodRol().getCodRol())                                
                                 .signWith(SignatureAlgorithm.HS256, "pclsystembacke".getBytes("UTF-8"))
                                 .compact();
                         
-                        response.setContentType("text/plain");
-                        response.getWriter().write(jwtToken);
+                        HashMap jsonString = new HashMap();
+                        jsonString.put("accessToken", jwtToken);
+                        ObjectMapper mapper = new ObjectMapper();
+                        String respuesta = mapper.writeValueAsString(jsonString);
+                        
+                        response.setContentType("application/json");
+                        response.getWriter().write(respuesta);
                         response.getWriter().close();
                     } else {
                         System.out.println("no habilitado");
