@@ -105,7 +105,7 @@ public class SessionFilter implements Filter {
             chain.doFilter(request, response);
         } else {
             System.out.println("session no existente");
-            respuesta.sendRedirect("../inicio.jsp"); // cambiar a la URL de la pantalla de login
+            respuesta.sendRedirect("http://localhost:4200/login"); // cambiar a la URL de la pantalla de login
         }
     }
 
