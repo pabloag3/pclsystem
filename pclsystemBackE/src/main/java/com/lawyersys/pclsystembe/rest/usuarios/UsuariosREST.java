@@ -84,7 +84,12 @@ public class UsuariosREST {
             if ( elem.getCorreoElectronico() == null ) {
                 throw new FaltaCargarElemento("Error. Cargar correo electrónico.");
             }
-            elem.setContrasenha(Seguridad.getMd5(elem.getContrasenha()));
+            
+            List<Usuarios> list = (List<Usuarios>) (Object) abmManager.find("Usuarios", elem.getUsuario());
+            Usuarios userAuxiliarBD = list.get(0);
+            if (!elem.getContrasenha().equals(userAuxiliarBD.getContrasenha())) {
+                elem.setContrasenha(Seguridad.getMd5(elem.getContrasenha()));
+            }            
             abmManager.edit(Usuarios.class, elem);
         return Response.ok().build();
         } catch (Exception e) {
