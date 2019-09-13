@@ -30,7 +30,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Permisos.findAll", query = "SELECT p FROM Permisos p")
     , @NamedQuery(name = "Permisos.findByCodPermiso", query = "SELECT p FROM Permisos p WHERE p.codPermiso = :codPermiso")
     , @NamedQuery(name = "Permisos.findByDescripcion", query = "SELECT p FROM Permisos p WHERE p.descripcion = :descripcion")
-//    , @NamedQuery(name = "Permisos.findByCodRol", query = "SELECT p FROM Permisos p WHERE p.rolesPermisosList.codRol = :codRol")
 })
 public class Permisos implements Serializable {
 

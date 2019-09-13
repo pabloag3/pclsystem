@@ -70,7 +70,11 @@ public class Login extends HttpServlet {
             }
             
             List<Usuarios> elem = (List<Usuarios>) (Object) abmManager.find("Usuarios", username);
-            Usuarios usuario = elem.get(0);
+            Usuarios usuario = null;
+            if (!elem.isEmpty()) {
+                usuario = elem.get(0);
+            } 
+            
             if (usuario == null) {
                 response.sendError(response.SC_FORBIDDEN);
                 System.out.println("usuario no existe");
