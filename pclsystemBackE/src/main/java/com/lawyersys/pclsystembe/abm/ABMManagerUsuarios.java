@@ -1,7 +1,7 @@
 package com.lawyersys.pclsystembe.abm;
 
 import com.lawyersys.pclsystembacke.entities.Empleados;
-import com.lawyersys.pclsystembacke.entities.EstadosUsuarios;
+import com.lawyersys.pclsystembacke.entities.EstadosEmpleados;
 import com.lawyersys.pclsystembacke.entities.Permisos;
 import com.lawyersys.pclsystembacke.entities.RolesPermisos;
 import com.lawyersys.pclsystembacke.entities.RolesUsuario;
@@ -53,7 +53,7 @@ public class ABMManagerUsuarios {
             Query q = em.createNamedQuery(entidad + ".findByCodRol")
                     .setParameter("codRol", Integer.parseInt(id));
             return q.getResultList();
-        } else if (entidad == "EstadosUsuarios") {
+        } else if (entidad == "EstadosEmpleados") {
             Query q = em.createNamedQuery(entidad + ".findByCodEstado")
                     .setParameter("codEstado", Integer.parseInt(id));
             return q.getResultList();
@@ -82,8 +82,8 @@ public class ABMManagerUsuarios {
         } else if (clazz == Empleados.class) {
             Empleados emp = (Empleados) elem;
             em.persist(emp);
-        } else if (clazz == EstadosUsuarios.class) {
-            EstadosUsuarios est = (EstadosUsuarios) elem;
+        } else if (clazz == EstadosEmpleados.class) {
+            EstadosEmpleados est = (EstadosEmpleados) elem;
             em.persist(est);
         } else if (clazz == RolesPermisosDTO.class) {
             
@@ -121,8 +121,8 @@ public class ABMManagerUsuarios {
         } else if (clazz == Empleados.class) {
             Empleados emp = (Empleados) elem;
             em.merge(emp);
-        } else if (clazz == EstadosUsuarios.class) {
-            EstadosUsuarios est = (EstadosUsuarios) elem;
+        } else if (clazz == EstadosEmpleados.class) {
+            EstadosEmpleados est = (EstadosEmpleados) elem;
             em.merge(est);
         } else if (clazz == RolesPermisosDTO.class) {
             

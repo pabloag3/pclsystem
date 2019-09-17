@@ -3,6 +3,7 @@
 package com.lawyersys.pclsystembe.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lawyersys.pclsystembacke.entities.Empleados;
 import com.lawyersys.pclsystembacke.entities.Permisos;
 import com.lawyersys.pclsystembacke.entities.Usuarios;
 import com.lawyersys.pclsystembe.abm.ABMManagerUsuarios;
@@ -71,6 +72,7 @@ public class Login extends HttpServlet {
             
             List<Usuarios> elem = (List<Usuarios>) (Object) abmManager.find("Usuarios", username);
             Usuarios usuario = null;
+            
             if (!elem.isEmpty()) {
                 usuario = elem.get(0);
             } 
@@ -80,7 +82,11 @@ public class Login extends HttpServlet {
                 System.out.println("usuario no existe");
             } else {
                 if (usuario.getContrasenha().equals(Seguridad.getMd5(contrasenha))) {
-                    if (usuario.getCodEstado().getDescripcion().equals("HABILITADO") ) {
+                    
+                    List<Empleados> empleados = (List<Empleados>) (Object) abmManager.find("Empleados", usuario.getCedula().getCedula());
+                    Empleados empleado = empleados.get(0);
+                    
+                    if (empleado.getCodEstado().getDescripcion().equals("HABILITADO") ) {
                         
                         String uuid = UUID.randomUUID().toString();
                         

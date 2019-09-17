@@ -15,6 +15,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -88,6 +90,10 @@ public class Empleados implements Serializable {
     @Size(min = 1, max = 150)
     @Column(name = "direccion")
     private String direccion;
+    
+    @JoinColumn(name = "cod_estado", referencedColumnName = "cod_estado")
+    @ManyToOne(optional = false)
+    private EstadosEmpleados codEstado;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cedulaEmisor")
     @JsonIgnore
@@ -224,6 +230,14 @@ public class Empleados implements Serializable {
     @Override
     public String toString() {
         return "com.lawyersys.pclsystembacke.Empleados[ cedula=" + cedula + " ]";
+    }
+
+    public EstadosEmpleados getCodEstado() {
+        return codEstado;
+    }
+
+    public void setCodEstado(EstadosEmpleados codEstado) {
+        this.codEstado = codEstado;
     }
     
 }

@@ -9,6 +9,7 @@ com\lawyersys\pclsystembe\rest\despachos\JuecesFacadeREST.class
 com\lawyersys\pclsystembe\rest\despachos\UjieresFacadeREST.class
 com\lawyersys\pclsystembacke\entities\Actividades.class
 com\lawyersys\pclsystembacke\entities\RecibosPK.class
+com\lawyersys\pclsystembe\dtos\RolesPermisosDTO.class
 com\lawyersys\pclsystembacke\entities\Fueros.class
 com\lawyersys\pclsystembacke\entities\Clientes.class
 com\lawyersys\pclsystembe\abm\ABMManagerDespachos.class
@@ -35,12 +36,12 @@ com\lawyersys\pclsystembacke\entities\Pagos.class
 com\lawyersys\pclsystembe\rest\despachos\DepartamentosFacadeREST.class
 com\lawyersys\pclsystembe\rest\usuarios\EmpleadosREST.class
 com\lawyersys\pclsystembacke\entities\FacturasPK.class
-com\lawyersys\pclsystembe\rest\usuarios\EstadosUsuariosREST.class
 com\lawyersys\pclsystembe\rest\usuarios\UsuariosREST.class
 com\lawyersys\pclsystembe\rest\actividades\TiposActividadesFacadeREST.class
 com\lawyersys\pclsystembe\rest\despachos\ActuariosFacadeREST.class
 com\lawyersys\pclsystembacke\entities\Ujieres.class
 com\lawyersys\pclsystembacke\entities\Recibos.class
+com\lawyersys\pclsystembe\rest\usuarios\EstadosEmpleadosREST.class
 com\lawyersys\pclsystembe\rest\expedientes\CasosFacadeREST.class
 com\lawyersys\pclsystembacke\entities\TiposActuaciones.class
 com\lawyersys\pclsystembacke\entities\Usuarios.class
@@ -52,6 +53,7 @@ com\lawyersys\pclsystembe\rest\despachos\DespachosFacadeREST.class
 com\lawyersys\pclsystembacke\entities\RolesPermisos.class
 com\lawyersys\pclsystembe\utilidades\Seguridad.class
 com\lawyersys\pclsystembe\rest\usuarios\PermisosREST.class
+com\lawyersys\pclsystembe\rest\usuarios\AbstractFacade.class
 com\lawyersys\pclsystembe\abm\ABMManagerActividades.class
 com\lawyersys\pclsystembacke\entities\DetalleExpediente.class
 com\lawyersys\pclsystembacke\entities\DetalleFacturaPK.class
@@ -60,11 +62,11 @@ com\lawyersys\pclsystembacke\entities\Ciudades.class
 com\lawyersys\pclsystembe\abm\ABMManagerUsuarios.class
 com\lawyersys\pclsystembe\rest\expedientes\ExpedientesFacadeREST.class
 com\lawyersys\pclsystembacke\entities\EstadosActividades.class
-com\lawyersys\pclsystembacke\entities\EstadosUsuarios.class
 com\lawyersys\pclsystembe\rest\expedientes\DetalleExpedienteFacadeREST.class
 com\lawyersys\pclsystembe\rest\expedientes\ClientesFacadeREST.class
 com\lawyersys\pclsystembacke\entities\Facturas.class
 com\lawyersys\pclsystembe\rest\despachos\FuerosFacadeREST.class
+com\lawyersys\pclsystembacke\entities\EstadosEmpleados.class
 com\lawyersys\pclsystembacke\entities\RolesUsuario.class
 com\lawyersys\pclsystembacke\entities\TiposReporte.class
 com\lawyersys\pclsystembe\rest\expedientes\EstadosCasoFacadeREST.class

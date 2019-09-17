@@ -43,7 +43,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.lawyersys.pclsystembe.rest.expedientes.ExpedientesFacadeREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.expedientes.TiposActuacionesFacadeREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.usuarios.EmpleadosREST.class);
-        resources.add(com.lawyersys.pclsystembe.rest.usuarios.EstadosUsuariosREST.class);
+        resources.add(com.lawyersys.pclsystembe.rest.usuarios.EstadosEmpleadosREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.usuarios.PermisosREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.usuarios.RolesUsuarioREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.usuarios.UsuariosREST.class);
