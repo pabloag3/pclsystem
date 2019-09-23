@@ -116,6 +116,7 @@ public class EmpleadosREST {
             List<Empleados> elem = (List<Empleados>) (Object) abmManager.find("Empleados", id);
             ObjectMapper mapper = new ObjectMapper();
             String resp = mapper.writeValueAsString(elem);
+            System.out.println(resp);
             return Response.ok(resp).build();
         } catch (Exception e) {
             return ErrorManager.tratarError(e);

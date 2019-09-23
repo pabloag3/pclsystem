@@ -40,34 +40,45 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Despachos implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_despacho")
     private Integer codDespacho;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "descripcion")
     private String descripcion;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codDespacho")
     @JsonIgnore
     private List<Expedientes> expedientesList;
+    
     @JoinColumn(name = "cod_actuario", referencedColumnName = "cod_actuario")
     @ManyToOne(optional = false)
     private Actuarios codActuario;
+    
     @JoinColumn(name = "cod_departamento", referencedColumnName = "cod_departamento")
     @ManyToOne(optional = false)
     private Departamentos codDepartamento;
+    
     @JoinColumn(name = "cod_fuero", referencedColumnName = "cod_fuero")
     @ManyToOne(optional = false)
     private Fueros codFuero;
+    
     @JoinColumn(name = "cod_juez", referencedColumnName = "cod_juez")
     @ManyToOne(optional = false)
     private Jueces codJuez;
+    
     @JoinColumn(name = "cod_ujier", referencedColumnName = "cod_ujier")
     @ManyToOne(optional = false)
     private Ujieres codUjier;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codDespacho")
+    private List<DetalleExpediente> detalleExpedienteList;
 
     public Despachos() {
     }
@@ -169,6 +180,15 @@ public class Despachos implements Serializable {
     @Override
     public String toString() {
         return "com.lawyersys.pclsystembacke.Despachos[ codDespacho=" + codDespacho + " ]";
+    }
+
+    @XmlTransient
+    public List<DetalleExpediente> getDetalleExpedienteList() {
+        return detalleExpedienteList;
+    }
+
+    public void setDetalleExpedienteList(List<DetalleExpediente> detalleExpedienteList) {
+        this.detalleExpedienteList = detalleExpedienteList;
     }
     
 }

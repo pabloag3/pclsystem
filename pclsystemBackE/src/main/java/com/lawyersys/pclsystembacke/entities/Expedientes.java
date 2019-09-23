@@ -45,6 +45,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Expedientes.findByNroExpediente", query = "SELECT e FROM Expedientes e WHERE e.nroExpediente = :nroExpediente")})
 public class Expedientes implements Serializable {
 
+    @JoinColumn(name = "camara_sorteada", referencedColumnName = "cod_despacho")
+    @ManyToOne(optional = false)
+    private Despachos camaraSorteada;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -206,6 +210,14 @@ public class Expedientes implements Serializable {
     @Override
     public String toString() {
         return "com.lawyersys.pclsystembacke.Expedientes[ codExpediente=" + codExpediente + " ]";
+    }
+
+    public Despachos getCamaraSorteada() {
+        return camaraSorteada;
+    }
+
+    public void setCamaraSorteada(Despachos camaraSorteada) {
+        this.camaraSorteada = camaraSorteada;
     }
     
 }

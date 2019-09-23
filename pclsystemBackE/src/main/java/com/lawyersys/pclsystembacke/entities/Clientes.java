@@ -46,46 +46,60 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Clientes implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_cliente")
     private Integer codCliente;
+    
     @Size(max = 10)
     @Column(name = "cedula")
     private String cedula;
+    
     @Size(max = 20)
     @Column(name = "ruc")
     private String ruc;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 30)
     @Column(name = "nombre")
     private String nombre;
+    
     @Size(max = 30)
     @Column(name = "apellido")
     private String apellido;
+    
     @Size(max = 15)
     @Column(name = "telefono")
     private String telefono;
     @Size(max = 200)
     @Column(name = "direccion")
     private String direccion;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "tipo_cliente")
     private String tipoCliente;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCliente")
     @JsonIgnore
     private List<Casos> casosList;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "clientes")
     @JsonIgnore
     private List<Cuentas> cuentasList;
+    
     @JoinColumn(name = "cod_ciudad", referencedColumnName = "cod_ciudad")
     @ManyToOne(optional = false)
     private Ciudades codCiudad;
-
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCliente")
+    @JsonIgnore
+    private List<DocumentosEntregados> documentosEntregadosList;
+    
     public Clientes() {
     }
 
@@ -212,6 +226,15 @@ public class Clientes implements Serializable {
     @Override
     public String toString() {
         return "com.lawyersys.pclsystembacke.Clientes[ codCliente=" + codCliente + " ]";
+    }
+
+    @XmlTransient
+    public List<DocumentosEntregados> getDocumentosEntregadosList() {
+        return documentosEntregadosList;
+    }
+
+    public void setDocumentosEntregadosList(List<DocumentosEntregados> documentosEntregadosList) {
+        this.documentosEntregadosList = documentosEntregadosList;
     }
     
 }

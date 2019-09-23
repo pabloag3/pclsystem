@@ -34,37 +34,47 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cuentas.findAll", query = "SELECT c FROM Cuentas c")
     , @NamedQuery(name = "Cuentas.findByCodCuenta", query = "SELECT c FROM Cuentas c WHERE c.cuentasPK.codCuenta = :codCuenta")
     , @NamedQuery(name = "Cuentas.findByCodCliente", query = "SELECT c FROM Cuentas c WHERE c.cuentasPK.codCliente = :codCliente")
+    , @NamedQuery(name = "Cuentas.findByCuentaCliente", query = "SELECT c FROM Cuentas c WHERE c.cuentasPK.codCuenta = :codCuenta AND c.cuentasPK.codCliente = :codCliente")
     , @NamedQuery(name = "Cuentas.findByTotal", query = "SELECT c FROM Cuentas c WHERE c.total = :total")
     , @NamedQuery(name = "Cuentas.findBySaldo", query = "SELECT c FROM Cuentas c WHERE c.saldo = :saldo")
     , @NamedQuery(name = "Cuentas.findByEstado", query = "SELECT c FROM Cuentas c WHERE c.estado = :estado")})
 public class Cuentas implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @EmbeddedId
     protected CuentasPK cuentasPK;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "total")
     private int total;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "saldo")
     private int saldo;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "estado")
     private boolean estado;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentas")
     private List<Facturas> facturasList;
+    
     @JoinColumn(name = "cod_caso", referencedColumnName = "cod_caso")
     @ManyToOne(optional = false)
     private Casos codCaso;
+    
     @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Clientes clientes;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentas")
     @JsonIgnore
     private List<Pagos> pagosList;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentas")
     @JsonIgnore
     private List<DetalleCuenta> detalleCuentaList;
