@@ -5,6 +5,7 @@ package com.lawyersys.pclsystembe.abm;
 import com.lawyersys.pclsystembacke.entities.Casos;
 import com.lawyersys.pclsystembacke.entities.Clientes;
 import com.lawyersys.pclsystembacke.entities.DetalleExpediente;
+import com.lawyersys.pclsystembacke.entities.DocumentosEntregados;
 import com.lawyersys.pclsystembacke.entities.EstadosCaso;
 import com.lawyersys.pclsystembacke.entities.Expedientes;
 import com.lawyersys.pclsystembacke.entities.TiposActuaciones;
@@ -55,6 +56,10 @@ public class ABMManagerExpedientes {
             Query q = em.createNamedQuery(entidad + ".findByCodTipoActuacion")
                     .setParameter("codTipoActuacion", Integer.parseInt(id));
             return q.getResultList();
+        } else if (entidad == "DocumentosEntregados") {
+            Query q = em.createNamedQuery(entidad + ".findByCodCliente")
+                    .setParameter("findByCodCliente", Integer.parseInt(id));
+            return q.getResultList();
         }
         return elem;
     }
@@ -78,6 +83,9 @@ public class ABMManagerExpedientes {
         } else if (clazz == TiposActuaciones.class) {
             TiposActuaciones ta = (TiposActuaciones) elem;
             em.persist(ta);
+        } else if (clazz == DocumentosEntregados.class) {
+            DocumentosEntregados ta = (DocumentosEntregados) elem;
+            em.persist(ta);
         }
     }
 
@@ -99,6 +107,9 @@ public class ABMManagerExpedientes {
             em.merge(ta);
         } else if (clazz == TiposActuaciones.class) {
             TiposActuaciones ta = (TiposActuaciones) elem;
+            em.merge(ta);
+        } else if (clazz == DocumentosEntregados.class) {
+            DocumentosEntregados ta = (DocumentosEntregados) elem;
             em.merge(ta);
         }
     }

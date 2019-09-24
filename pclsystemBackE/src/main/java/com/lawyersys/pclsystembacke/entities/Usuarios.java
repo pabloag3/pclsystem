@@ -66,9 +66,6 @@ public class Usuarios implements Serializable {
     @JoinColumn(name = "cedula", referencedColumnName = "cedula")
     @ManyToOne(optional = false)
     private Empleados cedula;
-    @JoinColumn(name = "cod_estado", referencedColumnName = "cod_estado")
-    @ManyToOne(optional = false)
-    private EstadosUsuarios codEstado;
     @JoinColumn(name = "cod_rol", referencedColumnName = "cod_rol")
     @ManyToOne(optional = false)
     private RolesUsuario codRol;
@@ -136,14 +133,6 @@ public class Usuarios implements Serializable {
 
     public void setCedula(Empleados cedula) {
         this.cedula = cedula;
-    }
-
-    public EstadosUsuarios getCodEstado() {
-        return codEstado;
-    }
-
-    public void setCodEstado(EstadosUsuarios codEstado) {
-        this.codEstado = codEstado;
     }
 
     public RolesUsuario getCodRol() {

@@ -51,6 +51,7 @@ public class Casos implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCaso")
+    @JsonIgnore
     private List<Expedientes> expedientesList;
     @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente")
     @ManyToOne(optional = false)

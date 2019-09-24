@@ -1,7 +1,4 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
  */
 package com.lawyersys.pclsystembacke.entities;
 
@@ -26,16 +23,16 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author carlo
+ * @author tatoa
  */
 @Entity
-@Table(name = "estados_usuarios")
+@Table(name = "estados_empleados")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "EstadosUsuarios.findAll", query = "SELECT e FROM EstadosUsuarios e")
-    , @NamedQuery(name = "EstadosUsuarios.findByCodEstado", query = "SELECT e FROM EstadosUsuarios e WHERE e.codEstado = :codEstado")
-    , @NamedQuery(name = "EstadosUsuarios.findByDescripcion", query = "SELECT e FROM EstadosUsuarios e WHERE e.descripcion = :descripcion")})
-public class EstadosUsuarios implements Serializable {
+    @NamedQuery(name = "EstadosEmpleados.findAll", query = "SELECT e FROM EstadosEmpleados e")
+    , @NamedQuery(name = "EstadosEmpleados.findByCodEstado", query = "SELECT e FROM EstadosEmpleados e WHERE e.codEstado = :codEstado")
+    , @NamedQuery(name = "EstadosEmpleados.findByDescripcion", query = "SELECT e FROM EstadosEmpleados e WHERE e.descripcion = :descripcion")})
+public class EstadosEmpleados implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -50,16 +47,16 @@ public class EstadosUsuarios implements Serializable {
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codEstado")
     @JsonIgnore
-    private List<Usuarios> usuariosList;
+    private List<Empleados> empleadosList;
 
-    public EstadosUsuarios() {
+    public EstadosEmpleados() {
     }
 
-    public EstadosUsuarios(Integer codEstado) {
+    public EstadosEmpleados(Integer codEstado) {
         this.codEstado = codEstado;
     }
 
-    public EstadosUsuarios(Integer codEstado, String descripcion) {
+    public EstadosEmpleados(Integer codEstado, String descripcion) {
         this.codEstado = codEstado;
         this.descripcion = descripcion;
     }
@@ -81,12 +78,12 @@ public class EstadosUsuarios implements Serializable {
     }
 
     @XmlTransient
-    public List<Usuarios> getUsuariosList() {
-        return usuariosList;
+    public List<Empleados> getEmpleadosList() {
+        return empleadosList;
     }
 
-    public void setUsuariosList(List<Usuarios> usuariosList) {
-        this.usuariosList = usuariosList;
+    public void setEmpleadosList(List<Empleados> empleadosList) {
+        this.empleadosList = empleadosList;
     }
 
     @Override
@@ -99,10 +96,10 @@ public class EstadosUsuarios implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof EstadosUsuarios)) {
+        if (!(object instanceof EstadosEmpleados)) {
             return false;
         }
-        EstadosUsuarios other = (EstadosUsuarios) object;
+        EstadosEmpleados other = (EstadosEmpleados) object;
         if ((this.codEstado == null && other.codEstado != null) || (this.codEstado != null && !this.codEstado.equals(other.codEstado))) {
             return false;
         }
@@ -111,7 +108,7 @@ public class EstadosUsuarios implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.EstadosUsuarios[ codEstado=" + codEstado + " ]";
+        return "com.lawyersys.pclsystembacke.entities.EstadosEmpleados[ codEstado=" + codEstado + " ]";
     }
     
 }

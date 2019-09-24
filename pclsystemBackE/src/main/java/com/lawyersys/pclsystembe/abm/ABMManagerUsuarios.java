@@ -1,10 +1,12 @@
 package com.lawyersys.pclsystembe.abm;
 
 import com.lawyersys.pclsystembacke.entities.Empleados;
-import com.lawyersys.pclsystembacke.entities.EstadosUsuarios;
+import com.lawyersys.pclsystembacke.entities.EstadosEmpleados;
+import com.lawyersys.pclsystembacke.entities.Permisos;
 import com.lawyersys.pclsystembacke.entities.RolesPermisos;
 import com.lawyersys.pclsystembacke.entities.RolesUsuario;
 import com.lawyersys.pclsystembacke.entities.Usuarios;
+import com.lawyersys.pclsystembe.dtos.RolesPermisosDTO;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -27,8 +29,13 @@ public class ABMManagerUsuarios {
     }
     
     public List<Object> findPermisosByRol(int rol) {
-        Query q = em.createNamedQuery("RolesPermisos.findByCodRolPermiso")
-                .setParameter("codRolPermiso", rol);
+//        Query q = em.createNamedQuery("Permisos.findByCodRol")
+//                .setParameter("codRol", rol);
+        Query q = em.createNativeQuery("SELECT p.cod_permiso, p.descripcion\n" 
+                + "FROM public.permisos p\n"
+                + "JOIN roles_permisos rp ON rp.cod_permiso = p.cod_permiso\n"
+                + "WHERE rp.cod_rol = (?1);");
+        q.setParameter(1, rol);
         return q.getResultList();
     }
     
@@ -46,7 +53,7 @@ public class ABMManagerUsuarios {
             Query q = em.createNamedQuery(entidad + ".findByCodRol")
                     .setParameter("codRol", Integer.parseInt(id));
             return q.getResultList();
-        } else if (entidad == "EstadosUsuarios") {
+        } else if (entidad == "EstadosEmpleados") {
             Query q = em.createNamedQuery(entidad + ".findByCodEstado")
                     .setParameter("codEstado", Integer.parseInt(id));
             return q.getResultList();
@@ -75,12 +82,35 @@ public class ABMManagerUsuarios {
         } else if (clazz == Empleados.class) {
             Empleados emp = (Empleados) elem;
             em.persist(emp);
-        } else if (clazz == EstadosUsuarios.class) {
-            EstadosUsuarios est = (EstadosUsuarios) elem;
+        } else if (clazz == EstadosEmpleados.class) {
+            EstadosEmpleados est = (EstadosEmpleados) elem;
             em.persist(est);
-        } else if (clazz == RolesUsuario.class) {
-            RolesUsuario rol = (RolesUsuario) elem;
+        } else if (clazz == RolesPermisosDTO.class) {
+            
+            RolesPermisosDTO rpdto = (RolesPermisosDTO) elem;
+            RolesUsuario rol = new RolesUsuario();
+            rol.setDescripcion(rpdto.getDescripcion());
             em.persist(rol);
+            System.out.println(rpdto);
+            if (rpdto.getPermisos() != null) {
+                
+                for (int cod : rpdto.getPermisos()) {
+                    Query q1;
+                    
+                    // crea el objeto permiso del codigo recibido
+                    q1 = em.createNamedQuery("Permisos.findByCodPermiso");
+                    Permisos per = (Permisos) q1.setParameter("codPermiso", cod).getSingleResult();
+                    per.setCodPermiso(cod);
+                    
+                    //crea los rolesPermisos y seteamos rol y permiso
+                    RolesPermisos rolPer = new RolesPermisos();
+                    rolPer.setCodRol(rol);
+                    rolPer.setCodPermiso(per);
+                    
+                    em.persist(rolPer);
+                }
+            }
+            
         }
     }
 
@@ -91,12 +121,71 @@ public class ABMManagerUsuarios {
         } else if (clazz == Empleados.class) {
             Empleados emp = (Empleados) elem;
             em.merge(emp);
-        } else if (clazz == EstadosUsuarios.class) {
-            EstadosUsuarios est = (EstadosUsuarios) elem;
+        } else if (clazz == EstadosEmpleados.class) {
+            EstadosEmpleados est = (EstadosEmpleados) elem;
             em.merge(est);
-        } else if (clazz == RolesUsuario.class) {
-            RolesUsuario rol = (RolesUsuario) elem;
-            em.merge(rol);
+        } else if (clazz == RolesPermisosDTO.class) {
+            
+            Query q;
+            
+            RolesPermisosDTO rpdto = (RolesPermisosDTO) elem;
+            
+            // traigo el objeto del rol cuyos permisos vamos a actualizar
+            q = em.createNamedQuery("RolesUsuario.findByCodRol");
+            q.setParameter("codRol", rpdto.getCodRol());
+            RolesUsuario rol = (RolesUsuario) q.getSingleResult();
+            
+            // si la descripcion del rol cambia, se actualiza
+            if (!rpdto.getDescripcion().equals(rol.getDescripcion())) {
+                rol.setDescripcion(rpdto.getDescripcion());
+                em.merge(rol);
+            }
+                        
+            // traigo la lista de codigos de permisos del rol especifico
+            q = em.createNativeQuery("SELECT p.cod_permiso FROM permisos p "
+                    + "JOIN roles_permisos rp ON rp.cod_permiso = p.cod_permiso "
+                    + "JOIN roles_usuario r ON r.cod_rol = rp.cod_rol "
+                    + "WHERE r.cod_rol = " + rol.getCodRol());
+            List<Integer> listaCodPer = q.getResultList(); //lista de codigos del rol especifico
+            List<Integer> codPerActualizado = rpdto.getPermisos(); //lista de codigos del rol a actualizar
+            
+            // agregamos los nuevos permisos que no estan cargados actualmente
+            for (Integer codPermisoDTO : codPerActualizado) {
+                if (!listaCodPer.contains(codPermisoDTO)) {
+                    // traigo el permiso
+                    q = em.createNamedQuery("Permisos.findByCodPermiso");
+                    q.setParameter("codPermiso", codPermisoDTO);
+                    Permisos per = (Permisos) q.getSingleResult();
+                    per.setCodPermiso(codPermisoDTO);
+                    
+                    // creo los rolesPermiso y seteamos el rol y permiso
+                    RolesPermisos rolPer = new RolesPermisos();
+                    rolPer.setCodRol(rol);
+                    rolPer.setCodPermiso(per);
+                    
+                    em.persist(rolPer);
+                }
+            }
+
+            //buscamos los que estan en la base de datos pero no en la lista actualizada
+            for (Integer codPermisoBD : listaCodPer) {
+                if (!codPerActualizado.contains(codPermisoBD)) {
+                    
+                    // traigo el objeto del permiso que no esta en la lista actualizada y hay que eliminar
+                    q = em.createNamedQuery("Permisos.findByCodPermiso");
+                    q.setParameter("codPermiso", codPermisoBD);
+                    Permisos per = (Permisos) q.getSingleResult();
+                    
+                    // traigo los objetos RolesPermisos que tengan como atributos el rol y permiso a eliminar
+                    q = em.createNamedQuery("RolesPermisos.findByRolPermiso");
+                    q.setParameter("codRol", rol);
+                    q.setParameter("codPermiso", per);
+                    RolesPermisos rp = (RolesPermisos) q.getSingleResult();
+                    
+                    em.remove(rp);
+                }
+            }
+
         }
     }
 

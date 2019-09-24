@@ -58,6 +58,12 @@ public class Actividades implements Serializable {
     @Column(name = "fecha")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "dia_notificable")
+    private int diaNotificable;
+    
     @JoinColumn(name = "cedula_responsable", referencedColumnName = "cedula")
     @ManyToOne(optional = false)
     private Empleados cedulaResponsable;
@@ -161,5 +167,13 @@ public class Actividades implements Serializable {
     public String toString() {
         return "com.lawyersys.pclsystembacke.Actividades[ codActividad=" + codActividad + " ]";
     }
-    
+
+    public int getDiaNotificable() {
+        return diaNotificable;
+    }
+
+    public void setDiaNotificable(int diaNotificable) {
+        this.diaNotificable = diaNotificable;
+    }
+
 }

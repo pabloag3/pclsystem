@@ -39,29 +39,37 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class DetalleExpediente implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @EmbeddedId
     protected DetalleExpedientePK detalleExpedientePK;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "descripcion")
     private String descripcion;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
-    @Basic(optional = false)
-    @NotNull
+    
     @Lob
     @Column(name = "archivo")
     private byte[] archivo;
+    
     @JoinColumn(name = "cod_expediente", referencedColumnName = "cod_expediente", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Expedientes expedientes;
+    
     @JoinColumn(name = "cod_tipo_actuacion", referencedColumnName = "cod_tipo_actuacion")
     @ManyToOne(optional = false)
     private TiposActuaciones codTipoActuacion;
+    
+    @JoinColumn(name = "cod_despacho", referencedColumnName = "cod_despacho")
+    @ManyToOne(optional = false)
+    private Despachos codDespacho;
 
     public DetalleExpediente() {
     }
@@ -105,13 +113,6 @@ public class DetalleExpediente implements Serializable {
         this.fecha = fecha;
     }
 
-    public byte[] getArchivo() {
-        return archivo;
-    }
-
-    public void setArchivo(byte[] archivo) {
-        this.archivo = archivo;
-    }
 
     public Expedientes getExpedientes() {
         return expedientes;
@@ -152,6 +153,22 @@ public class DetalleExpediente implements Serializable {
     @Override
     public String toString() {
         return "com.lawyersys.pclsystembacke.DetalleExpediente[ detalleExpedientePK=" + detalleExpedientePK + " ]";
+    }
+
+    public byte[] getArchivo() {
+        return archivo;
+    }
+
+    public void setArchivo(byte[] archivo) {
+        this.archivo = archivo;
+    }
+
+    public Despachos getCodDespacho() {
+        return codDespacho;
+    }
+
+    public void setCodDespacho(Despachos codDespacho) {
+        this.codDespacho = codDespacho;
     }
     
 }
