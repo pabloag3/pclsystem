@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,7 +21,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author tatoa
+ * @author carlo
  */
 @Entity
 @Table(name = "estados_empleados")
@@ -35,16 +33,19 @@ import javax.xml.bind.annotation.XmlTransient;
 public class EstadosEmpleados implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_estado")
     private Integer codEstado;
+   
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 25)
     @Column(name = "descripcion")
     private String descripcion;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codEstado")
     @JsonIgnore
     private List<Empleados> empleadosList;

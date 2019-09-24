@@ -76,7 +76,7 @@ public class CuentasPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.CuentasPK[ codCuenta=" + codCuenta + ", codCliente=" + codCliente + " ]";
+        return "com.lawyersys.pclsystembacke.entities.CuentasPK[ codCuenta=" + codCuenta + ", codCliente=" + codCliente + " ]";
     }
     
 }
