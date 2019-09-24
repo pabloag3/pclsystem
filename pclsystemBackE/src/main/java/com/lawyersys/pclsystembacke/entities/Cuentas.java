@@ -20,6 +20,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -60,7 +61,12 @@ public class Cuentas implements Serializable {
     @Column(name = "estado")
     private boolean estado;
     
+    @Size(max = 2147483647)
+    @Column(name = "descripcion")
+    private String descripcion;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentas")
+    @JsonIgnore
     private List<Facturas> facturasList;
     
     @JoinColumn(name = "cod_caso", referencedColumnName = "cod_caso")
@@ -195,6 +201,14 @@ public class Cuentas implements Serializable {
     @Override
     public String toString() {
         return "com.lawyersys.pclsystembacke.Cuentas[ cuentasPK=" + cuentasPK + " ]";
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
     
 }

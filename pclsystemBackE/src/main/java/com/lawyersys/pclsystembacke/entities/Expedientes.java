@@ -50,42 +50,60 @@ public class Expedientes implements Serializable {
     private Despachos camaraSorteada;
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_expediente")
     private Integer codExpediente;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 200)
     @Column(name = "descripcion")
     private String descripcion;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 300)
     @Column(name = "caratula")
     private String caratula;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "nro_expediente")
     private int nroExpediente;
+    
     @JoinColumn(name = "cod_caso", referencedColumnName = "cod_caso")
     @ManyToOne(optional = false)
     private Casos codCaso;
+    
     @JoinColumn(name = "cod_despacho", referencedColumnName = "cod_despacho")
     @ManyToOne(optional = false)
     private Despachos codDespacho;
+    
+    @Column(name = "fecha_fin")
+    @Temporal(TemporalType.DATE)
+    private Date fechaFin;
+    
+    @JoinColumn(name = "cod_estado_expediente", referencedColumnName = "cod_estado_expediente")
+    @ManyToOne(optional = false)
+    private EstadoExpediente codEstadoExpediente;
+    
     @OneToMany(mappedBy = "parentCodExpediente")
     @JsonIgnore
     private List<Expedientes> expedientesList;
+    
     @JoinColumn(name = "parent_cod_expediente", referencedColumnName = "cod_expediente")
     @ManyToOne
     private Expedientes parentCodExpediente;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "expedientes")
     @JsonIgnore
     private List<DetalleExpediente> detalleExpedienteList;
@@ -218,6 +236,22 @@ public class Expedientes implements Serializable {
 
     public void setCamaraSorteada(Despachos camaraSorteada) {
         this.camaraSorteada = camaraSorteada;
+    }
+
+    public Date getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(Date fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public EstadoExpediente getCodEstadoExpediente() {
+        return codEstadoExpediente;
+    }
+
+    public void setCodEstadoExpediente(EstadoExpediente codEstadoExpediente) {
+        this.codEstadoExpediente = codEstadoExpediente;
     }
     
 }

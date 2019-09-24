@@ -46,25 +46,34 @@ public class Ujieres implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_ujier")
     private Integer codUjier;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 30)
     @Column(name = "apellido")
     private String apellido;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 30)
     @Column(name = "nombre")
     private String nombre;
+    
     @Size(max = 15)
     @Column(name = "telefono_1")
     private String telefono1;
+    
     @Size(max = 15)
     @Column(name = "telefono_2")
     private String telefono2;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codUjier")
     @JsonIgnore
     private List<Despachos> despachosList;
+    
+    @OneToMany(mappedBy = "codUjier")
+    @JsonIgnore
+    private List<DetalleExpediente> detalleExpedienteList;
 
     public Ujieres() {
     }
@@ -151,6 +160,15 @@ public class Ujieres implements Serializable {
     @Override
     public String toString() {
         return "com.lawyersys.pclsystembacke.Ujieres[ codUjier=" + codUjier + " ]";
+    }
+
+    @XmlTransient
+    public List<DetalleExpediente> getDetalleExpedienteList() {
+        return detalleExpedienteList;
+    }
+
+    public void setDetalleExpedienteList(List<DetalleExpediente> detalleExpedienteList) {
+        this.detalleExpedienteList = detalleExpedienteList;
     }
     
 }

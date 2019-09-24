@@ -43,26 +43,32 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Facturas implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @EmbeddedId
     protected FacturasPK facturasPK;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha_emision")
     @Temporal(TemporalType.DATE)
     private Date fechaEmision;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "monto_total")
     private int montoTotal;
+    
     @ManyToOne(optional = false)
     @JoinColumns({
         @JoinColumn(name = "cod_cuenta", referencedColumnName = "cod_cuenta", insertable = false, updatable = false),
         @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente", insertable = false, updatable = false)
     })
     private Cuentas cuentas;
+    
     @JoinColumn(name = "cedula_emisor", referencedColumnName = "cedula")
     @ManyToOne(optional = false)
     private Empleados cedulaEmisor;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "facturas")
     @JsonIgnore
     private List<DetalleFactura> detalleFacturaList;

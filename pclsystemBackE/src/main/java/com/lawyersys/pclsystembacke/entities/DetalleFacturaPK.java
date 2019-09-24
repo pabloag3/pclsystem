@@ -21,22 +21,18 @@ public class DetalleFacturaPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_detalle_factura")
     private int codDetalleFactura;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "cod_factura")
     private int codFactura;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "cod_pago")
-    private int codPago;
 
     public DetalleFacturaPK() {
     }
 
-    public DetalleFacturaPK(int codDetalleFactura, int codFactura, int codPago) {
+    public DetalleFacturaPK(int codDetalleFactura, int codFactura) {
         this.codDetalleFactura = codDetalleFactura;
         this.codFactura = codFactura;
-        this.codPago = codPago;
     }
 
     public int getCodDetalleFactura() {
@@ -55,20 +51,11 @@ public class DetalleFacturaPK implements Serializable {
         this.codFactura = codFactura;
     }
 
-    public int getCodPago() {
-        return codPago;
-    }
-
-    public void setCodPago(int codPago) {
-        this.codPago = codPago;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) codDetalleFactura;
         hash += (int) codFactura;
-        hash += (int) codPago;
         return hash;
     }
 
@@ -85,15 +72,12 @@ public class DetalleFacturaPK implements Serializable {
         if (this.codFactura != other.codFactura) {
             return false;
         }
-        if (this.codPago != other.codPago) {
-            return false;
-        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.DetalleFacturaPK[ codDetalleFactura=" + codDetalleFactura + ", codFactura=" + codFactura + ", codPago=" + codPago + " ]";
+        return "com.lawyersys.pclsystembacke.DetalleFacturaPK[ codDetalleFactura=" + codDetalleFactura + ", codFactura=" + codFactura + " ]";
     }
     
 }
