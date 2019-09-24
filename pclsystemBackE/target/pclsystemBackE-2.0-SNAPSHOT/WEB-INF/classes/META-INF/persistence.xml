@@ -9,7 +9,6 @@
     <class>com.lawyersys.pclsystembacke.entities.Ciudades</class>
     <class>com.lawyersys.pclsystembacke.entities.Clientes</class>
     <class>com.lawyersys.pclsystembacke.entities.Cuentas</class>
-    <class>com.lawyersys.pclsystembacke.entities.CuentasPK</class>
     <class>com.lawyersys.pclsystembacke.entities.Departamentos</class>
     <class>com.lawyersys.pclsystembacke.entities.Despachos</class>
     <class>com.lawyersys.pclsystembacke.entities.DetalleCuenta</class>
