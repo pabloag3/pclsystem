@@ -20,6 +20,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -34,10 +35,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cuentas.findAll", query = "SELECT c FROM Cuentas c")
     , @NamedQuery(name = "Cuentas.findByCodCuenta", query = "SELECT c FROM Cuentas c WHERE c.cuentasPK.codCuenta = :codCuenta")
     , @NamedQuery(name = "Cuentas.findByCodCliente", query = "SELECT c FROM Cuentas c WHERE c.cuentasPK.codCliente = :codCliente")
-    , @NamedQuery(name = "Cuentas.findByCuentaCliente", query = "SELECT c FROM Cuentas c WHERE c.cuentasPK.codCuenta = :codCuenta AND c.cuentasPK.codCliente = :codCliente")
     , @NamedQuery(name = "Cuentas.findByTotal", query = "SELECT c FROM Cuentas c WHERE c.total = :total")
     , @NamedQuery(name = "Cuentas.findBySaldo", query = "SELECT c FROM Cuentas c WHERE c.saldo = :saldo")
-    , @NamedQuery(name = "Cuentas.findByEstado", query = "SELECT c FROM Cuentas c WHERE c.estado = :estado")})
+    , @NamedQuery(name = "Cuentas.findByEstado", query = "SELECT c FROM Cuentas c WHERE c.estado = :estado")
+    , @NamedQuery(name = "Cuentas.findByDescripcion", query = "SELECT c FROM Cuentas c WHERE c.descripcion = :descripcion")})
 public class Cuentas implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,7 +50,7 @@ public class Cuentas implements Serializable {
     @NotNull
     @Column(name = "total")
     private int total;
-    
+   
     @Basic(optional = false)
     @NotNull
     @Column(name = "saldo")
@@ -60,7 +61,12 @@ public class Cuentas implements Serializable {
     @Column(name = "estado")
     private boolean estado;
     
+    @Size(max = 2147483647)
+    @Column(name = "descripcion")
+    private String descripcion;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentas")
+    @JsonIgnore
     private List<Facturas> facturasList;
     
     @JoinColumn(name = "cod_caso", referencedColumnName = "cod_caso")
@@ -71,10 +77,10 @@ public class Cuentas implements Serializable {
     @ManyToOne(optional = false)
     private Clientes clientes;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentas")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCuenta")
     @JsonIgnore
     private List<Pagos> pagosList;
-    
+   
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentas")
     @JsonIgnore
     private List<DetalleCuenta> detalleCuentaList;
@@ -127,6 +133,14 @@ public class Cuentas implements Serializable {
 
     public void setEstado(boolean estado) {
         this.estado = estado;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     @XmlTransient
@@ -194,7 +208,7 @@ public class Cuentas implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.Cuentas[ cuentasPK=" + cuentasPK + " ]";
+        return "com.lawyersys.pclsystembacke.entities.Cuentas[ cuentasPK=" + cuentasPK + " ]";
     }
     
 }

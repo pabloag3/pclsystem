@@ -34,41 +34,47 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Usuarios.findByUsuario", query = "SELECT u FROM Usuarios u WHERE u.usuario = :usuario")
     , @NamedQuery(name = "Usuarios.findByContrasenha", query = "SELECT u FROM Usuarios u WHERE u.contrasenha = :contrasenha")
     , @NamedQuery(name = "Usuarios.findByCorreoElectronico", query = "SELECT u FROM Usuarios u WHERE u.correoElectronico = :correoElectronico")
-    , @NamedQuery(name = "Usuarios.findByDescripcion", query = "SELECT u FROM Usuarios u WHERE u.descripcion = :descripcion")
-    , @NamedQuery(name = "Usuarios.findByCodRol", query = "SELECT u FROM Usuarios u WHERE u.codRol = :codRol")
-})
+    , @NamedQuery(name = "Usuarios.findByDescripcion", query = "SELECT u FROM Usuarios u WHERE u.descripcion = :descripcion")})
 public class Usuarios implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_usuario")
     private Integer codUsuario;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "usuario")
     private String usuario;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 200)
     @Column(name = "contrasenha")
     private String contrasenha;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
     @Column(name = "correo_electronico")
     private String correoElectronico;
+    
     @Size(max = 100)
     @Column(name = "descripcion")
     private String descripcion;
+    
     @JoinColumn(name = "cedula", referencedColumnName = "cedula")
     @ManyToOne(optional = false)
     private Empleados cedula;
+    
     @JoinColumn(name = "cod_rol", referencedColumnName = "cod_rol")
     @ManyToOne(optional = false)
     private RolesUsuario codRol;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codUsuario")
     @JsonIgnore
     private List<Reportes> reportesList;
@@ -174,7 +180,7 @@ public class Usuarios implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.Usuarios[ codUsuario=" + codUsuario + " ]";
+        return "com.lawyersys.pclsystembacke.entities.Usuarios[ codUsuario=" + codUsuario + " ]";
     }
     
 }

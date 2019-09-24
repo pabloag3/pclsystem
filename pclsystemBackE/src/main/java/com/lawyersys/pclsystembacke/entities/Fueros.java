@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -38,16 +33,19 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Fueros implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_fuero")
     private Integer codFuero;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
     @Column(name = "tipo_fuero")
     private String tipoFuero;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codFuero")
     @JsonIgnore
     private List<Despachos> despachosList;
@@ -111,7 +109,7 @@ public class Fueros implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.Fueros[ codFuero=" + codFuero + " ]";
+        return "com.lawyersys.pclsystembacke.entities.Fueros[ codFuero=" + codFuero + " ]";
     }
     
 }

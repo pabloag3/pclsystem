@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -44,10 +38,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Empleados.findByFechaNacimiento", query = "SELECT e FROM Empleados e WHERE e.fechaNacimiento = :fechaNacimiento")
     , @NamedQuery(name = "Empleados.findByTelefono", query = "SELECT e FROM Empleados e WHERE e.telefono = :telefono")
     , @NamedQuery(name = "Empleados.findByDireccion", query = "SELECT e FROM Empleados e WHERE e.direccion = :direccion")})
-
 public class Empleados implements Serializable {
 
     private static final long serialVersionUID = 1L;
+     
     @Id
     @Basic(optional = false)
     @NotNull
@@ -91,10 +85,6 @@ public class Empleados implements Serializable {
     @Column(name = "direccion")
     private String direccion;
     
-    @JoinColumn(name = "cod_estado", referencedColumnName = "cod_estado")
-    @ManyToOne(optional = false)
-    private EstadosEmpleados codEstado;
-    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cedulaEmisor")
     @JsonIgnore
     private List<Facturas> facturasList;
@@ -106,6 +96,10 @@ public class Empleados implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cedula")
     @JsonIgnore
     private List<Usuarios> usuariosList;
+    
+    @JoinColumn(name = "cod_estado", referencedColumnName = "cod_estado")
+    @ManyToOne(optional = false)
+    private EstadosEmpleados codEstado;
 
     public Empleados() {
     }
@@ -207,6 +201,14 @@ public class Empleados implements Serializable {
         this.usuariosList = usuariosList;
     }
 
+    public EstadosEmpleados getCodEstado() {
+        return codEstado;
+    }
+
+    public void setCodEstado(EstadosEmpleados codEstado) {
+        this.codEstado = codEstado;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -229,15 +231,7 @@ public class Empleados implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.Empleados[ cedula=" + cedula + " ]";
-    }
-
-    public EstadosEmpleados getCodEstado() {
-        return codEstado;
-    }
-
-    public void setCodEstado(EstadosEmpleados codEstado) {
-        this.codEstado = codEstado;
+        return "com.lawyersys.pclsystembacke.entities.Empleados[ cedula=" + cedula + " ]";
     }
     
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
@@ -32,8 +27,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "DetalleExpediente.findAll", query = "SELECT d FROM DetalleExpediente d")
-    , @NamedQuery(name = "DetalleExpediente.findByCodDetalleExpediente", query = "SELECT d FROM DetalleExpediente d WHERE d.detalleExpedientePK.codDetalleExpediente = :codDetalleExpediente")
     , @NamedQuery(name = "DetalleExpediente.findByCodExpediente", query = "SELECT d FROM DetalleExpediente d WHERE d.detalleExpedientePK.codExpediente = :codExpediente")
+    , @NamedQuery(name = "DetalleExpediente.findByCodDetalleExpediente", query = "SELECT d FROM DetalleExpediente d WHERE d.detalleExpedientePK.codDetalleExpediente = :codDetalleExpediente")
     , @NamedQuery(name = "DetalleExpediente.findByDescripcion", query = "SELECT d FROM DetalleExpediente d WHERE d.descripcion = :descripcion")
     , @NamedQuery(name = "DetalleExpediente.findByFecha", query = "SELECT d FROM DetalleExpediente d WHERE d.fecha = :fecha")})
 public class DetalleExpediente implements Serializable {
@@ -59,17 +54,29 @@ public class DetalleExpediente implements Serializable {
     @Column(name = "archivo")
     private byte[] archivo;
     
+    @JoinColumn(name = "cod_actuario", referencedColumnName = "cod_actuario")
+    @ManyToOne
+    private Actuarios codActuario;
+    
+    @JoinColumn(name = "cod_despacho", referencedColumnName = "cod_despacho")
+    @ManyToOne(optional = false)
+    private Despachos codDespacho;
+    
     @JoinColumn(name = "cod_expediente", referencedColumnName = "cod_expediente", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Expedientes expedientes;
+    
+    @JoinColumn(name = "cod_juez", referencedColumnName = "cod_juez")
+    @ManyToOne
+    private Jueces codJuez;
     
     @JoinColumn(name = "cod_tipo_actuacion", referencedColumnName = "cod_tipo_actuacion")
     @ManyToOne(optional = false)
     private TiposActuaciones codTipoActuacion;
     
-    @JoinColumn(name = "cod_despacho", referencedColumnName = "cod_despacho")
-    @ManyToOne(optional = false)
-    private Despachos codDespacho;
+    @JoinColumn(name = "cod_ujier", referencedColumnName = "cod_ujier")
+    @ManyToOne
+    private Ujieres codUjier;
 
     public DetalleExpediente() {
     }
@@ -78,15 +85,14 @@ public class DetalleExpediente implements Serializable {
         this.detalleExpedientePK = detalleExpedientePK;
     }
 
-    public DetalleExpediente(DetalleExpedientePK detalleExpedientePK, String descripcion, Date fecha, byte[] archivo) {
+    public DetalleExpediente(DetalleExpedientePK detalleExpedientePK, String descripcion, Date fecha) {
         this.detalleExpedientePK = detalleExpedientePK;
         this.descripcion = descripcion;
         this.fecha = fecha;
-        this.archivo = archivo;
     }
 
-    public DetalleExpediente(int codDetalleExpediente, int codExpediente) {
-        this.detalleExpedientePK = new DetalleExpedientePK(codDetalleExpediente, codExpediente);
+    public DetalleExpediente(int codExpediente, int codDetalleExpediente) {
+        this.detalleExpedientePK = new DetalleExpedientePK(codExpediente, codDetalleExpediente);
     }
 
     public DetalleExpedientePK getDetalleExpedientePK() {
@@ -113,6 +119,29 @@ public class DetalleExpediente implements Serializable {
         this.fecha = fecha;
     }
 
+    public byte[] getArchivo() {
+        return archivo;
+    }
+
+    public void setArchivo(byte[] archivo) {
+        this.archivo = archivo;
+    }
+
+    public Actuarios getCodActuario() {
+        return codActuario;
+    }
+
+    public void setCodActuario(Actuarios codActuario) {
+        this.codActuario = codActuario;
+    }
+
+    public Despachos getCodDespacho() {
+        return codDespacho;
+    }
+
+    public void setCodDespacho(Despachos codDespacho) {
+        this.codDespacho = codDespacho;
+    }
 
     public Expedientes getExpedientes() {
         return expedientes;
@@ -122,12 +151,28 @@ public class DetalleExpediente implements Serializable {
         this.expedientes = expedientes;
     }
 
+    public Jueces getCodJuez() {
+        return codJuez;
+    }
+
+    public void setCodJuez(Jueces codJuez) {
+        this.codJuez = codJuez;
+    }
+
     public TiposActuaciones getCodTipoActuacion() {
         return codTipoActuacion;
     }
 
     public void setCodTipoActuacion(TiposActuaciones codTipoActuacion) {
         this.codTipoActuacion = codTipoActuacion;
+    }
+
+    public Ujieres getCodUjier() {
+        return codUjier;
+    }
+
+    public void setCodUjier(Ujieres codUjier) {
+        this.codUjier = codUjier;
     }
 
     @Override
@@ -152,23 +197,7 @@ public class DetalleExpediente implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.DetalleExpediente[ detalleExpedientePK=" + detalleExpedientePK + " ]";
-    }
-
-    public byte[] getArchivo() {
-        return archivo;
-    }
-
-    public void setArchivo(byte[] archivo) {
-        this.archivo = archivo;
-    }
-
-    public Despachos getCodDespacho() {
-        return codDespacho;
-    }
-
-    public void setCodDespacho(Despachos codDespacho) {
-        this.codDespacho = codDespacho;
+        return "com.lawyersys.pclsystembacke.entities.DetalleExpediente[ detalleExpedientePK=" + detalleExpedientePK + " ]";
     }
     
 }

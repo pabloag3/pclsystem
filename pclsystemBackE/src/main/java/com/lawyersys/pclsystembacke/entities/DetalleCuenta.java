@@ -39,30 +39,36 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class DetalleCuenta implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @EmbeddedId
     protected DetalleCuentaPK detalleCuentaPK;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "descripcion")
     private String descripcion;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "monto")
     private int monto;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "estado")
     private boolean estado;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "saldo_detalle_cta")
     private BigInteger saldoDetalleCta;
-    @ManyToOne(optional = false)
+    
     @JoinColumns({
         @JoinColumn(name = "cod_cuenta", referencedColumnName = "cod_cuenta", insertable = false, updatable = false),
         @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente", insertable = false, updatable = false)
     })
+    @ManyToOne(optional = false)
     private Cuentas cuentas;
 
     public DetalleCuenta() {
@@ -154,7 +160,7 @@ public class DetalleCuenta implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.DetalleCuenta[ detalleCuentaPK=" + detalleCuentaPK + " ]";
+        return "com.lawyersys.pclsystembacke.entities.DetalleCuenta[ detalleCuentaPK=" + detalleCuentaPK + " ]";
     }
     
 }

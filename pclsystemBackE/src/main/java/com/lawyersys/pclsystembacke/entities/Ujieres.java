@@ -1,15 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,28 +35,38 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Ujieres implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_ujier")
     private Integer codUjier;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 30)
     @Column(name = "apellido")
     private String apellido;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 30)
     @Column(name = "nombre")
     private String nombre;
+    
     @Size(max = 15)
     @Column(name = "telefono_1")
     private String telefono1;
+    
     @Size(max = 15)
     @Column(name = "telefono_2")
     private String telefono2;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codUjier")
+    
+    @OneToMany(mappedBy = "codUjier")
+    @JsonIgnore
+    private List<DetalleExpediente> detalleExpedienteList;
+    
+    @OneToMany(mappedBy = "codUjier")
     @JsonIgnore
     private List<Despachos> despachosList;
 
@@ -120,6 +124,15 @@ public class Ujieres implements Serializable {
     }
 
     @XmlTransient
+    public List<DetalleExpediente> getDetalleExpedienteList() {
+        return detalleExpedienteList;
+    }
+
+    public void setDetalleExpedienteList(List<DetalleExpediente> detalleExpedienteList) {
+        this.detalleExpedienteList = detalleExpedienteList;
+    }
+
+    @XmlTransient
     public List<Despachos> getDespachosList() {
         return despachosList;
     }
@@ -150,7 +163,7 @@ public class Ujieres implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.Ujieres[ codUjier=" + codUjier + " ]";
+        return "com.lawyersys.pclsystembacke.entities.Ujieres[ codUjier=" + codUjier + " ]";
     }
     
 }
