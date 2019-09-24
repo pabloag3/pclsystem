@@ -14,9 +14,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -40,7 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Pagos.findAll", query = "SELECT p FROM Pagos p")
-    , @NamedQuery(name = "Pagos.findByCodPago", query = "SELECT p FROM Pagos p WHERE p.codPago = :codPago")
+    , @NamedQuery(name = "Pagos.findByCodPago", query = "SELECT p FROM Pagos p WHERE p.pagosPK.codPago = :codPago")
+    , @NamedQuery(name = "Pagos.findByCodCuenta", query = "SELECT p FROM Pagos p WHERE p.pagosPK.codCuenta = :codCuenta")
     , @NamedQuery(name = "Pagos.findByFechaPago", query = "SELECT p FROM Pagos p WHERE p.fechaPago = :fechaPago")
     , @NamedQuery(name = "Pagos.findByMontoPagado", query = "SELECT p FROM Pagos p WHERE p.montoPagado = :montoPagado")
     , @NamedQuery(name = "Pagos.findByNroComproBanco", query = "SELECT p FROM Pagos p WHERE p.nroComproBanco = :nroComproBanco")
@@ -52,67 +50,47 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Pagos implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "cod_pago")
-    private Integer codPago;
-    
-    @JoinColumn(name = "cod_cuenta", referencedColumnName = "cod_cuenta")
-    @ManyToOne(optional = false)
-    private Cuentas codCuenta;
-    
+    @EmbeddedId
+    protected PagosPK pagosPK;
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha_pago")
     @Temporal(TemporalType.DATE)
     private Date fechaPago;
-    
     @Basic(optional = false)
     @NotNull
     @Column(name = "monto_pagado")
     private int montoPagado;
-    
     @Size(max = 150)
     @Column(name = "nro_compro_banco")
     private String nroComproBanco;
-    
     @Size(max = 50)
     @Column(name = "entidad_financiera")
     private String entidadFinanciera;
-    
     @Size(max = 3)
     @Column(name = "nro_tarjeta")
     private String nroTarjeta;
-    
     @Size(max = 20)
     @Column(name = "nro_serie_cheque")
     private String nroSerieCheque;
-    
     @Size(max = 20)
     @Column(name = "nro_cuenta_cheque")
     private String nroCuentaCheque;
-    
     @Column(name = "fecha_venc_cheque")
     @Temporal(TemporalType.DATE)
     private Date fechaVencCheque;
-    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pagos")
     @JsonIgnore
     private List<Recibos> recibosList;
-    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pagos")
     @JsonIgnore
     private List<DetalleFactura> detalleFacturaList;
-    
-//    @ManyToOne(optional = false)
-//    @JoinColumns({
-//           @JoinColumn(name = "cod_cuenta", referencedColumnName = "cod_cuenta", insertable = false, updatable = false),
-//           @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente", insertable = false, updatable = false)
-//    })
-//    private Cuentas cuentas;
-    
+    @ManyToOne(optional = false)
+    @JoinColumns({
+           @JoinColumn(name = "cod_cuenta", referencedColumnName = "cod_cuenta", insertable = false, updatable = false),
+           @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente", insertable = false, updatable = false)
+    })
+    private Cuentas cuentas;
     @JoinColumn(name = "cod_tipo_pago", referencedColumnName = "cod_tipo_pago")
     @ManyToOne(optional = false)
     private TiposPagos codTipoPago;
@@ -120,14 +98,26 @@ public class Pagos implements Serializable {
     public Pagos() {
     }
 
-    public Pagos(Integer codPago, Date fechaPago, int montoPagado) {
-        this.codPago = codPago;
+    public Pagos(PagosPK pagosPK) {
+        this.pagosPK = pagosPK;
+    }
+
+    public Pagos(PagosPK pagosPK, Date fechaPago, int montoPagado) {
+        this.pagosPK = pagosPK;
         this.fechaPago = fechaPago;
         this.montoPagado = montoPagado;
     }
 
     public Pagos(int codPago, int codCuenta) {
-        this.codPago = codPago;
+        this.pagosPK = new PagosPK(codPago, codCuenta);
+    }
+
+    public PagosPK getPagosPK() {
+        return pagosPK;
+    }
+
+    public void setPagosPK(PagosPK pagosPK) {
+        this.pagosPK = pagosPK;
     }
 
     public Date getFechaPago() {
@@ -212,13 +202,13 @@ public class Pagos implements Serializable {
         this.detalleFacturaList = detalleFacturaList;
     }
 
-//    public Cuentas getCuentas() {
-//        return cuentas;
-//    }
-//
-//    public void setCuentas(Cuentas cuentas) {
-//        this.cuentas = cuentas;
-//    }
+    public Cuentas getCuentas() {
+        return cuentas;
+    }
+
+    public void setCuentas(Cuentas cuentas) {
+        this.cuentas = cuentas;
+    }
 
     public TiposPagos getCodTipoPago() {
         return codTipoPago;
@@ -229,34 +219,9 @@ public class Pagos implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "com.lawyersys.pclsystembacke.Pagos[ pagosPK=" + codPago + " ]";
-    }
-
-    public Pagos(Integer codPago) {
-        this.codPago = codPago;
-    }
-
-    public Integer getCodPago() {
-        return codPago;
-    }
-
-    public void setCodPago(Integer codPago) {
-        this.codPago = codPago;
-    }
-
-    public Cuentas getCodCuenta() {
-        return codCuenta;
-    }
-
-    public void setCodCuenta(Cuentas codCuenta) {
-        this.codCuenta = codCuenta;
-    }
-
-    @Override
     public int hashCode() {
         int hash = 0;
-        hash += (codPago != null ? codPago.hashCode() : 0);
+        hash += (pagosPK != null ? pagosPK.hashCode() : 0);
         return hash;
     }
 
@@ -267,10 +232,15 @@ public class Pagos implements Serializable {
             return false;
         }
         Pagos other = (Pagos) object;
-        if ((this.codPago == null && other.codPago != null) || (this.codPago != null && !this.codPago.equals(other.codPago))) {
+        if ((this.pagosPK == null && other.pagosPK != null) || (this.pagosPK != null && !this.pagosPK.equals(other.pagosPK))) {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.lawyersys.pclsystembacke.Pagos[ pagosPK=" + pagosPK + " ]";
     }
     
 }

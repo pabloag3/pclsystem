@@ -37,43 +37,39 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "DetalleFactura.findByMontoIva", query = "SELECT d FROM DetalleFactura d WHERE d.montoIva = :montoIva")
     , @NamedQuery(name = "DetalleFactura.findByMonto", query = "SELECT d FROM DetalleFactura d WHERE d.monto = :monto")})
 public class DetalleFactura implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
-    
     @EmbeddedId
     protected DetalleFacturaPK detalleFacturaPK;
-    
-    @JoinColumn(name = "cod_pago", referencedColumnName = "cod_pago")
-    @ManyToOne(optional = false)
-    private Pagos codPago;
-    
     @Basic(optional = false)
     @NotNull
     @Column(name = "porcentaje_iva")
     private int porcentajeIva;
-    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "descripcion")
     private String descripcion;
-    
     @Basic(optional = false)
     @NotNull
     @Column(name = "monto_iva")
     private int montoIva;
-    
     @Basic(optional = false)
     @NotNull
     @Column(name = "monto")
     private int monto;
-    
     @ManyToOne(optional = false)
     @JoinColumns({
         @JoinColumn(name = "cod_factura", referencedColumnName = "cod_factura", insertable = false, updatable = false),
         @JoinColumn(name = "cod_cuenta", referencedColumnName = "cod_cuenta", insertable = false, updatable = false)
     })
     private Facturas facturas;
+    @ManyToOne(optional = false)
+    @JoinColumns({
+        @JoinColumn(name = "cod_pago", referencedColumnName = "cod_pago", insertable = false, updatable = false),
+        @JoinColumn(name = "cod_cuenta", referencedColumnName = "cod_cuenta", insertable = false, updatable = false)
+    })
+    private Pagos pagos;
 
     public DetalleFactura() {
     }
@@ -90,8 +86,8 @@ public class DetalleFactura implements Serializable {
         this.monto = monto;
     }
 
-    public DetalleFactura(int codDetalleFactura, int codFactura) {
-        this.detalleFacturaPK = new DetalleFacturaPK(codDetalleFactura, codFactura);
+    public DetalleFactura(int codDetalleFactura, int codFactura, int codPago) {
+        this.detalleFacturaPK = new DetalleFacturaPK(codDetalleFactura, codFactura, codPago);
     }
 
     public DetalleFacturaPK getDetalleFacturaPK() {
@@ -100,14 +96,6 @@ public class DetalleFactura implements Serializable {
 
     public void setDetalleFacturaPK(DetalleFacturaPK detalleFacturaPK) {
         this.detalleFacturaPK = detalleFacturaPK;
-    }
-        
-    public Pagos getCodPago() {
-        return codPago;
-    }
-
-    public void setCodPago(Pagos codPago) {
-        this.codPago = codPago;
     }
 
     public int getPorcentajeIva() {
@@ -148,6 +136,14 @@ public class DetalleFactura implements Serializable {
 
     public void setFacturas(Facturas facturas) {
         this.facturas = facturas;
+    }
+
+    public Pagos getPagos() {
+        return pagos;
+    }
+
+    public void setPagos(Pagos pagos) {
+        this.pagos = pagos;
     }
 
     @Override

@@ -58,8 +58,8 @@ public class DetalleFacturaFacadeREST {
             key.setCodFactura(new java.lang.Integer(codFactura.get(0)));
         }
         java.util.List<String> codPago = map.get("codPago");
-        if (codFactura != null && !codFactura.isEmpty()) {
-            key.setCodFactura(new java.lang.Integer(codFactura.get(0)));
+        if (codPago != null && !codPago.isEmpty()) {
+            key.setCodPago(new java.lang.Integer(codPago.get(0)));
         }
         return key;
     }

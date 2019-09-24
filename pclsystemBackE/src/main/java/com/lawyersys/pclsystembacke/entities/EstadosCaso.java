@@ -38,19 +38,16 @@ import javax.xml.bind.annotation.XmlTransient;
 public class EstadosCaso implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_estado_caso")
     private Integer codEstadoCaso;
-    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 10)
     @Column(name = "descripcion")
     private String descripcion;
-    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codEstadoCaso")
     @JsonIgnore
     private List<Casos> casosList;

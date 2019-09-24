@@ -43,13 +43,11 @@ public class TiposPagos implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_tipo_pago")
     private Integer codTipoPago;
-    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 1000)
     @Column(name = "descripcion")
     private String descripcion;
-    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codTipoPago")
     @JsonIgnore
     private List<Pagos> pagosList;

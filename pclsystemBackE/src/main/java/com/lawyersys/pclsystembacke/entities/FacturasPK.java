@@ -22,7 +22,6 @@ public class FacturasPK implements Serializable {
     @NotNull
     @Column(name = "cod_factura")
     private int codFactura;
-    
     @Basic(optional = false)
     @NotNull
     @Column(name = "cod_cuenta")
