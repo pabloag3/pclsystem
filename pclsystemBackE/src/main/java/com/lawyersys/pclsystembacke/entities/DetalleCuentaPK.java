@@ -76,7 +76,7 @@ public class DetalleCuentaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.DetalleCuentaPK[ codDetalleCuenta=" + codDetalleCuenta + ", codCuenta=" + codCuenta + " ]";
+        return "com.lawyersys.pclsystembacke.DetalleCuentaPK[ codDetalleCuenta=" + codDetalleCuenta + ", codCuenta=" + codCuenta + " ]";
     }
     
 }

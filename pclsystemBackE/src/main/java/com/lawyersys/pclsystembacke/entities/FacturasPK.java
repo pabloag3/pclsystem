@@ -77,7 +77,7 @@ public class FacturasPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.FacturasPK[ codFactura=" + codFactura + ", codCuenta=" + codCuenta + " ]";
+        return "com.lawyersys.pclsystembacke.FacturasPK[ codFactura=" + codFactura + ", codCuenta=" + codCuenta + " ]";
     }
     
 }

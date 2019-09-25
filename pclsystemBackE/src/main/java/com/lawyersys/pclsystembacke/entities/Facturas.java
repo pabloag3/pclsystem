@@ -1,4 +1,8 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.lawyersys.pclsystembacke.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,8 +15,8 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -41,29 +45,24 @@ public class Facturas implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected FacturasPK facturasPK;
-    
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha_emision")
     @Temporal(TemporalType.DATE)
     private Date fechaEmision;
-    
     @Basic(optional = false)
     @NotNull
     @Column(name = "monto_total")
     private int montoTotal;
-    
+    @ManyToOne(optional = false)
     @JoinColumns({
         @JoinColumn(name = "cod_cuenta", referencedColumnName = "cod_cuenta", insertable = false, updatable = false),
         @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente", insertable = false, updatable = false)
     })
-    @ManyToOne(optional = false)
     private Cuentas cuentas;
-    
     @JoinColumn(name = "cedula_emisor", referencedColumnName = "cedula")
     @ManyToOne(optional = false)
     private Empleados cedulaEmisor;
-    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "facturas")
     @JsonIgnore
     private List<DetalleFactura> detalleFacturaList;
@@ -156,7 +155,7 @@ public class Facturas implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.Facturas[ facturasPK=" + facturasPK + " ]";
+        return "com.lawyersys.pclsystembacke.Facturas[ facturasPK=" + facturasPK + " ]";
     }
     
 }

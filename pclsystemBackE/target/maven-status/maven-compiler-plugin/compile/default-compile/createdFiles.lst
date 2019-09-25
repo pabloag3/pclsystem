@@ -7,13 +7,14 @@ com\lawyersys\pclsystembe\rest\actividades\ActividadesFacadeREST.class
 com\lawyersys\pclsystembe\rest\despachos\CiudadesFacadeREST.class
 com\lawyersys\pclsystembe\rest\despachos\JuecesFacadeREST.class
 com\lawyersys\pclsystembe\rest\despachos\UjieresFacadeREST.class
-com\lawyersys\pclsystembacke\entities\EstadoExpediente.class
 com\lawyersys\pclsystembacke\entities\Actividades.class
+com\lawyersys\pclsystembacke\entities\RecibosPK.class
 com\lawyersys\pclsystembe\dtos\RolesPermisosDTO.class
 com\lawyersys\pclsystembacke\entities\Fueros.class
 com\lawyersys\pclsystembacke\entities\Clientes.class
 com\lawyersys\pclsystembe\abm\ABMManagerDespachos.class
 com\lawyersys\pclsystembe\rest\config\ApplicationConfig.class
+com\lawyersys\pclsystembacke\entities\PagosPK.class
 com\lawyersys\pclsystembacke\entities\Despachos.class
 com\lawyersys\pclsystembacke\entities\EstadosCaso.class
 com\lawyersys\pclsystembe\rest\usuarios\RolesUsuarioREST.class
@@ -33,6 +34,7 @@ com\lawyersys\pclsystembacke\entities\Permisos.class
 com\lawyersys\pclsystembe\rest\facturacion\TiposPagosFacadeREST.class
 com\lawyersys\pclsystembe\utilidades\ErrorManager.class
 com\lawyersys\pclsystembe\rest\actividades\EstadosActividadesFacadeREST.class
+com\lawyersys\pclsystembacke\entities\CuentasPK.class
 com\lawyersys\pclsystembe\servlet\Login.class
 com\lawyersys\pclsystembacke\entities\Pagos.class
 com\lawyersys\pclsystembe\rest\despachos\DepartamentosFacadeREST.class

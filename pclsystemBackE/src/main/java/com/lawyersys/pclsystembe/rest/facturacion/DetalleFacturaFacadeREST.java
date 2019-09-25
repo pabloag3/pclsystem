@@ -15,11 +15,15 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -52,6 +56,10 @@ public class DetalleFacturaFacadeREST {
         java.util.List<String> codFactura = map.get("codFactura");
         if (codFactura != null && !codFactura.isEmpty()) {
             key.setCodFactura(new java.lang.Integer(codFactura.get(0)));
+        }
+        java.util.List<String> codPago = map.get("codPago");
+        if (codPago != null && !codPago.isEmpty()) {
+            key.setCodPago(new java.lang.Integer(codPago.get(0)));
         }
         return key;
     }

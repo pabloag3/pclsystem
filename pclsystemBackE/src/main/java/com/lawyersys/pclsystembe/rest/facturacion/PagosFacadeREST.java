@@ -5,6 +5,7 @@ package com.lawyersys.pclsystembe.rest.facturacion;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawyersys.pclsystembacke.entities.Pagos;
+import com.lawyersys.pclsystembacke.entities.PagosPK;
 import com.lawyersys.pclsystembe.abm.ABMManagerFacturacion;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
@@ -14,11 +15,16 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -29,6 +35,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Stateless
 @Path("pagos")
 public class PagosFacadeREST {
+
+    @PersistenceContext(unitName = "lawyersys")
+    private EntityManager em;
+
+    private PagosPK getPrimaryKey(PathSegment pathSegment) {
+        /*
+         * pathSemgent represents a URI path segment and any associated matrix parameters.
+         * URI path part is supposed to be in form of 'somePath;codPago=codPagoValue;codCuenta=codCuentaValue'.
+         * Here 'somePath' is a result of getPath() method invocation and
+         * it is ignored in the following code.
+         * Matrix parameters are used as field names to build a primary key instance.
+         */
+        com.lawyersys.pclsystembacke.entities.PagosPK key = new com.lawyersys.pclsystembacke.entities.PagosPK();
+        javax.ws.rs.core.MultivaluedMap<String, String> map = pathSegment.getMatrixParameters();
+        java.util.List<String> codPago = map.get("codPago");
+        if (codPago != null && !codPago.isEmpty()) {
+            key.setCodPago(new java.lang.Integer(codPago.get(0)));
+        }
+        java.util.List<String> codCuenta = map.get("codCuenta");
+        if (codCuenta != null && !codCuenta.isEmpty()) {
+            key.setCodCuenta(new java.lang.Integer(codCuenta.get(0)));
+        }
+        return key;
+    }
 
     public PagosFacadeREST() {
     }

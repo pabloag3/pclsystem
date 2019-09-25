@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
@@ -31,7 +36,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Actividades.findByCodActividad", query = "SELECT a FROM Actividades a WHERE a.codActividad = :codActividad")
     , @NamedQuery(name = "Actividades.findByDescripcion", query = "SELECT a FROM Actividades a WHERE a.descripcion = :descripcion")
     , @NamedQuery(name = "Actividades.findByObservacion", query = "SELECT a FROM Actividades a WHERE a.observacion = :observacion")
-    , @NamedQuery(name = "Actividades.findByDiaNotificable", query = "SELECT a FROM Actividades a WHERE a.diaNotificable = :diaNotificable")
     , @NamedQuery(name = "Actividades.findByFecha", query = "SELECT a FROM Actividades a WHERE a.fecha = :fecha")})
 public class Actividades implements Serializable {
 
@@ -51,11 +55,15 @@ public class Actividades implements Serializable {
     private String observacion;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "dia_notificable")
-    private int diaNotificable;
     @Column(name = "fecha")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "dia_notificable")
+    private int diaNotificable;
+    
     @JoinColumn(name = "cedula_responsable", referencedColumnName = "cedula")
     @ManyToOne(optional = false)
     private Empleados cedulaResponsable;
@@ -73,10 +81,10 @@ public class Actividades implements Serializable {
         this.codActividad = codActividad;
     }
 
-    public Actividades(Integer codActividad, String descripcion, int diaNotificable) {
+    public Actividades(Integer codActividad, String descripcion, Date fecha) {
         this.codActividad = codActividad;
         this.descripcion = descripcion;
-        this.diaNotificable = diaNotificable;
+        this.fecha = fecha;
     }
 
     public Integer getCodActividad() {
@@ -101,14 +109,6 @@ public class Actividades implements Serializable {
 
     public void setObservacion(String observacion) {
         this.observacion = observacion;
-    }
-
-    public int getDiaNotificable() {
-        return diaNotificable;
-    }
-
-    public void setDiaNotificable(int diaNotificable) {
-        this.diaNotificable = diaNotificable;
     }
 
     public Date getFecha() {
@@ -165,7 +165,15 @@ public class Actividades implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.Actividades[ codActividad=" + codActividad + " ]";
+        return "com.lawyersys.pclsystembacke.Actividades[ codActividad=" + codActividad + " ]";
     }
-    
+
+    public int getDiaNotificable() {
+        return diaNotificable;
+    }
+
+    public void setDiaNotificable(int diaNotificable) {
+        this.diaNotificable = diaNotificable;
+    }
+
 }

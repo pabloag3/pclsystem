@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
@@ -35,33 +40,27 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Reportes implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_reporte")
     private Integer codReporte;
-    
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
-    
     @Size(max = 100)
     @Column(name = "descripcion")
     private String descripcion;
-    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 300)
     @Column(name = "parametros")
     private String parametros;
-    
     @JoinColumn(name = "cod_tipo_reporte", referencedColumnName = "cod_tipo_reporte")
     @ManyToOne(optional = false)
     private TiposReporte codTipoReporte;
-    
     @JoinColumn(name = "cod_usuario", referencedColumnName = "cod_usuario")
     @ManyToOne(optional = false)
     private Usuarios codUsuario;
@@ -149,7 +148,7 @@ public class Reportes implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.Reportes[ codReporte=" + codReporte + " ]";
+        return "com.lawyersys.pclsystembacke.Reportes[ codReporte=" + codReporte + " ]";
     }
     
 }

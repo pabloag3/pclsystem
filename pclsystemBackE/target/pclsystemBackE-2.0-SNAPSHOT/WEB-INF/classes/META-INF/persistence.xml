@@ -9,6 +9,7 @@
     <class>com.lawyersys.pclsystembacke.entities.Ciudades</class>
     <class>com.lawyersys.pclsystembacke.entities.Clientes</class>
     <class>com.lawyersys.pclsystembacke.entities.Cuentas</class>
+    <class>com.lawyersys.pclsystembacke.entities.CuentasPK</class>
     <class>com.lawyersys.pclsystembacke.entities.Departamentos</class>
     <class>com.lawyersys.pclsystembacke.entities.Despachos</class>
     <class>com.lawyersys.pclsystembacke.entities.DetalleCuenta</class>
@@ -17,20 +18,20 @@
     <class>com.lawyersys.pclsystembacke.entities.DetalleExpedientePK</class>
     <class>com.lawyersys.pclsystembacke.entities.DetalleFactura</class>
     <class>com.lawyersys.pclsystembacke.entities.DetalleFacturaPK</class>
-    <class>com.lawyersys.pclsystembacke.entities.DocumentosEntregados</class>
     <class>com.lawyersys.pclsystembacke.entities.Empleados</class>
     <class>com.lawyersys.pclsystembacke.entities.EstadosActividades</class>
     <class>com.lawyersys.pclsystembacke.entities.EstadosCaso</class>
-    <class>com.lawyersys.pclsystembacke.entities.EstadosEmpleados</class>
-    <class>com.lawyersys.pclsystembacke.entities.EstadoExpedientes</class>
+    <class>com.lawyersys.pclsystembacke.entities.EstadosUsuarios</class>
     <class>com.lawyersys.pclsystembacke.entities.Expedientes</class>
     <class>com.lawyersys.pclsystembacke.entities.Facturas</class>
     <class>com.lawyersys.pclsystembacke.entities.FacturasPK</class>
     <class>com.lawyersys.pclsystembacke.entities.Fueros</class>
     <class>com.lawyersys.pclsystembacke.entities.Jueces</class>
     <class>com.lawyersys.pclsystembacke.entities.Pagos</class>
+    <class>com.lawyersys.pclsystembacke.entities.PagosPK</class>
     <class>com.lawyersys.pclsystembacke.entities.Permisos</class>
     <class>com.lawyersys.pclsystembacke.entities.Recibos</class>
+    <class>com.lawyersys.pclsystembacke.entities.RecibosPK</class>
     <class>com.lawyersys.pclsystembacke.entities.Reportes</class>
     <class>com.lawyersys.pclsystembacke.entities.RolesPermisos</class>
     <class>com.lawyersys.pclsystembacke.entities.RolesUsuario</class>

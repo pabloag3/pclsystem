@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.lawyersys.pclsystembacke.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -33,23 +38,19 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Departamentos implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_departamento")
     private Integer codDepartamento;
-    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "nombre")
     private String nombre;
-    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codDepartamento")
     @JsonIgnore
     private List<Ciudades> ciudadesList;
-    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codDepartamento")
     @JsonIgnore
     private List<Despachos> despachosList;
@@ -122,7 +123,7 @@ public class Departamentos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.Departamentos[ codDepartamento=" + codDepartamento + " ]";
+        return "com.lawyersys.pclsystembacke.Departamentos[ codDepartamento=" + codDepartamento + " ]";
     }
     
 }

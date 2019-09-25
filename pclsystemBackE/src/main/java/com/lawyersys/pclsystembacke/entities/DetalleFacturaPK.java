@@ -19,18 +19,31 @@ import javax.validation.constraints.NotNull;
 public class DetalleFacturaPK implements Serializable {
 
     @Basic(optional = false)
+    @Column(name = "cod_detalle_factura")
+    private int codDetalleFactura;
+    @Basic(optional = false)
     @NotNull
     @Column(name = "cod_factura")
     private int codFactura;
     @Basic(optional = false)
-    @Column(name = "cod_detalle_factura")
-    private int codDetalleFactura;
+    @NotNull
+    @Column(name = "cod_pago")
+    private int codPago;
 
     public DetalleFacturaPK() {
     }
 
-    public DetalleFacturaPK(int codFactura, int codDetalleFactura) {
+    public DetalleFacturaPK(int codDetalleFactura, int codFactura, int codPago) {
+        this.codDetalleFactura = codDetalleFactura;
         this.codFactura = codFactura;
+        this.codPago = codPago;
+    }
+
+    public int getCodDetalleFactura() {
+        return codDetalleFactura;
+    }
+
+    public void setCodDetalleFactura(int codDetalleFactura) {
         this.codDetalleFactura = codDetalleFactura;
     }
 
@@ -42,19 +55,20 @@ public class DetalleFacturaPK implements Serializable {
         this.codFactura = codFactura;
     }
 
-    public int getCodDetalleFactura() {
-        return codDetalleFactura;
+    public int getCodPago() {
+        return codPago;
     }
 
-    public void setCodDetalleFactura(int codDetalleFactura) {
-        this.codDetalleFactura = codDetalleFactura;
+    public void setCodPago(int codPago) {
+        this.codPago = codPago;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) codFactura;
         hash += (int) codDetalleFactura;
+        hash += (int) codFactura;
+        hash += (int) codPago;
         return hash;
     }
 
@@ -65,10 +79,13 @@ public class DetalleFacturaPK implements Serializable {
             return false;
         }
         DetalleFacturaPK other = (DetalleFacturaPK) object;
+        if (this.codDetalleFactura != other.codDetalleFactura) {
+            return false;
+        }
         if (this.codFactura != other.codFactura) {
             return false;
         }
-        if (this.codDetalleFactura != other.codDetalleFactura) {
+        if (this.codPago != other.codPago) {
             return false;
         }
         return true;
@@ -76,7 +93,7 @@ public class DetalleFacturaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.DetalleFacturaPK[ codFactura=" + codFactura + ", codDetalleFactura=" + codDetalleFactura + " ]";
+        return "com.lawyersys.pclsystembacke.DetalleFacturaPK[ codDetalleFactura=" + codDetalleFactura + ", codFactura=" + codFactura + ", codPago=" + codPago + " ]";
     }
     
 }
