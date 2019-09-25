@@ -1,15 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -29,54 +26,53 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Recibos.findAll", query = "SELECT r FROM Recibos r")
-    , @NamedQuery(name = "Recibos.findByCodRecibo", query = "SELECT r FROM Recibos r WHERE r.recibosPK.codRecibo = :codRecibo")
-    , @NamedQuery(name = "Recibos.findByCodPago", query = "SELECT r FROM Recibos r WHERE r.recibosPK.codPago = :codPago")
+    , @NamedQuery(name = "Recibos.findByCodRecibo", query = "SELECT r FROM Recibos r WHERE r.codRecibo = :codRecibo")
     , @NamedQuery(name = "Recibos.findByDescripcion", query = "SELECT r FROM Recibos r WHERE r.descripcion = :descripcion")
     , @NamedQuery(name = "Recibos.findByMonto", query = "SELECT r FROM Recibos r WHERE r.monto = :monto")})
 public class Recibos implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected RecibosPK recibosPK;
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "cod_recibo")
+    private Integer codRecibo;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "descripcion")
     private String descripcion;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "monto")
     private int monto;
+   
+    @JoinColumn(name = "cod_pago", referencedColumnName = "cod_pago")
     @ManyToOne(optional = false)
-    @JoinColumns({
-           @JoinColumn(name = "cod_pago", referencedColumnName = "cod_pago", insertable = false, updatable = false),
-           @JoinColumn(name = "cod_cuenta", referencedColumnName = "cod_cuenta", insertable = false, updatable = false)
-    })
-    private Pagos pagos;
+    private Pagos codPago;
 
     public Recibos() {
     }
 
-    public Recibos(RecibosPK recibosPK) {
-        this.recibosPK = recibosPK;
+    public Recibos(Integer codRecibo) {
+        this.codRecibo = codRecibo;
     }
 
-    public Recibos(RecibosPK recibosPK, String descripcion, int monto) {
-        this.recibosPK = recibosPK;
+    public Recibos(Integer codRecibo, String descripcion, int monto) {
+        this.codRecibo = codRecibo;
         this.descripcion = descripcion;
         this.monto = monto;
     }
 
-    public Recibos(int codRecibo, int codPago) {
-        this.recibosPK = new RecibosPK(codRecibo, codPago);
+    public Integer getCodRecibo() {
+        return codRecibo;
     }
 
-    public RecibosPK getRecibosPK() {
-        return recibosPK;
-    }
-
-    public void setRecibosPK(RecibosPK recibosPK) {
-        this.recibosPK = recibosPK;
+    public void setCodRecibo(Integer codRecibo) {
+        this.codRecibo = codRecibo;
     }
 
     public String getDescripcion() {
@@ -95,18 +91,18 @@ public class Recibos implements Serializable {
         this.monto = monto;
     }
 
-    public Pagos getPagos() {
-        return pagos;
+    public Pagos getCodPago() {
+        return codPago;
     }
 
-    public void setPagos(Pagos pagos) {
-        this.pagos = pagos;
+    public void setCodPago(Pagos codPago) {
+        this.codPago = codPago;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (recibosPK != null ? recibosPK.hashCode() : 0);
+        hash += (codRecibo != null ? codRecibo.hashCode() : 0);
         return hash;
     }
 
@@ -117,7 +113,7 @@ public class Recibos implements Serializable {
             return false;
         }
         Recibos other = (Recibos) object;
-        if ((this.recibosPK == null && other.recibosPK != null) || (this.recibosPK != null && !this.recibosPK.equals(other.recibosPK))) {
+        if ((this.codRecibo == null && other.codRecibo != null) || (this.codRecibo != null && !this.codRecibo.equals(other.codRecibo))) {
             return false;
         }
         return true;
@@ -125,7 +121,7 @@ public class Recibos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.Recibos[ recibosPK=" + recibosPK + " ]";
+        return "com.lawyersys.pclsystembacke.entities.Recibos[ codRecibo=" + codRecibo + " ]";
     }
     
 }

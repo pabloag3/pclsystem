@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -42,50 +37,69 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Expedientes.findByDescripcion", query = "SELECT e FROM Expedientes e WHERE e.descripcion = :descripcion")
     , @NamedQuery(name = "Expedientes.findByCaratula", query = "SELECT e FROM Expedientes e WHERE e.caratula = :caratula")
     , @NamedQuery(name = "Expedientes.findByFecha", query = "SELECT e FROM Expedientes e WHERE e.fecha = :fecha")
-    , @NamedQuery(name = "Expedientes.findByNroExpediente", query = "SELECT e FROM Expedientes e WHERE e.nroExpediente = :nroExpediente")})
+    , @NamedQuery(name = "Expedientes.findByNroExpediente", query = "SELECT e FROM Expedientes e WHERE e.nroExpediente = :nroExpediente")
+    , @NamedQuery(name = "Expedientes.findByFechaFin", query = "SELECT e FROM Expedientes e WHERE e.fechaFin = :fechaFin")})
 public class Expedientes implements Serializable {
 
-    @JoinColumn(name = "camara_sorteada", referencedColumnName = "cod_despacho")
-    @ManyToOne(optional = false)
-    private Despachos camaraSorteada;
-
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_expediente")
     private Integer codExpediente;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 200)
     @Column(name = "descripcion")
     private String descripcion;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 300)
     @Column(name = "caratula")
     private String caratula;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
     private Date fecha;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "nro_expediente")
     private int nroExpediente;
+    
+    @Column(name = "fecha_fin")
+    @Temporal(TemporalType.DATE)
+    private Date fechaFin;
+    
     @JoinColumn(name = "cod_caso", referencedColumnName = "cod_caso")
     @ManyToOne(optional = false)
     private Casos codCaso;
+    
     @JoinColumn(name = "cod_despacho", referencedColumnName = "cod_despacho")
     @ManyToOne(optional = false)
     private Despachos codDespacho;
+    
+    @JoinColumn(name = "camara_sorteada", referencedColumnName = "cod_despacho")
+    @ManyToOne
+    private Despachos camaraSorteada;
+    
+    @JoinColumn(name = "cod_estado_expediente", referencedColumnName = "cod_estado_expediente")
+    @ManyToOne(optional = false)
+    private EstadoExpediente codEstadoExpediente;
+    
     @OneToMany(mappedBy = "parentCodExpediente")
     @JsonIgnore
     private List<Expedientes> expedientesList;
+    
     @JoinColumn(name = "parent_cod_expediente", referencedColumnName = "cod_expediente")
     @ManyToOne
     private Expedientes parentCodExpediente;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "expedientes")
     @JsonIgnore
     private List<DetalleExpediente> detalleExpedienteList;
@@ -145,6 +159,14 @@ public class Expedientes implements Serializable {
         this.nroExpediente = nroExpediente;
     }
 
+    public Date getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(Date fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
     public Casos getCodCaso() {
         return codCaso;
     }
@@ -159,6 +181,22 @@ public class Expedientes implements Serializable {
 
     public void setCodDespacho(Despachos codDespacho) {
         this.codDespacho = codDespacho;
+    }
+
+    public Despachos getCamaraSorteada() {
+        return camaraSorteada;
+    }
+
+    public void setCamaraSorteada(Despachos camaraSorteada) {
+        this.camaraSorteada = camaraSorteada;
+    }
+
+    public EstadoExpediente getCodEstadoExpediente() {
+        return codEstadoExpediente;
+    }
+
+    public void setCodEstadoExpediente(EstadoExpediente codEstadoExpediente) {
+        this.codEstadoExpediente = codEstadoExpediente;
     }
 
     @XmlTransient
@@ -209,15 +247,7 @@ public class Expedientes implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.Expedientes[ codExpediente=" + codExpediente + " ]";
-    }
-
-    public Despachos getCamaraSorteada() {
-        return camaraSorteada;
-    }
-
-    public void setCamaraSorteada(Despachos camaraSorteada) {
-        this.camaraSorteada = camaraSorteada;
+        return "com.lawyersys.pclsystembacke.entities.Expedientes[ codExpediente=" + codExpediente + " ]";
     }
     
 }

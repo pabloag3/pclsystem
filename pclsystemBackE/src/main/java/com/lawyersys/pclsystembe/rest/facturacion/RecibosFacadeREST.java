@@ -5,7 +5,6 @@ package com.lawyersys.pclsystembe.rest.facturacion;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawyersys.pclsystembacke.entities.Recibos;
-import com.lawyersys.pclsystembacke.entities.RecibosPK;
 import com.lawyersys.pclsystembe.abm.ABMManagerFacturacion;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
@@ -39,26 +38,6 @@ public class RecibosFacadeREST {
     @PersistenceContext(unitName = "lawyersys")
     private EntityManager em;
 
-    private RecibosPK getPrimaryKey(PathSegment pathSegment) {
-        /*
-         * pathSemgent represents a URI path segment and any associated matrix parameters.
-         * URI path part is supposed to be in form of 'somePath;codRecibo=codReciboValue;codPago=codPagoValue'.
-         * Here 'somePath' is a result of getPath() method invocation and
-         * it is ignored in the following code.
-         * Matrix parameters are used as field names to build a primary key instance.
-         */
-        com.lawyersys.pclsystembacke.entities.RecibosPK key = new com.lawyersys.pclsystembacke.entities.RecibosPK();
-        javax.ws.rs.core.MultivaluedMap<String, String> map = pathSegment.getMatrixParameters();
-        java.util.List<String> codRecibo = map.get("codRecibo");
-        if (codRecibo != null && !codRecibo.isEmpty()) {
-            key.setCodRecibo(new java.lang.Integer(codRecibo.get(0)));
-        }
-        java.util.List<String> codPago = map.get("codPago");
-        if (codPago != null && !codPago.isEmpty()) {
-            key.setCodPago(new java.lang.Integer(codPago.get(0)));
-        }
-        return key;
-    }
 
     public RecibosFacadeREST() {
     }
