@@ -6,6 +6,7 @@ D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\expedientes\ExpedientesFacadeREST.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\usuarios\EstadosEmpleadosREST.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\EstadosEmpleados.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\facturacion\TiposPagosFacadeREST.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Reportes.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\error\UsuarioConRolExistente.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\servlet\SessionFilter.java
@@ -19,6 +20,7 @@ D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\EstadoExpediente.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\abm\ABMManagerDespachos.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Ujieres.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\facturacion\PagosFacadeREST.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\TiposActividades.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\despachos\FuerosFacadeREST.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\DetalleExpedientePK.java
@@ -36,6 +38,7 @@ D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\utili
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\DetalleFactura.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Clientes.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\abm\ABMManagerUsuarios.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\facturacion\CuentasFacadeREST.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\TiposReporte.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\abm\ABMManagerFacturacion.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Expedientes.java
@@ -50,6 +53,7 @@ D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\servl
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Despachos.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Recibos.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\FacturasPK.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\facturacion\AbstractFacade.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\error\FaltaCargarElemento.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Casos.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\despachos\ActuariosFacadeREST.java
@@ -61,6 +65,7 @@ D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\en
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\despachos\DespachosFacadeREST.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\DetalleFacturaPK.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\expedientes\CasosFacadeREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\facturacion\RecibosFacadeREST.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\expedientes\ClientesFacadeREST.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\utilidades\ErrorManager.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Empleados.java

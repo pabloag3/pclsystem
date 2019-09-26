@@ -134,11 +134,11 @@ public class Cuentas implements Serializable {
         this.codCaso = codCaso;
     }
 
-    public Clientes getClientes() {
+    public Clientes getCodCliente() {
         return codCliente;
     }
 
-    public void setClientes(Clientes clientes) {
+    public void setCodCliente(Clientes clientes) {
         this.codCliente = clientes;
     }
 

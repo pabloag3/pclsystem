@@ -21,16 +21,20 @@ com\lawyersys\pclsystembacke\entities\TiposPagos.class
 com\lawyersys\pclsystembacke\entities\Empleados.class
 com\lawyersys\pclsystembe\rest\expedientes\TiposActuacionesFacadeREST.class
 com\lawyersys\pclsystembacke\entities\DetalleCuenta.class
+com\lawyersys\pclsystembe\rest\facturacion\RecibosFacadeREST.class
 com\lawyersys\pclsystembacke\entities\DocumentosEntregados.class
 com\lawyersys\pclsystembe\error\UsuarioConRolExistente.class
 com\lawyersys\pclsystembacke\entities\Expedientes.class
 com\lawyersys\pclsystembacke\entities\Cuentas.class
 com\lawyersys\pclsystembacke\entities\DetalleCuentaPK.class
+com\lawyersys\pclsystembe\rest\facturacion\PagosFacadeREST.class
 com\lawyersys\pclsystembacke\entities\DetalleFactura.class
 com\lawyersys\pclsystembacke\entities\Permisos.class
+com\lawyersys\pclsystembe\rest\facturacion\TiposPagosFacadeREST.class
 com\lawyersys\pclsystembe\utilidades\ErrorManager.class
 com\lawyersys\pclsystembe\rest\actividades\EstadosActividadesFacadeREST.class
 com\lawyersys\pclsystembe\rest\expedientes\EstadoExpedienteFacadeREST.class
+com\lawyersys\pclsystembe\rest\facturacion\AbstractFacade.class
 com\lawyersys\pclsystembe\servlet\Login.class
 com\lawyersys\pclsystembacke\entities\Pagos.class
 com\lawyersys\pclsystembe\rest\despachos\DepartamentosFacadeREST.class
@@ -70,4 +74,5 @@ com\lawyersys\pclsystembe\rest\despachos\FuerosFacadeREST.class
 com\lawyersys\pclsystembacke\entities\EstadosEmpleados.class
 com\lawyersys\pclsystembacke\entities\RolesUsuario.class
 com\lawyersys\pclsystembacke\entities\TiposReporte.class
+com\lawyersys\pclsystembe\rest\facturacion\CuentasFacadeREST.class
 com\lawyersys\pclsystembe\rest\expedientes\EstadosCasoFacadeREST.class
