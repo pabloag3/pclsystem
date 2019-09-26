@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
@@ -35,19 +33,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class DocumentosEntregados implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_documento")
     private Integer codDocumento;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "descripcion")
     private String descripcion;
+    
     @Lob
     @Column(name = "archivo")
     private byte[] archivo;
+    
     @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente")
     @ManyToOne(optional = false)
     private Clientes codCliente;

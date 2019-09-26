@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -40,25 +35,31 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Casos implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_caso")
     private Integer codCaso;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 200)
     @Column(name = "descripcion")
     private String descripcion;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCaso")
     @JsonIgnore
     private List<Expedientes> expedientesList;
+    
     @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente")
     @ManyToOne(optional = false)
     private Clientes codCliente;
+    
     @JoinColumn(name = "cod_estado_caso", referencedColumnName = "cod_estado_caso")
     @ManyToOne(optional = false)
     private EstadosCaso codEstadoCaso;
+    
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCaso")
     private List<Cuentas> cuentasList;

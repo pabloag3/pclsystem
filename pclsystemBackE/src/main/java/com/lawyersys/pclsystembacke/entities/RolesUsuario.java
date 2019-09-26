@@ -33,19 +33,23 @@ import javax.xml.bind.annotation.XmlTransient;
 public class RolesUsuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_rol")
     private Integer codRol;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "descripcion")
     private String descripcion;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codRol")
     @JsonIgnore
     private List<Usuarios> usuariosList;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codRol")
     @JsonIgnore
     private List<RolesPermisos> rolesPermisosList;

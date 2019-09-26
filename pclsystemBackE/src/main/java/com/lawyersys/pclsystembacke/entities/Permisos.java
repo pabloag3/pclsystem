@@ -34,16 +34,19 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Permisos implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_permiso")
     private Integer codPermiso;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
     @Column(name = "descripcion")
     private String descripcion;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codPermiso")
     @JsonIgnore
     private List<RolesPermisos> rolesPermisosList;

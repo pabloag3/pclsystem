@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -88,7 +83,7 @@ public class Clientes implements Serializable {
     @JsonIgnore
     private List<Casos> casosList;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "clientes")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCuenta")
     @JsonIgnore
     private List<Cuentas> cuentasList;
     
@@ -202,6 +197,15 @@ public class Clientes implements Serializable {
     public void setCodCiudad(Ciudades codCiudad) {
         this.codCiudad = codCiudad;
     }
+    
+    @XmlTransient
+    public List<DocumentosEntregados> getDocumentosEntregadosList() {
+        return documentosEntregadosList;
+    }
+
+    public void setDocumentosEntregadosList(List<DocumentosEntregados> documentosEntregadosList) {
+        this.documentosEntregadosList = documentosEntregadosList;
+    }
 
     @Override
     public int hashCode() {
@@ -226,15 +230,6 @@ public class Clientes implements Serializable {
     @Override
     public String toString() {
         return "com.lawyersys.pclsystembacke.Clientes[ codCliente=" + codCliente + " ]";
-    }
-
-    @XmlTransient
-    public List<DocumentosEntregados> getDocumentosEntregadosList() {
-        return documentosEntregadosList;
-    }
-
-    public void setDocumentosEntregadosList(List<DocumentosEntregados> documentosEntregadosList) {
-        this.documentosEntregadosList = documentosEntregadosList;
     }
     
 }

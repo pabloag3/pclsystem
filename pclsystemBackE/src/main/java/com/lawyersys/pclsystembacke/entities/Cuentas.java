@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,8 +6,10 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -20,6 +17,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -32,9 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Cuentas.findAll", query = "SELECT c FROM Cuentas c")
-    , @NamedQuery(name = "Cuentas.findByCodCuenta", query = "SELECT c FROM Cuentas c WHERE c.cuentasPK.codCuenta = :codCuenta")
-    , @NamedQuery(name = "Cuentas.findByCodCliente", query = "SELECT c FROM Cuentas c WHERE c.cuentasPK.codCliente = :codCliente")
-    , @NamedQuery(name = "Cuentas.findByCuentaCliente", query = "SELECT c FROM Cuentas c WHERE c.cuentasPK.codCuenta = :codCuenta AND c.cuentasPK.codCliente = :codCliente")
+    , @NamedQuery(name = "Cuentas.findByCodCuenta", query = "SELECT c FROM Cuentas c WHERE c.codCuenta = :codCuenta")
     , @NamedQuery(name = "Cuentas.findByTotal", query = "SELECT c FROM Cuentas c WHERE c.total = :total")
     , @NamedQuery(name = "Cuentas.findBySaldo", query = "SELECT c FROM Cuentas c WHERE c.saldo = :saldo")
     , @NamedQuery(name = "Cuentas.findByEstado", query = "SELECT c FROM Cuentas c WHERE c.estado = :estado")})
@@ -42,8 +38,15 @@ public class Cuentas implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
-    @EmbeddedId
-    protected CuentasPK cuentasPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "cod_cuenta")
+    private Integer codCuenta;
+    
+    @Size(max = 2147483647)
+    @Column(name = "descripcion")
+    private String descripcion;
     
     @Basic(optional = false)
     @NotNull
@@ -61,6 +64,7 @@ public class Cuentas implements Serializable {
     private boolean estado;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentas")
+    @JsonIgnore
     private List<Facturas> facturasList;
     
     @JoinColumn(name = "cod_caso", referencedColumnName = "cod_caso")
@@ -69,9 +73,9 @@ public class Cuentas implements Serializable {
     
     @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Clientes clientes;
+    private Clientes codCliente;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentas")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCuenta")
     @JsonIgnore
     private List<Pagos> pagosList;
     
@@ -82,27 +86,11 @@ public class Cuentas implements Serializable {
     public Cuentas() {
     }
 
-    public Cuentas(CuentasPK cuentasPK) {
-        this.cuentasPK = cuentasPK;
-    }
-
-    public Cuentas(CuentasPK cuentasPK, int total, int saldo, boolean estado) {
-        this.cuentasPK = cuentasPK;
+    public Cuentas(Integer codCuenta, int total, int saldo, boolean estado) {
+        this.codCuenta = codCuenta;
         this.total = total;
         this.saldo = saldo;
         this.estado = estado;
-    }
-
-    public Cuentas(int codCuenta, int codCliente) {
-        this.cuentasPK = new CuentasPK(codCuenta, codCliente);
-    }
-
-    public CuentasPK getCuentasPK() {
-        return cuentasPK;
-    }
-
-    public void setCuentasPK(CuentasPK cuentasPK) {
-        this.cuentasPK = cuentasPK;
     }
 
     public int getTotal() {
@@ -147,11 +135,11 @@ public class Cuentas implements Serializable {
     }
 
     public Clientes getClientes() {
-        return clientes;
+        return codCliente;
     }
 
     public void setClientes(Clientes clientes) {
-        this.clientes = clientes;
+        this.codCliente = clientes;
     }
 
     @XmlTransient
@@ -172,10 +160,30 @@ public class Cuentas implements Serializable {
         this.detalleCuentaList = detalleCuentaList;
     }
 
+    public Cuentas(Integer codCuenta) {
+        this.codCuenta = codCuenta;
+    }
+
+    public Integer getCodCuenta() {
+        return codCuenta;
+    }
+
+    public void setCodCuenta(Integer codCuenta) {
+        this.codCuenta = codCuenta;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (cuentasPK != null ? cuentasPK.hashCode() : 0);
+        hash += (codCuenta != null ? codCuenta.hashCode() : 0);
         return hash;
     }
 
@@ -186,7 +194,7 @@ public class Cuentas implements Serializable {
             return false;
         }
         Cuentas other = (Cuentas) object;
-        if ((this.cuentasPK == null && other.cuentasPK != null) || (this.cuentasPK != null && !this.cuentasPK.equals(other.cuentasPK))) {
+        if ((this.codCuenta == null && other.codCuenta != null) || (this.codCuenta != null && !this.codCuenta.equals(other.codCuenta))) {
             return false;
         }
         return true;
@@ -194,7 +202,7 @@ public class Cuentas implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.Cuentas[ cuentasPK=" + cuentasPK + " ]";
+        return "com.lawyersys.pclsystembacke.entities.Cuentas[ codCuenta=" + codCuenta + " ]";
     }
     
 }

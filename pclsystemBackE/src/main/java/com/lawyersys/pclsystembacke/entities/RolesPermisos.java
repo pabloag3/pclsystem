@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
@@ -35,14 +30,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class RolesPermisos implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_rol_permiso")
     private Integer codRolPermiso;
+    
     @JoinColumn(name = "cod_permiso", referencedColumnName = "cod_permiso")
     @ManyToOne(optional = false)
     private Permisos codPermiso;
+    
     @JoinColumn(name = "cod_rol", referencedColumnName = "cod_rol")
     @ManyToOne(optional = false)
     private RolesUsuario codRol;

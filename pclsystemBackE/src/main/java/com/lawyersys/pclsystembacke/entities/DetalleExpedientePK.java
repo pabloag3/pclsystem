@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
@@ -21,6 +16,7 @@ public class DetalleExpedientePK implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_detalle_expediente")
     private int codDetalleExpediente;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "cod_expediente")

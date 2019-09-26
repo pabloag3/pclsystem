@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -41,30 +36,40 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Jueces implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_juez")
     private Integer codJuez;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "nombre")
     private String nombre;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "apellido")
     private String apellido;
+    
     @Size(max = 2147483647)
     @Column(name = "telefono_1")
     private String telefono1;
+    
     @Size(max = 2147483647)
     @Column(name = "telefono_2")
     private String telefono2;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codJuez")
     @JsonIgnore
     private List<Despachos> despachosList;
+    
+    @OneToMany(mappedBy = "codJuez")
+    @JsonIgnore
+    private List<DetalleExpediente> detalleExpedienteList;
 
     public Jueces() {
     }
@@ -128,6 +133,15 @@ public class Jueces implements Serializable {
         this.despachosList = despachosList;
     }
 
+    @XmlTransient
+    public List<DetalleExpediente> getDetalleExpedienteList() {
+        return detalleExpedienteList;
+    }
+
+    public void setDetalleExpedienteList(List<DetalleExpediente> detalleExpedienteList) {
+        this.detalleExpedienteList = detalleExpedienteList;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

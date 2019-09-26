@@ -53,7 +53,7 @@ public class ABMManagerUsuarios {
             Query q = em.createNamedQuery(entidad + ".findByCodRol")
                     .setParameter("codRol", Integer.parseInt(id));
             return q.getResultList();
-        } else if (entidad == "EstadosEmpleados") {
+        } else if (entidad == "EstadoEmpleados") {
             Query q = em.createNamedQuery(entidad + ".findByCodEstado")
                     .setParameter("codEstado", Integer.parseInt(id));
             return q.getResultList();
