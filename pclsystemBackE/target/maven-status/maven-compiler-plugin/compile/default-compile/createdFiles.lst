@@ -30,6 +30,7 @@ com\lawyersys\pclsystembacke\entities\DetalleFactura.class
 com\lawyersys\pclsystembacke\entities\Permisos.class
 com\lawyersys\pclsystembe\utilidades\ErrorManager.class
 com\lawyersys\pclsystembe\rest\actividades\EstadosActividadesFacadeREST.class
+com\lawyersys\pclsystembe\rest\expedientes\EstadoExpedienteFacadeREST.class
 com\lawyersys\pclsystembe\servlet\Login.class
 com\lawyersys\pclsystembacke\entities\Pagos.class
 com\lawyersys\pclsystembe\rest\despachos\DepartamentosFacadeREST.class
