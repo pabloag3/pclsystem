@@ -1,6 +1,7 @@
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\usuarios\UsuariosREST.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\TiposPagos.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\despachos\JuecesFacadeREST.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\facturacion\DetalleCuentaFacadeREST.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Actividades.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\expedientes\DetalleExpedienteFacadeREST.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\expedientes\ExpedientesFacadeREST.java
@@ -9,6 +10,7 @@ D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\en
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\facturacion\TiposPagosFacadeREST.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Reportes.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\error\UsuarioConRolExistente.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\facturacion\FacturasFacadeREST.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\servlet\SessionFilter.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\RolesPermisos.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\despachos\UjieresFacadeREST.java
@@ -45,6 +47,7 @@ D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\en
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\expedientes\EstadoExpedienteFacadeREST.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Actuarios.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Cuentas.java
+D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\facturacion\DetalleFacturaFacadeREST.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Usuarios.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\RolesUsuario.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Facturas.java
@@ -53,7 +56,6 @@ D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\servl
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Despachos.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Recibos.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\FacturasPK.java
-D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\facturacion\AbstractFacade.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\error\FaltaCargarElemento.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembacke\entities\Casos.java
 D:\GitHub\pclsystem\pclsystemBackE\src\main\java\com\lawyersys\pclsystembe\rest\despachos\ActuariosFacadeREST.java

@@ -56,7 +56,7 @@ public class DetalleCuenta implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "saldo_detalle_cta")
-    private BigInteger saldoDetalleCta;
+    private int saldoDetalleCta;
     
     @JoinColumn(name = "cod_cuenta", referencedColumnName = "cod_cuenta", insertable = false, updatable = false)
     @ManyToOne(optional = false)
@@ -69,7 +69,7 @@ public class DetalleCuenta implements Serializable {
         this.detalleCuentaPK = detalleCuentaPK;
     }
 
-    public DetalleCuenta(DetalleCuentaPK detalleCuentaPK, String descripcion, int monto, boolean estado, BigInteger saldoDetalleCta) {
+    public DetalleCuenta(DetalleCuentaPK detalleCuentaPK, String descripcion, int monto, boolean estado, int saldoDetalleCta) {
         this.detalleCuentaPK = detalleCuentaPK;
         this.descripcion = descripcion;
         this.monto = monto;
@@ -113,11 +113,11 @@ public class DetalleCuenta implements Serializable {
         this.estado = estado;
     }
 
-    public BigInteger getSaldoDetalleCta() {
+    public int getSaldoDetalleCta() {
         return saldoDetalleCta;
     }
 
-    public void setSaldoDetalleCta(BigInteger saldoDetalleCta) {
+    public void setSaldoDetalleCta(int saldoDetalleCta) {
         this.saldoDetalleCta = saldoDetalleCta;
     }
 

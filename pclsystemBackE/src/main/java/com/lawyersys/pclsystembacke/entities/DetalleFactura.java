@@ -26,17 +26,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "DetalleFactura.findAll", query = "SELECT d FROM DetalleFactura d")
     , @NamedQuery(name = "DetalleFactura.findByCodDetalleFactura", query = "SELECT d FROM DetalleFactura d WHERE d.detalleFacturaPK.codDetalleFactura = :codDetalleFactura")
     , @NamedQuery(name = "DetalleFactura.findByCodFactura", query = "SELECT d FROM DetalleFactura d WHERE d.detalleFacturaPK.codFactura = :codFactura")
-    , @NamedQuery(name = "DetalleFactura.findByCodPago", query = "SELECT d FROM DetalleFactura d WHERE d.codPago = :codPago")
     , @NamedQuery(name = "DetalleFactura.findByPorcentajeIva", query = "SELECT d FROM DetalleFactura d WHERE d.porcentajeIva = :porcentajeIva")
     , @NamedQuery(name = "DetalleFactura.findByDescripcion", query = "SELECT d FROM DetalleFactura d WHERE d.descripcion = :descripcion")
     , @NamedQuery(name = "DetalleFactura.findByMontoIva", query = "SELECT d FROM DetalleFactura d WHERE d.montoIva = :montoIva")
     , @NamedQuery(name = "DetalleFactura.findByMonto", query = "SELECT d FROM DetalleFactura d WHERE d.monto = :monto")})
 public class DetalleFactura implements Serializable {
-
-//    @JoinColumn(name = "cod_factura", referencedColumnName = "cod_factura", insertable = false, updatable = false)
-//    @ManyToOne(optional = false)
-//    private Facturas facturas;
-    
     
     private static final long serialVersionUID = 1L;
     

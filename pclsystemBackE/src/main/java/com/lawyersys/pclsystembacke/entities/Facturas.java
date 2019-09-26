@@ -56,6 +56,10 @@ public class Facturas implements Serializable {
     @ManyToOne(optional = false)
     private Empleados cedulaEmisor;
     
+    @JoinColumn(name = "cod_pago", referencedColumnName = "cod_pago")
+    @ManyToOne(optional = false)
+    private Pagos codPago;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "facturas")
     @JsonIgnore
     private List<DetalleFactura> detalleFacturaList;
@@ -119,6 +123,14 @@ public class Facturas implements Serializable {
 
     public void setCedulaEmisor(Empleados cedulaEmisor) {
         this.cedulaEmisor = cedulaEmisor;
+    }
+    
+    public Pagos getCodPago() {
+        return codPago;
+    }
+
+    public void setCodPago(Pagos codPago) {
+        this.codPago = codPago;
     }
 
     @XmlTransient

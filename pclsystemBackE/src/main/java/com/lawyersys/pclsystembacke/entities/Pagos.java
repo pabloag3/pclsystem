@@ -95,13 +95,13 @@ public class Pagos implements Serializable {
     @JsonIgnore
     private List<Recibos> recibosList;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codPago")
-    @JsonIgnore
-    private List<DetalleFactura> detalleFacturaList;
-    
     @JoinColumn(name = "cod_tipo_pago", referencedColumnName = "cod_tipo_pago")
     @ManyToOne(optional = false)
     private TiposPagos codTipoPago;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codPago")
+    @JsonIgnore
+    private List<Facturas> facturasList;
 
     public Pagos() {
     }
@@ -185,15 +185,6 @@ public class Pagos implements Serializable {
         this.recibosList = recibosList;
     }
 
-    @XmlTransient
-    public List<DetalleFactura> getDetalleFacturaList() {
-        return detalleFacturaList;
-    }
-
-    public void setDetalleFacturaList(List<DetalleFactura> detalleFacturaList) {
-        this.detalleFacturaList = detalleFacturaList;
-    }
-
     public TiposPagos getCodTipoPago() {
         return codTipoPago;
     }
@@ -245,6 +236,15 @@ public class Pagos implements Serializable {
     @Override
     public String toString() {
         return "com.lawyersys.pclsystembacke.entities.Pagos[ codPago=" + codPago + " ]";
+    }
+
+    @XmlTransient
+    public List<Facturas> getFacturasList() {
+        return facturasList;
+    }
+
+    public void setFacturasList(List<Facturas> facturasList) {
+        this.facturasList = facturasList;
     }
     
 }
