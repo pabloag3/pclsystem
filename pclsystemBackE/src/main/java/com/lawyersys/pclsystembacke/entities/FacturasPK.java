@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
@@ -22,6 +17,7 @@ public class FacturasPK implements Serializable {
     @NotNull
     @Column(name = "cod_factura")
     private int codFactura;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "cod_cuenta")
@@ -77,7 +73,7 @@ public class FacturasPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.FacturasPK[ codFactura=" + codFactura + ", codCuenta=" + codCuenta + " ]";
+        return "com.lawyersys.pclsystembacke.FacturasPK[ codFactura=" + codFactura + ", codCuenta=" + codCuenta + " ]";
     }
     
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -62,13 +63,13 @@ public class Ujieres implements Serializable {
     @Column(name = "telefono_2")
     private String telefono2;
     
-    @OneToMany(mappedBy = "codUjier")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codUjier")
     @JsonIgnore
-    private List<DetalleExpediente> detalleExpedienteList;
+    private List<Despachos> despachosList;
     
     @OneToMany(mappedBy = "codUjier")
     @JsonIgnore
-    private List<Despachos> despachosList;
+    private List<DetalleExpediente> detalleExpedienteList;
 
     public Ujieres() {
     }
@@ -124,21 +125,21 @@ public class Ujieres implements Serializable {
     }
 
     @XmlTransient
-    public List<DetalleExpediente> getDetalleExpedienteList() {
-        return detalleExpedienteList;
-    }
-
-    public void setDetalleExpedienteList(List<DetalleExpediente> detalleExpedienteList) {
-        this.detalleExpedienteList = detalleExpedienteList;
-    }
-
-    @XmlTransient
     public List<Despachos> getDespachosList() {
         return despachosList;
     }
 
     public void setDespachosList(List<Despachos> despachosList) {
         this.despachosList = despachosList;
+    }
+    
+    @XmlTransient
+    public List<DetalleExpediente> getDetalleExpedienteList() {
+        return detalleExpedienteList;
+    }
+
+    public void setDetalleExpedienteList(List<DetalleExpediente> detalleExpedienteList) {
+        this.detalleExpedienteList = detalleExpedienteList;
     }
 
     @Override
@@ -163,7 +164,7 @@ public class Ujieres implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.Ujieres[ codUjier=" + codUjier + " ]";
+        return "com.lawyersys.pclsystembacke.Ujieres[ codUjier=" + codUjier + " ]";
     }
     
 }

@@ -19,10 +19,10 @@
     <class>com.lawyersys.pclsystembacke.entities.DetalleFacturaPK</class>
     <class>com.lawyersys.pclsystembacke.entities.DocumentosEntregados</class>
     <class>com.lawyersys.pclsystembacke.entities.Empleados</class>
+    <class>com.lawyersys.pclsystembacke.entities.EstadoExpediente</class>
     <class>com.lawyersys.pclsystembacke.entities.EstadosActividades</class>
     <class>com.lawyersys.pclsystembacke.entities.EstadosCaso</class>
     <class>com.lawyersys.pclsystembacke.entities.EstadosEmpleados</class>
-    <class>com.lawyersys.pclsystembacke.entities.EstadoExpedientes</class>
     <class>com.lawyersys.pclsystembacke.entities.Expedientes</class>
     <class>com.lawyersys.pclsystembacke.entities.Facturas</class>
     <class>com.lawyersys.pclsystembacke.entities.FacturasPK</class>

@@ -41,7 +41,7 @@ public class Despachos implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_despacho")
     private Integer codDespacho;
-   
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 2147483647)
@@ -51,17 +51,9 @@ public class Despachos implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codDespacho")
     @JsonIgnore
     private List<Expedientes> expedientesList;
-   
-    @OneToMany(mappedBy = "camaraSorteada")
-    @JsonIgnore
-    private List<Expedientes> expedientesList1;
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codDespacho")
-    @JsonIgnore
-    private List<DetalleExpediente> detalleExpedienteList;
     
     @JoinColumn(name = "cod_actuario", referencedColumnName = "cod_actuario")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Actuarios codActuario;
     
     @JoinColumn(name = "cod_departamento", referencedColumnName = "cod_departamento")
@@ -73,12 +65,15 @@ public class Despachos implements Serializable {
     private Fueros codFuero;
     
     @JoinColumn(name = "cod_juez", referencedColumnName = "cod_juez")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Jueces codJuez;
     
     @JoinColumn(name = "cod_ujier", referencedColumnName = "cod_ujier")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Ujieres codUjier;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codDespacho")
+    private List<DetalleExpediente> detalleExpedienteList;
 
     public Despachos() {
     }
@@ -115,24 +110,6 @@ public class Despachos implements Serializable {
 
     public void setExpedientesList(List<Expedientes> expedientesList) {
         this.expedientesList = expedientesList;
-    }
-
-    @XmlTransient
-    public List<Expedientes> getExpedientesList1() {
-        return expedientesList1;
-    }
-
-    public void setExpedientesList1(List<Expedientes> expedientesList1) {
-        this.expedientesList1 = expedientesList1;
-    }
-
-    @XmlTransient
-    public List<DetalleExpediente> getDetalleExpedienteList() {
-        return detalleExpedienteList;
-    }
-
-    public void setDetalleExpedienteList(List<DetalleExpediente> detalleExpedienteList) {
-        this.detalleExpedienteList = detalleExpedienteList;
     }
 
     public Actuarios getCodActuario() {
@@ -174,6 +151,15 @@ public class Despachos implements Serializable {
     public void setCodUjier(Ujieres codUjier) {
         this.codUjier = codUjier;
     }
+    
+    @XmlTransient
+    public List<DetalleExpediente> getDetalleExpedienteList() {
+        return detalleExpedienteList;
+    }
+
+    public void setDetalleExpedienteList(List<DetalleExpediente> detalleExpedienteList) {
+        this.detalleExpedienteList = detalleExpedienteList;
+    }
 
     @Override
     public int hashCode() {
@@ -197,7 +183,7 @@ public class Despachos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.Despachos[ codDespacho=" + codDespacho + " ]";
+        return "com.lawyersys.pclsystembacke.Despachos[ codDespacho=" + codDespacho + " ]";
     }
     
 }

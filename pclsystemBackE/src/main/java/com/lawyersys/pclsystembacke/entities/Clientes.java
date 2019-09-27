@@ -47,7 +47,7 @@ public class Clientes implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_cliente")
     private Integer codCliente;
-   
+    
     @Size(max = 10)
     @Column(name = "cedula")
     private String cedula;
@@ -65,11 +65,10 @@ public class Clientes implements Serializable {
     @Size(max = 30)
     @Column(name = "apellido")
     private String apellido;
-   
+    
     @Size(max = 15)
     @Column(name = "telefono")
     private String telefono;
-    
     @Size(max = 200)
     @Column(name = "direccion")
     private String direccion;
@@ -79,23 +78,23 @@ public class Clientes implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "tipo_cliente")
     private String tipoCliente;
-   
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCliente")
-    @JsonIgnore
-    private List<DocumentosEntregados> documentosEntregadosList;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCliente")
     @JsonIgnore
     private List<Casos> casosList;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "clientes")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCuenta")
     @JsonIgnore
     private List<Cuentas> cuentasList;
     
     @JoinColumn(name = "cod_ciudad", referencedColumnName = "cod_ciudad")
     @ManyToOne(optional = false)
     private Ciudades codCiudad;
-
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCliente")
+    @JsonIgnore
+    private List<DocumentosEntregados> documentosEntregadosList;
+    
     public Clientes() {
     }
 
@@ -174,15 +173,6 @@ public class Clientes implements Serializable {
     }
 
     @XmlTransient
-    public List<DocumentosEntregados> getDocumentosEntregadosList() {
-        return documentosEntregadosList;
-    }
-
-    public void setDocumentosEntregadosList(List<DocumentosEntregados> documentosEntregadosList) {
-        this.documentosEntregadosList = documentosEntregadosList;
-    }
-
-    @XmlTransient
     public List<Casos> getCasosList() {
         return casosList;
     }
@@ -207,6 +197,15 @@ public class Clientes implements Serializable {
     public void setCodCiudad(Ciudades codCiudad) {
         this.codCiudad = codCiudad;
     }
+    
+    @XmlTransient
+    public List<DocumentosEntregados> getDocumentosEntregadosList() {
+        return documentosEntregadosList;
+    }
+
+    public void setDocumentosEntregadosList(List<DocumentosEntregados> documentosEntregadosList) {
+        this.documentosEntregadosList = documentosEntregadosList;
+    }
 
     @Override
     public int hashCode() {
@@ -230,7 +229,7 @@ public class Clientes implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.Clientes[ codCliente=" + codCliente + " ]";
+        return "com.lawyersys.pclsystembacke.Clientes[ codCliente=" + codCliente + " ]";
     }
     
 }

@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author carlo
+ * @author tatoa
  */
 @Entity
 @Table(name = "estados_empleados")
@@ -39,7 +39,7 @@ public class EstadosEmpleados implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_estado")
     private Integer codEstado;
-   
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 25)

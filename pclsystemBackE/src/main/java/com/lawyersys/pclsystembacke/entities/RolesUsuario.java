@@ -122,7 +122,7 @@ public class RolesUsuario implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.RolesUsuario[ codRol=" + codRol + " ]";
+        return "com.lawyersys.pclsystembacke.RolesUsuario[ codRol=" + codRol + " ]";
     }
     
 }

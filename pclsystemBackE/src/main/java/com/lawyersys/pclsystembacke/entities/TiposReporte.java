@@ -109,7 +109,7 @@ public class TiposReporte implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.TiposReporte[ codTipoReporte=" + codTipoReporte + " ]";
+        return "com.lawyersys.pclsystembacke.TiposReporte[ codTipoReporte=" + codTipoReporte + " ]";
     }
     
 }

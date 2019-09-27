@@ -109,7 +109,7 @@ public class TiposActuaciones implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.TiposActuaciones[ codTipoActuacion=" + codTipoActuacion + " ]";
+        return "com.lawyersys.pclsystembacke.TiposActuaciones[ codTipoActuacion=" + codTipoActuacion + " ]";
     }
     
 }

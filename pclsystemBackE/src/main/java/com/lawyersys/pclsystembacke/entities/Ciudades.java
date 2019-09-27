@@ -123,7 +123,7 @@ public class Ciudades implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.Ciudades[ codCiudad=" + codCiudad + " ]";
+        return "com.lawyersys.pclsystembacke.Ciudades[ codCiudad=" + codCiudad + " ]";
     }
     
 }

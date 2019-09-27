@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author carlo
+ * @author tatoa
  */
 @Entity
 @Table(name = "documentos_entregados")
@@ -27,7 +27,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "DocumentosEntregados.findAll", query = "SELECT d FROM DocumentosEntregados d")
     , @NamedQuery(name = "DocumentosEntregados.findByCodDocumento", query = "SELECT d FROM DocumentosEntregados d WHERE d.codDocumento = :codDocumento")
-    , @NamedQuery(name = "DocumentosEntregados.findByDescripcion", query = "SELECT d FROM DocumentosEntregados d WHERE d.descripcion = :descripcion")})
+    , @NamedQuery(name = "DocumentosEntregados.findByDescripcion", query = "SELECT d FROM DocumentosEntregados d WHERE d.descripcion = :descripcion")
+    , @NamedQuery(name = "DocumentosEntregados.findByCodCliente", query = "SELECT d FROM DocumentosEntregados d WHERE d.codCliente.codCliente = :codCliente")
+})
 public class DocumentosEntregados implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,7 +45,7 @@ public class DocumentosEntregados implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "descripcion")
     private String descripcion;
-   
+    
     @Lob
     @Column(name = "archivo")
     private byte[] archivo;

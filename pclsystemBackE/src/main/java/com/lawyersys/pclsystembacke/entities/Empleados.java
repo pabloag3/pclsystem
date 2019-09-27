@@ -38,10 +38,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Empleados.findByFechaNacimiento", query = "SELECT e FROM Empleados e WHERE e.fechaNacimiento = :fechaNacimiento")
     , @NamedQuery(name = "Empleados.findByTelefono", query = "SELECT e FROM Empleados e WHERE e.telefono = :telefono")
     , @NamedQuery(name = "Empleados.findByDireccion", query = "SELECT e FROM Empleados e WHERE e.direccion = :direccion")})
+
 public class Empleados implements Serializable {
 
     private static final long serialVersionUID = 1L;
-     
     @Id
     @Basic(optional = false)
     @NotNull
@@ -85,6 +85,10 @@ public class Empleados implements Serializable {
     @Column(name = "direccion")
     private String direccion;
     
+    @JoinColumn(name = "cod_estado", referencedColumnName = "cod_estado")
+    @ManyToOne(optional = false)
+    private EstadosEmpleados codEstado;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cedulaEmisor")
     @JsonIgnore
     private List<Facturas> facturasList;
@@ -96,10 +100,6 @@ public class Empleados implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cedula")
     @JsonIgnore
     private List<Usuarios> usuariosList;
-    
-    @JoinColumn(name = "cod_estado", referencedColumnName = "cod_estado")
-    @ManyToOne(optional = false)
-    private EstadosEmpleados codEstado;
 
     public Empleados() {
     }
@@ -200,7 +200,7 @@ public class Empleados implements Serializable {
     public void setUsuariosList(List<Usuarios> usuariosList) {
         this.usuariosList = usuariosList;
     }
-
+    
     public EstadosEmpleados getCodEstado() {
         return codEstado;
     }
@@ -231,7 +231,7 @@ public class Empleados implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.Empleados[ cedula=" + cedula + " ]";
+        return "com.lawyersys.pclsystembacke.Empleados[ cedula=" + cedula + " ]";
     }
     
 }

@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembe.rest.facturacion;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,14 +23,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  *
- * @author Pablo Aguilar
+ * @author tatoa
  */
 @Stateless
 @Path("tipospagos")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class TiposPagosFacadeREST {
-
 
     public TiposPagosFacadeREST() {
     }

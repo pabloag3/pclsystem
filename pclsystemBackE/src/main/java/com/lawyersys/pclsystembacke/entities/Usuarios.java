@@ -34,7 +34,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Usuarios.findByUsuario", query = "SELECT u FROM Usuarios u WHERE u.usuario = :usuario")
     , @NamedQuery(name = "Usuarios.findByContrasenha", query = "SELECT u FROM Usuarios u WHERE u.contrasenha = :contrasenha")
     , @NamedQuery(name = "Usuarios.findByCorreoElectronico", query = "SELECT u FROM Usuarios u WHERE u.correoElectronico = :correoElectronico")
-    , @NamedQuery(name = "Usuarios.findByDescripcion", query = "SELECT u FROM Usuarios u WHERE u.descripcion = :descripcion")})
+    , @NamedQuery(name = "Usuarios.findByDescripcion", query = "SELECT u FROM Usuarios u WHERE u.descripcion = :descripcion")
+    , @NamedQuery(name = "Usuarios.findByCodRol", query = "SELECT u FROM Usuarios u WHERE u.codRol = :codRol")
+})
 public class Usuarios implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -180,7 +182,7 @@ public class Usuarios implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.Usuarios[ codUsuario=" + codUsuario + " ]";
+        return "com.lawyersys.pclsystembacke.Usuarios[ codUsuario=" + codUsuario + " ]";
     }
     
 }

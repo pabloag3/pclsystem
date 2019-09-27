@@ -23,7 +23,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "RolesPermisos.findAll", query = "SELECT r FROM RolesPermisos r")
-    , @NamedQuery(name = "RolesPermisos.findByCodRolPermiso", query = "SELECT r FROM RolesPermisos r WHERE r.codRolPermiso = :codRolPermiso")})
+    , @NamedQuery(name = "RolesPermisos.findByCodRolPermiso", query = "SELECT r FROM RolesPermisos r WHERE r.codRolPermiso = :codRolPermiso")
+    , @NamedQuery(name = "RolesPermisos.findByCodRol", query = "SELECT r FROM RolesPermisos r WHERE r.codRol = :codRol")
+    , @NamedQuery(name = "RolesPermisos.findByRolPermiso", query = "SELECT r FROM RolesPermisos r WHERE r.codRol = :codRol AND r.codPermiso = :codPermiso")
+})
 public class RolesPermisos implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -95,7 +98,7 @@ public class RolesPermisos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.RolesPermisos[ codRolPermiso=" + codRolPermiso + " ]";
+        return "com.lawyersys.pclsystembacke.RolesPermisos[ codRolPermiso=" + codRolPermiso + " ]";
     }
     
 }

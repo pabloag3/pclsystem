@@ -6,6 +6,7 @@ import com.lawyersys.pclsystembacke.entities.Casos;
 import com.lawyersys.pclsystembacke.entities.Clientes;
 import com.lawyersys.pclsystembacke.entities.DetalleExpediente;
 import com.lawyersys.pclsystembacke.entities.DocumentosEntregados;
+import com.lawyersys.pclsystembacke.entities.EstadoExpediente;
 import com.lawyersys.pclsystembacke.entities.EstadosCaso;
 import com.lawyersys.pclsystembacke.entities.Expedientes;
 import com.lawyersys.pclsystembacke.entities.TiposActuaciones;
@@ -27,6 +28,12 @@ public class ABMManagerExpedientes {
     
     public List<Object> findAll(String entidad) {
         Query q = em.createNamedQuery(entidad + ".findAll");
+        return q.getResultList();
+    }
+    
+    public List<Object> findDocumentosPorCliente(String codCliente) {
+        Query q = em.createNamedQuery("DocumentosEntregados.findByCodCliente")
+                .setParameter("codCliente", Integer.parseInt(codCliente));
         return q.getResultList();
     }
     
@@ -57,8 +64,12 @@ public class ABMManagerExpedientes {
                     .setParameter("codTipoActuacion", Integer.parseInt(id));
             return q.getResultList();
         } else if (entidad == "DocumentosEntregados") {
-            Query q = em.createNamedQuery(entidad + ".findByCodCliente")
-                    .setParameter("findByCodCliente", Integer.parseInt(id));
+            Query q = em.createNamedQuery(entidad + ".findByCodDocumento")
+                    .setParameter("codDocumento", Integer.parseInt(id));
+            return q.getResultList();
+        } else if (entidad == "EstadoExpediente") {
+            Query q = em.createNamedQuery(entidad + ".findByCodEstadoExpediente")
+                    .setParameter("codEstadoExpediente", Integer.parseInt(id));
             return q.getResultList();
         }
         return elem;
@@ -86,6 +97,9 @@ public class ABMManagerExpedientes {
         } else if (clazz == DocumentosEntregados.class) {
             DocumentosEntregados ta = (DocumentosEntregados) elem;
             em.persist(ta);
+        } else if (clazz == EstadoExpediente.class) {
+            EstadoExpediente ta = (EstadoExpediente) elem;
+            em.persist(ta);
         }
     }
 
@@ -110,6 +124,9 @@ public class ABMManagerExpedientes {
             em.merge(ta);
         } else if (clazz == DocumentosEntregados.class) {
             DocumentosEntregados ta = (DocumentosEntregados) elem;
+            em.merge(ta);
+        } else if (clazz == EstadoExpediente.class) {
+            EstadoExpediente ta = (EstadoExpediente) elem;
             em.merge(ta);
         }
     }
