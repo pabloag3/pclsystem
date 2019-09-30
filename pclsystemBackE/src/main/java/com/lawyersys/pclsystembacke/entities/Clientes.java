@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Clientes.findByDireccion", query = "SELECT c FROM Clientes c WHERE c.direccion = :direccion")
     , @NamedQuery(name = "Clientes.findByTipoCliente", query = "SELECT c FROM Clientes c WHERE c.tipoCliente = :tipoCliente")})
 public class Clientes implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
     
     @Id
@@ -94,6 +94,11 @@ public class Clientes implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCliente")
     @JsonIgnore
     private List<DocumentosEntregados> documentosEntregadosList;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCliente")
+    @JsonIgnore
+    private List<Facturas> facturasList;
+
     
     public Clientes() {
     }
@@ -205,6 +210,15 @@ public class Clientes implements Serializable {
 
     public void setDocumentosEntregadosList(List<DocumentosEntregados> documentosEntregadosList) {
         this.documentosEntregadosList = documentosEntregadosList;
+    }
+    
+    @XmlTransient
+    public List<Facturas> getFacturasList() {
+        return facturasList;
+    }
+
+    public void setFacturasList(List<Facturas> facturasList) {
+        this.facturasList = facturasList;
     }
 
     @Override

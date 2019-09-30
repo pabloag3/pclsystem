@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -41,6 +42,10 @@ public class Facturas implements Serializable {
     @EmbeddedId
     protected FacturasPK facturasPK;
     
+    @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente")
+    @ManyToOne(optional = false)
+    private Clientes codCliente;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha_emision")
@@ -59,6 +64,12 @@ public class Facturas implements Serializable {
     @JoinColumn(name = "cod_pago", referencedColumnName = "cod_pago")
     @ManyToOne(optional = false)
     private Pagos codPago;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "archivo")
+    private String archivo;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "facturas")
     @JsonIgnore
@@ -140,6 +151,22 @@ public class Facturas implements Serializable {
 
     public void setDetalleFacturaList(List<DetalleFactura> detalleFacturaList) {
         this.detalleFacturaList = detalleFacturaList;
+    }
+    
+    public String getArchivo() {
+        return archivo;
+    }
+
+    public void setArchivo(String archivo) {
+        this.archivo = archivo;
+    }
+
+    public Clientes getCodCliente() {
+        return codCliente;
+    }
+
+    public void setCodCliente(Clientes codCliente) {
+        this.codCliente = codCliente;
     }
 
     @Override

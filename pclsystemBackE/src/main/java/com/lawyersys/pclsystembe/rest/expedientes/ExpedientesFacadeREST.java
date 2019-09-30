@@ -89,6 +89,19 @@ public class ExpedientesFacadeREST {
             return ErrorManager.tratarError(e);
         }
     }
+    
+    @GET
+    @Path("listar-por-despachos/{id}")
+    public Response findPorDespachos(@PathParam("id") String id) throws JsonProcessingException {
+        try {
+            List<Expedientes> elem = (List<Expedientes>) (Object) abmManager.traerExpedientePorDespacho(id);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.tratarError(e);
+        }
+    }
 
     @GET
     @Path("listar")

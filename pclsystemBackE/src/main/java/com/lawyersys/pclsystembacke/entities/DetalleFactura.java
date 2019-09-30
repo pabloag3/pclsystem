@@ -36,10 +36,6 @@ public class DetalleFactura implements Serializable {
     
     @EmbeddedId
     protected DetalleFacturaPK detalleFacturaPK;
-    
-    @JoinColumn(name = "cod_pago", referencedColumnName = "cod_pago")
-    @ManyToOne(optional = false)
-    private Pagos codPago;
 
     @Basic(optional = false)
     @NotNull
@@ -134,14 +130,6 @@ public class DetalleFactura implements Serializable {
 
     public void setFacturas(Facturas facturas) {
         this.facturas = facturas;
-    }
-    
-    public Pagos getCodPago() {
-        return codPago;
-    }
-
-    public void setCodPago(Pagos codPago) {
-        this.codPago = codPago;
     }
 
     @Override

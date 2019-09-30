@@ -63,6 +63,13 @@ public class ABMManagerDespachos {
         }
         return elem;
     }
+    
+    public List<Object> buscarDespachoPorDepartamentoFuero(String codDepartamento, String codFuero) {
+        Query q = em.createNamedQuery("Despachos.findByDepartamentoFuero")
+                .setParameter("codDepartamento", Integer.parseInt(codDepartamento))
+                .setParameter("codFuero", Integer.parseInt(codFuero));
+        return q.getResultList();
+    }
 
     public <S> void create(Class<S> clazz, S elem) {
         if (clazz == Departamentos.class) {

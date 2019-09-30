@@ -46,9 +46,11 @@ public class DocumentosEntregados implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
     
-    @Lob
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
     @Column(name = "archivo")
-    private byte[] archivo;
+    private String archivo;
     
     @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente")
     @ManyToOne(optional = false)
@@ -82,13 +84,6 @@ public class DocumentosEntregados implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public byte[] getArchivo() {
-        return archivo;
-    }
-
-    public void setArchivo(byte[] archivo) {
-        this.archivo = archivo;
-    }
 
     public Clientes getCodCliente() {
         return codCliente;
@@ -121,6 +116,14 @@ public class DocumentosEntregados implements Serializable {
     @Override
     public String toString() {
         return "com.lawyersys.pclsystembacke.entities.DocumentosEntregados[ codDocumento=" + codDocumento + " ]";
+    }
+
+    public String getArchivo() {
+        return archivo;
+    }
+
+    public void setArchivo(String archivo) {
+        this.archivo = archivo;
     }
     
 }
