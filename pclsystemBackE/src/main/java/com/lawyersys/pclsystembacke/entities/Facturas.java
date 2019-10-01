@@ -34,7 +34,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Facturas.findByCodFactura", query = "SELECT f FROM Facturas f WHERE f.facturasPK.codFactura = :codFactura")
     , @NamedQuery(name = "Facturas.findByCodCuenta", query = "SELECT f FROM Facturas f WHERE f.facturasPK.codCuenta = :codCuenta")
     , @NamedQuery(name = "Facturas.findByFechaEmision", query = "SELECT f FROM Facturas f WHERE f.fechaEmision = :fechaEmision")
-    , @NamedQuery(name = "Facturas.findByMontoTotal", query = "SELECT f FROM Facturas f WHERE f.montoTotal = :montoTotal")})
+    , @NamedQuery(name = "Facturas.findByMontoTotal", query = "SELECT f FROM Facturas f WHERE f.montoTotal = :montoTotal")
+    , @NamedQuery(name = "Facturas.findUltimaFactura", query = "SELECT f FROM Facturas f ORDER BY f.facturasPK.codFactura DESC")
+})
 public class Facturas implements Serializable {
     
     private static final long serialVersionUID = 1L;
@@ -66,7 +68,6 @@ public class Facturas implements Serializable {
     private Pagos codPago;
     
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "archivo")
     private String archivo;

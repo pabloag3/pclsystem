@@ -51,7 +51,6 @@ public class DetalleExpediente implements Serializable {
     private Date fecha;
     
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "archivo")
     private String archivo;

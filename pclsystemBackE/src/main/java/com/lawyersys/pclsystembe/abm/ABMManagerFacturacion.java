@@ -5,9 +5,12 @@ package com.lawyersys.pclsystembe.abm;
 import com.lawyersys.pclsystembacke.entities.Cuentas;
 import com.lawyersys.pclsystembacke.entities.DetalleCuenta;
 import com.lawyersys.pclsystembacke.entities.DetalleFactura;
+import com.lawyersys.pclsystembacke.entities.DetalleFacturaPK;
 import com.lawyersys.pclsystembacke.entities.Facturas;
+import com.lawyersys.pclsystembacke.entities.Pagos;
 import com.lawyersys.pclsystembacke.entities.Recibos;
 import com.lawyersys.pclsystembacke.entities.TiposPagos;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -34,6 +37,10 @@ public class ABMManagerFacturacion {
         if (entidad == "TiposPagos") {
             Query q = em.createNamedQuery(entidad + ".findByCodTipoPago")
                     .setParameter("codTipoPago", Integer.parseInt(id));
+            return q.getResultList();
+        } else if (entidad == "Pagos") {
+            Query q = em.createNamedQuery(entidad + ".findByCodPago")
+                    .setParameter("codPago", Integer.parseInt(id));
             return q.getResultList();
         } else if (entidad == "Cuentas") {
             Query q = em.createNamedQuery(entidad + ".findByCodCuenta")
@@ -63,6 +70,11 @@ public class ABMManagerFacturacion {
         if (clazz == TiposPagos.class) {
             TiposPagos ta = (TiposPagos) elem;
             em.persist(ta);
+        } else if (clazz == Pagos.class) {
+            Pagos pago = (Pagos) elem;
+            pago.setFechaPago(new Date());
+            
+            em.persist(pago);
         } else if (clazz == Cuentas.class) {
             Cuentas ta = (Cuentas) elem;
             em.persist(ta);
@@ -70,14 +82,37 @@ public class ABMManagerFacturacion {
             DetalleCuenta ta = (DetalleCuenta) elem;
             em.persist(ta);
         } else if (clazz == Facturas.class) {
-            Facturas ta = (Facturas) elem;
-            em.persist(ta);
+            Facturas factura = (Facturas) elem;
+            factura.setFechaEmision(new Date());
+            
+            // capturo el ultimo pago realizado para la generacion de la factura
+            Query q = em.createNamedQuery("Pagos.findUltimoPago");
+            Pagos ultimoPago = (Pagos) q.setMaxResults(1).getResultList();
+            factura.setCodPago(ultimoPago);
+            
+            em.persist(factura);
         } else if (clazz == DetalleFactura.class) {
-            DetalleFactura ta = (DetalleFactura) elem;
-            em.persist(ta);
+            DetalleFactura detalleFactura = (DetalleFactura) elem;
+            
+            Query q = em.createNamedQuery("Facturas.findUltimaFactura");
+            Facturas ultimaFactura = (Facturas) q.setMaxResults(1).getResultList();
+            
+            DetalleFacturaPK detalleFacturaPK = null;
+            detalleFacturaPK.setCodFactura(ultimaFactura.getFacturasPK().getCodFactura());
+            detalleFactura.setDetalleFacturaPK(detalleFacturaPK);
+            
+            detalleFactura.setMontoIva((detalleFactura.getMonto() * detalleFactura.getPorcentajeIva() / 100));
+            
+            em.persist(detalleFactura);
         } else if (clazz == Recibos.class) {
-            Recibos ta = (Recibos) elem;
-            em.persist(ta);
+            Recibos recibo = (Recibos) elem;
+            
+            // capturo el ultimo pago realizado para la generacion del recibo
+            Query q = em.createNamedQuery("Pagos.findUltimoPago");
+            Pagos ultimoPago = (Pagos) q.setMaxResults(1).getResultList();
+            recibo.setCodPago(ultimoPago);
+            
+            em.persist(recibo);
         }
     }
 
@@ -85,6 +120,11 @@ public class ABMManagerFacturacion {
         if (clazz == TiposPagos.class) {
             TiposPagos ta = (TiposPagos) elem;
             em.merge(ta);
+        } else if (clazz == Pagos.class) {
+            Pagos pago = (Pagos) elem;
+            pago.setFechaPago(new Date());
+            
+            em.merge(pago);
         } else if (clazz == Cuentas.class) {
             Cuentas ta = (Cuentas) elem;
             em.merge(ta);
@@ -92,11 +132,15 @@ public class ABMManagerFacturacion {
             DetalleCuenta ta = (DetalleCuenta) elem;
             em.merge(ta);
         } else if (clazz == Facturas.class) {
-            Facturas ta = (Facturas) elem;
-            em.merge(ta);
+            Facturas factura = (Facturas) elem;
+            factura.setFechaEmision(new Date());
+            em.merge(factura);
         } else if (clazz == DetalleFactura.class) {
-            DetalleFactura ta = (DetalleFactura) elem;
-            em.merge(ta);
+            DetalleFactura detalleFactura = (DetalleFactura) elem;
+            
+            detalleFactura.setMontoIva((detalleFactura.getMonto() * detalleFactura.getPorcentajeIva() / 100));
+            
+            em.merge(detalleFactura);
         } else if (clazz == Recibos.class) {
             Recibos ta = (Recibos) elem;
             em.merge(ta);

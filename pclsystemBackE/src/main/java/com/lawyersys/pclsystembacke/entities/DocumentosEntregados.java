@@ -47,7 +47,6 @@ public class DocumentosEntregados implements Serializable {
     private String descripcion;
     
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 2147483647)
     @Column(name = "archivo")
     private String archivo;
