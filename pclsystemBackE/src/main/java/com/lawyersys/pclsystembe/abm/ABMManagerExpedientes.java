@@ -37,6 +37,18 @@ public class ABMManagerExpedientes {
         return q.getResultList();
     }
     
+    public List<Object> traerClientePorRuc(String ruc) {
+        Query q = em.createNamedQuery("Clientes.findByRuc")
+                .setParameter("ruc", ruc);
+        return q.getResultList();
+    }
+    
+    public List<Object> traerExpedientePorDespacho(String codDespacho) {
+        Query q = em.createNamedQuery("Expedientes.findBycodDespacho")
+                .setParameter("codDespacho", Integer.parseInt(codDespacho));
+        return q.getResultList();
+    }
+    
     public List<Object> find(String entidad, String id) {
         List<Object> elem = null;
         if (entidad == "Casos") {

@@ -8,6 +8,7 @@ import com.lawyersys.pclsystembe.abm.ABMManagerFacturacion;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -66,12 +67,17 @@ public class FacturasFacadeREST {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Facturas elem = mapper.readValue(entity, Facturas.class);
+            
+            if ( elem.getCodCliente().getRuc() == "" ) {
+                throw new FaltaCargarElemento("Error. Cargar RUC del cliente.");
+            }
             if ( elem.getFechaEmision() == null ) {
                 throw new FaltaCargarElemento("Error. Cargar fecha de emision de factura.");
             }
             if ( elem.getMontoTotal() == 0 ) {
                 throw new FaltaCargarElemento("Error. Cargar monto.");
             }
+            
             abmManager.create(Facturas.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
@@ -85,12 +91,14 @@ public class FacturasFacadeREST {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Facturas elem = mapper.readValue(entity, Facturas.class);
+            
             if ( elem.getFechaEmision() == null ) {
                 throw new FaltaCargarElemento("Error. Cargar fecha de emision de factura.");
             }
             if ( elem.getMontoTotal() == 0 ) {
                 throw new FaltaCargarElemento("Error. Cargar monto.");
             }
+            
             abmManager.edit(Facturas.class, elem);
             return Response.ok().build();
         } catch (Exception e) {

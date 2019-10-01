@@ -31,7 +31,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Despachos.findAll", query = "SELECT d FROM Despachos d")
     , @NamedQuery(name = "Despachos.findByCodDespacho", query = "SELECT d FROM Despachos d WHERE d.codDespacho = :codDespacho")
-    , @NamedQuery(name = "Despachos.findByDescripcion", query = "SELECT d FROM Despachos d WHERE d.descripcion = :descripcion")})
+    , @NamedQuery(name = "Despachos.findByDescripcion", query = "SELECT d FROM Despachos d WHERE d.descripcion = :descripcion")
+    , @NamedQuery(name = "Despachos.findByDepartamentoFuero", query = "SELECT d FROM Despachos d WHERE d.codFuero.codFuero = :codFuero "
+                                                                                                + "AND d.codDepartamento.codDepartamento = :codDepartamento")
+})
 public class Despachos implements Serializable {
 
     private static final long serialVersionUID = 1L;

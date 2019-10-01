@@ -89,6 +89,19 @@ public class ClientesFacadeREST {
             return ErrorManager.tratarError(e);
         }
     }
+    
+    @GET
+    @Path("traer-por-ruc/{id}")
+    public Response traerClientePorRuc(@PathParam("id") String id) throws JsonProcessingException {
+        try {
+            List<Clientes> elem = (List<Clientes>) (Object) abmManager.traerClientePorRuc(id);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.tratarError(e);
+        }
+    }
 
     @GET
     @Path("listar")

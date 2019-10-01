@@ -50,6 +50,11 @@ public class DetalleExpediente implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fecha;
     
+    @Basic(optional = false)
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "archivo")
+    private String archivo;
+    
     @JoinColumn(name = "cod_expediente", referencedColumnName = "cod_expediente", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Expedientes expedientes;
@@ -61,10 +66,6 @@ public class DetalleExpediente implements Serializable {
     @JoinColumn(name = "cod_despacho", referencedColumnName = "cod_despacho")
     @ManyToOne(optional = false)
     private Despachos codDespacho;
-    
-    @Lob
-    @Column(name = "archivo")
-    private byte[] archivo;
     
     @JoinColumn(name = "cod_actuario", referencedColumnName = "cod_actuario")
     @ManyToOne
@@ -85,7 +86,7 @@ public class DetalleExpediente implements Serializable {
         this.detalleExpedientePK = detalleExpedientePK;
     }
 
-    public DetalleExpediente(DetalleExpedientePK detalleExpedientePK, String descripcion, Date fecha, byte[] archivo) {
+    public DetalleExpediente(DetalleExpedientePK detalleExpedientePK, String descripcion, Date fecha, String archivo) {
         this.detalleExpedientePK = detalleExpedientePK;
         this.descripcion = descripcion;
         this.fecha = fecha;
@@ -120,7 +121,14 @@ public class DetalleExpediente implements Serializable {
         this.fecha = fecha;
     }
 
+    public String getArchivo() {
+        return archivo;
+    }
 
+    public void setArchivo(String archivo) {
+        this.archivo = archivo;
+    }
+    
     public Expedientes getExpedientes() {
         return expedientes;
     }
@@ -143,14 +151,6 @@ public class DetalleExpediente implements Serializable {
 
     public void setCodDespacho(Despachos codDespacho) {
         this.codDespacho = codDespacho;
-    }
-
-    public byte[] getArchivo() {
-        return archivo;
-    }
-
-    public void setArchivo(byte[] archivo) {
-        this.archivo = archivo;
     }
 
     public Actuarios getCodActuario() {
