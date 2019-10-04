@@ -110,6 +110,20 @@ public class DetalleCuentaFacadeREST {
             return ErrorManager.tratarError(e);
         }
     }
+    
+    @GET
+    @Path("traer-detalles-de-cuenta/{id}")
+    public Response traerDetallesDeCuenta(@PathParam("id") String id) throws JsonProcessingException {
+        try {
+            List<DetalleCuenta> elem = (List<DetalleCuenta>) (Object) abmManager.traerDetallesDeCuenta(id);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.tratarError(e);
+        }
+    }
+
 
     @GET
     @Path("listar")
