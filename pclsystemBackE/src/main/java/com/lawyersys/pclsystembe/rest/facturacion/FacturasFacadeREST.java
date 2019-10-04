@@ -2,12 +2,13 @@ package com.lawyersys.pclsystembe.rest.facturacion;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lawyersys.pclsystembacke.entities.DetalleCuenta;
-import com.lawyersys.pclsystembacke.entities.DetalleCuentaPK;
+import com.lawyersys.pclsystembacke.entities.Facturas;
+import com.lawyersys.pclsystembacke.entities.FacturasPK;
 import com.lawyersys.pclsystembe.abm.ABMManagerFacturacion;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -28,24 +29,24 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @author tatoa
  */
 @Stateless
-@Path("detallecuenta")
+@Path("facturas")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class DetalleCuentaFacadeREST {
+public class FacturasFacadeREST {
 
-    private DetalleCuentaPK getPrimaryKey(PathSegment pathSegment) {
+    private FacturasPK getPrimaryKey(PathSegment pathSegment) {
         /*
          * pathSemgent represents a URI path segment and any associated matrix parameters.
-         * URI path part is supposed to be in form of 'somePath;codDetalleCuenta=codDetalleCuentaValue;codCuenta=codCuentaValue'.
+         * URI path part is supposed to be in form of 'somePath;codFactura=codFacturaValue;codCuenta=codCuentaValue'.
          * Here 'somePath' is a result of getPath() method invocation and
          * it is ignored in the following code.
          * Matrix parameters are used as field names to build a primary key instance.
          */
-        com.lawyersys.pclsystembacke.entities.DetalleCuentaPK key = new com.lawyersys.pclsystembacke.entities.DetalleCuentaPK();
+        com.lawyersys.pclsystembacke.entities.FacturasPK key = new com.lawyersys.pclsystembacke.entities.FacturasPK();
         javax.ws.rs.core.MultivaluedMap<String, String> map = pathSegment.getMatrixParameters();
-        java.util.List<String> codDetalleCuenta = map.get("codDetalleCuenta");
-        if (codDetalleCuenta != null && !codDetalleCuenta.isEmpty()) {
-            key.setCodDetalleCuenta(new java.lang.Integer(codDetalleCuenta.get(0)));
+        java.util.List<String> codFactura = map.get("codFactura");
+        if (codFactura != null && !codFactura.isEmpty()) {
+            key.setCodFactura(new java.lang.Integer(codFactura.get(0)));
         }
         java.util.List<String> codCuenta = map.get("codCuenta");
         if (codCuenta != null && !codCuenta.isEmpty()) {
@@ -54,7 +55,7 @@ public class DetalleCuentaFacadeREST {
         return key;
     }
 
-    public DetalleCuentaFacadeREST() {
+    public FacturasFacadeREST() {
     }
 
     @EJB
@@ -65,14 +66,19 @@ public class DetalleCuentaFacadeREST {
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            DetalleCuenta elem = mapper.readValue(entity, DetalleCuenta.class);
-            if ( elem.getDescripcion() == null ) {
-                throw new FaltaCargarElemento("Error. Cargar descripcion.");
+            Facturas elem = mapper.readValue(entity, Facturas.class);
+            
+            if ( elem.getCodCliente().getRuc() == "" ) {
+                throw new FaltaCargarElemento("Error. Cargar RUC del cliente.");
             }
-            if ( elem.getMonto() == 0 ) {
+            if ( elem.getFechaEmision() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar fecha de emision de factura.");
+            }
+            if ( elem.getMontoTotal() == 0 ) {
                 throw new FaltaCargarElemento("Error. Cargar monto.");
             }
-            abmManager.create(DetalleCuenta.class, elem);
+            
+            abmManager.create(Facturas.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.tratarError(e);
@@ -84,14 +90,16 @@ public class DetalleCuentaFacadeREST {
     public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            DetalleCuenta elem = mapper.readValue(entity, DetalleCuenta.class);
-            if ( elem.getDescripcion() == null ) {
-                throw new FaltaCargarElemento("Error. Cargar descripcion.");
+            Facturas elem = mapper.readValue(entity, Facturas.class);
+            
+            if ( elem.getFechaEmision() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar fecha de emision de factura.");
             }
-            if ( elem.getMonto() == 0 ) {
+            if ( elem.getMontoTotal() == 0 ) {
                 throw new FaltaCargarElemento("Error. Cargar monto.");
             }
-            abmManager.edit(DetalleCuenta.class, elem);
+            
+            abmManager.edit(Facturas.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.tratarError(e);
@@ -102,7 +110,7 @@ public class DetalleCuentaFacadeREST {
     @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         try {
-            List<DetalleCuenta> elem = (List<DetalleCuenta>) (Object) abmManager.find("DetalleCuenta", id);
+            List<Facturas> elem = (List<Facturas>) (Object) abmManager.find("Facturas", id);
             ObjectMapper mapper = new ObjectMapper();
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
@@ -115,7 +123,7 @@ public class DetalleCuentaFacadeREST {
     @Path("listar")
     public Response findAll() throws JsonProcessingException {
         try {
-            List<DetalleCuenta> elem = (List<DetalleCuenta>) (Object) abmManager.findAll("DetalleCuenta");
+            List<Facturas> elem = (List<Facturas>) (Object) abmManager.findAll("Facturas");
             ObjectMapper mapper = new ObjectMapper();
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();

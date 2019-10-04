@@ -4,14 +4,12 @@ package com.lawyersys.pclsystembe.abm;
 
 import com.lawyersys.pclsystembacke.entities.Cuentas;
 import com.lawyersys.pclsystembacke.entities.DetalleCuenta;
-import com.lawyersys.pclsystembacke.entities.DetalleCuentaPK;
 import com.lawyersys.pclsystembacke.entities.DetalleFactura;
 import com.lawyersys.pclsystembacke.entities.DetalleFacturaPK;
 import com.lawyersys.pclsystembacke.entities.Facturas;
 import com.lawyersys.pclsystembacke.entities.Pagos;
 import com.lawyersys.pclsystembacke.entities.Recibos;
 import com.lawyersys.pclsystembacke.entities.TiposPagos;
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -34,12 +32,6 @@ public class ABMManagerFacturacion {
         return q.getResultList();
     }
     
-    public List<Object> traerDetallesDeCuenta(String cuenta) {
-        Query q = em.createNamedQuery("DetalleCuenta.findByCodCuenta")
-                .setParameter("codCuenta", Integer.parseInt(cuenta));
-        return q.getResultList();
-    }
-    
     public List<Object> find(String entidad, String id) {
         List<Object> elem = null;
         if (entidad == "TiposPagos") {
@@ -52,7 +44,7 @@ public class ABMManagerFacturacion {
             return q.getResultList();
         } else if (entidad == "Cuentas") {
             Query q = em.createNamedQuery(entidad + ".findByCodCuenta")
-                    .setParameter("codCuenta", Integer.parseInt(id));
+                    .setParameter("codTipoPago", Integer.parseInt(id));
             return q.getResultList();
         } else if (entidad == "DetalleCuenta") {
             Query q = em.createNamedQuery(entidad + ".findByCodDetalleCuenta")
@@ -87,11 +79,8 @@ public class ABMManagerFacturacion {
             Cuentas ta = (Cuentas) elem;
             em.persist(ta);
         } else if (clazz == DetalleCuenta.class) {
-            DetalleCuenta dc = (DetalleCuenta) elem;
-            Query q = em.createNativeQuery("select nextval('detalle_cuenta_cod_detalle_cuenta_seq');");
-            int secuenciaSiguiente = ((BigInteger) q.getSingleResult()).intValue();
-            dc.setDetalleCuentaPK(new DetalleCuentaPK(secuenciaSiguiente+1, dc.getDetalleCuentaPK().getCodCuenta()));
-            em.persist(dc);
+            DetalleCuenta ta = (DetalleCuenta) elem;
+            em.persist(ta);
         } else if (clazz == Facturas.class) {
             Facturas factura = (Facturas) elem;
             factura.setFechaEmision(new Date());
