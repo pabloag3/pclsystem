@@ -81,7 +81,7 @@ public class FacturasFacadeREST {
             abmManager.create(Facturas.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Facturas.class);
         }
     }
 
@@ -102,7 +102,7 @@ public class FacturasFacadeREST {
             abmManager.edit(Facturas.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Facturas.class);
         }
     }
 
@@ -115,7 +115,7 @@ public class FacturasFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Facturas.class);
         }
     }
 
@@ -128,7 +128,7 @@ public class FacturasFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Facturas.class);
         }
     }
     

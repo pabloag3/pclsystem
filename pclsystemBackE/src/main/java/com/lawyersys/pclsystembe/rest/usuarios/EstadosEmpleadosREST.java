@@ -51,7 +51,7 @@ public class EstadosEmpleadosREST {
             abmManager.create(EstadosEmpleados.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, EstadosEmpleados.class);
         }
     }
 
@@ -67,7 +67,7 @@ public class EstadosEmpleadosREST {
             abmManager.edit(EstadosEmpleados.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, EstadosEmpleados.class);
         }
         
     }
@@ -81,7 +81,7 @@ public class EstadosEmpleadosREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, EstadosEmpleados.class);
         }
     }
 
@@ -94,7 +94,7 @@ public class EstadosEmpleadosREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, EstadosEmpleados.class);
         }
     }
     

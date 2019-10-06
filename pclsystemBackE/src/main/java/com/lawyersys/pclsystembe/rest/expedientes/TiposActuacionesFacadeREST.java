@@ -52,7 +52,7 @@ public class TiposActuacionesFacadeREST {
             abmManager.create(TiposActuaciones.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, TiposActuaciones.class);
         }
     }
 
@@ -68,7 +68,7 @@ public class TiposActuacionesFacadeREST {
             abmManager.edit(TiposActuaciones.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, TiposActuaciones.class);
         }
     }
 
@@ -81,7 +81,7 @@ public class TiposActuacionesFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, TiposActuaciones.class);
         }
     }
 
@@ -94,7 +94,7 @@ public class TiposActuacionesFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, TiposActuaciones.class);
         }
     }
     

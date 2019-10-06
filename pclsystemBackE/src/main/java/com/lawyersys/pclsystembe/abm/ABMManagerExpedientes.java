@@ -10,6 +10,7 @@ import com.lawyersys.pclsystembacke.entities.EstadoExpediente;
 import com.lawyersys.pclsystembacke.entities.EstadosCaso;
 import com.lawyersys.pclsystembacke.entities.Expedientes;
 import com.lawyersys.pclsystembacke.entities.TiposActuaciones;
+import java.sql.SQLException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -87,7 +88,7 @@ public class ABMManagerExpedientes {
         return elem;
     }
     
-    public <S> void create(Class<S> clazz, S elem) {
+    public <S> void create(Class<S> clazz, S elem) throws SQLException, Exception {
         if (clazz == Casos.class) {
             Casos ta = (Casos) elem;
             em.persist(ta);
@@ -115,7 +116,7 @@ public class ABMManagerExpedientes {
         }
     }
 
-    public <S> void edit(Class<S> clazz, S elem) {
+    public <S> void edit(Class<S> clazz, S elem) throws SQLException, Exception {
         if (clazz == Casos.class) {
             Casos ta = (Casos) elem;
             em.merge(ta);

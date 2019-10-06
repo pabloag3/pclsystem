@@ -65,7 +65,7 @@ public class RolesUsuarioREST {
             abmManager.create(RolesPermisosDTO.class, entity);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, RolesUsuario.class);
         }
     }
 
@@ -76,7 +76,7 @@ public class RolesUsuarioREST {
             abmManager.edit(RolesPermisosDTO.class, entity);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, RolesUsuario.class);
         }
     }
 
@@ -89,7 +89,7 @@ public class RolesUsuarioREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, RolesUsuario.class);
         }
     }
 
@@ -102,7 +102,7 @@ public class RolesUsuarioREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, RolesUsuario.class);
         }
     }
     
@@ -115,7 +115,7 @@ public class RolesUsuarioREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, RolesUsuario.class);
         }
     }
     
@@ -128,7 +128,7 @@ public class RolesUsuarioREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, RolesUsuario.class);
         }
     }   
     

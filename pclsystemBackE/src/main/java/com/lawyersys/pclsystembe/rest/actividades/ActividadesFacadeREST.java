@@ -54,7 +54,7 @@ public class ActividadesFacadeREST {
             abmManager.create(Actividades.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Actividades.class);
         }
     }
 
@@ -73,7 +73,7 @@ public class ActividadesFacadeREST {
             abmManager.edit(Actividades.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Actividades.class);
         }
     }
 
@@ -86,7 +86,7 @@ public class ActividadesFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Actividades.class);
         }
     }
 
@@ -99,7 +99,7 @@ public class ActividadesFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Actividades.class);
         }
         
     }

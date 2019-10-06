@@ -54,7 +54,7 @@ public class JuecesFacadeREST {
             abmManager.create(Jueces.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Jueces.class);
         }
     }
 
@@ -73,7 +73,7 @@ public class JuecesFacadeREST {
             abmManager.edit(Jueces.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Jueces.class);
         }
     }
 
@@ -86,7 +86,7 @@ public class JuecesFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Jueces.class);
         }
     }
 
@@ -99,7 +99,7 @@ public class JuecesFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Jueces.class);
         }
     }
     

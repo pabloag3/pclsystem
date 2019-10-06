@@ -12,6 +12,7 @@ import com.lawyersys.pclsystembacke.entities.Pagos;
 import com.lawyersys.pclsystembacke.entities.Recibos;
 import com.lawyersys.pclsystembacke.entities.TiposPagos;
 import java.math.BigInteger;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -74,7 +75,7 @@ public class ABMManagerFacturacion {
         return elem;
     }
 
-    public <S> void create(Class<S> clazz, S elem) {
+    public <S> void create(Class<S> clazz, S elem) throws SQLException, Exception {
         if (clazz == TiposPagos.class) {
             TiposPagos ta = (TiposPagos) elem;
             em.persist(ta);
@@ -127,7 +128,7 @@ public class ABMManagerFacturacion {
         }
     }
 
-    public <S> void edit(Class<S> clazz, S elem) {
+    public <S> void edit(Class<S> clazz, S elem) throws SQLException, Exception {
         if (clazz == TiposPagos.class) {
             TiposPagos ta = (TiposPagos) elem;
             em.merge(ta);

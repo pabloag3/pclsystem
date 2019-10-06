@@ -62,7 +62,7 @@ public class UsuariosREST {
             abmManager.create(Usuarios.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Usuarios.class);
         }
     }
 
@@ -93,7 +93,7 @@ public class UsuariosREST {
             abmManager.edit(Usuarios.class, elem);
         return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Usuarios.class);
         }
         
     }
@@ -107,7 +107,7 @@ public class UsuariosREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Usuarios.class);
         }
     }
 
@@ -120,7 +120,7 @@ public class UsuariosREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Usuarios.class);
         }
  
     }

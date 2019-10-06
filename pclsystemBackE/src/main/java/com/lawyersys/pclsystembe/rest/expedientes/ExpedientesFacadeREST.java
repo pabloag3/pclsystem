@@ -60,7 +60,7 @@ public class ExpedientesFacadeREST {
             abmManager.create(Expedientes.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Expedientes.class);
         }
     }
 
@@ -73,7 +73,7 @@ public class ExpedientesFacadeREST {
             abmManager.edit(Expedientes.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Expedientes.class);
         }
     }
 
@@ -86,7 +86,7 @@ public class ExpedientesFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Expedientes.class);
         }
     }
     
@@ -99,7 +99,7 @@ public class ExpedientesFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Expedientes.class);
         }
     }
 
@@ -112,7 +112,7 @@ public class ExpedientesFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Expedientes.class);
         }
     }
     

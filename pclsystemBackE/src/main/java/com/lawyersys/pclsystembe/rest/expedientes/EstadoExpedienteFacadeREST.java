@@ -49,7 +49,7 @@ public class EstadoExpedienteFacadeREST {
             abmManager.create(EstadoExpediente.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, EstadoExpediente.class);
         }
     }
 
@@ -65,7 +65,7 @@ public class EstadoExpedienteFacadeREST {
             abmManager.edit(EstadoExpediente.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, EstadoExpediente.class);
         }
     }
 
@@ -78,7 +78,7 @@ public class EstadoExpedienteFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, EstadoExpediente.class);
         }
     }
 
@@ -91,7 +91,7 @@ public class EstadoExpedienteFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, EstadoExpediente.class);
         }
     }
     

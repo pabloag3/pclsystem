@@ -52,7 +52,7 @@ public class RecibosFacadeREST  {
             abmManager.create(Recibos.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Recibos.class);
         }
     }
 
@@ -71,7 +71,7 @@ public class RecibosFacadeREST  {
             abmManager.edit(Recibos.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Recibos.class);
         }
     }
 
@@ -84,7 +84,7 @@ public class RecibosFacadeREST  {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Recibos.class);
         }
     }
 
@@ -97,7 +97,7 @@ public class RecibosFacadeREST  {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Recibos.class);
         }
     }
     

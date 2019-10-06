@@ -9,6 +9,7 @@ import com.lawyersys.pclsystembacke.entities.Despachos;
 import com.lawyersys.pclsystembacke.entities.Fueros;
 import com.lawyersys.pclsystembacke.entities.Jueces;
 import com.lawyersys.pclsystembacke.entities.Ujieres;
+import java.sql.SQLException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -71,7 +72,7 @@ public class ABMManagerDespachos {
         return q.getResultList();
     }
 
-    public <S> void create(Class<S> clazz, S elem) {
+    public <S> void create(Class<S> clazz, S elem) throws SQLException, Exception {
         if (clazz == Departamentos.class) {
             Departamentos ta = (Departamentos) elem;
             em.persist(ta);
@@ -96,7 +97,7 @@ public class ABMManagerDespachos {
         }
     }
 
-    public <S> void edit(Class<S> clazz, S elem) {
+    public <S> void edit(Class<S> clazz, S elem) throws SQLException, Exception {
         if (clazz == Departamentos.class) {
             Departamentos ta = (Departamentos) elem;
             em.merge(ta);
