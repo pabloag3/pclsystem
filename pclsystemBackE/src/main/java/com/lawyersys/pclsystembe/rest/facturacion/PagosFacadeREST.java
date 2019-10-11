@@ -56,7 +56,7 @@ public class PagosFacadeREST {
             abmManager.create(Pagos.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Pagos.class);
         }
     }
 
@@ -81,7 +81,7 @@ public class PagosFacadeREST {
             abmManager.edit(Pagos.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Pagos.class);
         }
     }
 
@@ -94,7 +94,7 @@ public class PagosFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Pagos.class);
         }
     }
 
@@ -107,7 +107,7 @@ public class PagosFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Pagos.class);
         }
     }
     

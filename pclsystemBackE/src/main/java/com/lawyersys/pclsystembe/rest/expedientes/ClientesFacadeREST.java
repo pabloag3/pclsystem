@@ -54,7 +54,7 @@ public class ClientesFacadeREST {
             abmManager.create(Clientes.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Clientes.class);
         }
     }
 
@@ -73,7 +73,7 @@ public class ClientesFacadeREST {
             abmManager.edit(Clientes.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Clientes.class);
         }
     }
 
@@ -86,7 +86,7 @@ public class ClientesFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Clientes.class);
         }
     }
     
@@ -99,7 +99,7 @@ public class ClientesFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Clientes.class);
         }
     }
 
@@ -112,7 +112,7 @@ public class ClientesFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Clientes.class);
         }
     }
     

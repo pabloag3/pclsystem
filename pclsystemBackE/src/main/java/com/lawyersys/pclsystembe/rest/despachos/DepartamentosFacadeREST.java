@@ -51,7 +51,7 @@ public class DepartamentosFacadeREST {
             abmManager.create(Departamentos.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Departamentos.class);
         }
     }
 
@@ -67,7 +67,7 @@ public class DepartamentosFacadeREST {
             abmManager.edit(Departamentos.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Departamentos.class);
         }
     }
 
@@ -80,7 +80,7 @@ public class DepartamentosFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Departamentos.class);
         }
     }
 
@@ -93,7 +93,7 @@ public class DepartamentosFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Departamentos.class);
         }
     }
 

@@ -5,6 +5,7 @@ package com.lawyersys.pclsystembe.abm;
 import com.lawyersys.pclsystembacke.entities.Actividades;
 import com.lawyersys.pclsystembacke.entities.EstadosActividades;
 import com.lawyersys.pclsystembacke.entities.TiposActividades;
+import java.sql.SQLException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -44,7 +45,7 @@ public class ABMManagerActividades {
         return elem;
     }
 
-    public <S> void create(Class<S> clazz, S elem) {
+    public <S> void create(Class<S> clazz, S elem) throws SQLException, Exception {
         if (clazz == TiposActividades.class) {
             TiposActividades ta = (TiposActividades) elem;
             em.persist(ta);
@@ -57,7 +58,7 @@ public class ABMManagerActividades {
         }
     }
 
-    public <S> void edit(Class<S> clazz, S elem) {
+    public <S> void edit(Class<S> clazz, S elem) throws SQLException, Exception {
         if (clazz == TiposActividades.class) {
             TiposActividades ta = (TiposActividades) elem;
             em.merge(ta);

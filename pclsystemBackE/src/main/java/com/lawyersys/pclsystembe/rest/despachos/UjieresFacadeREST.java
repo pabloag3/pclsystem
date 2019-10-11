@@ -54,7 +54,7 @@ public class UjieresFacadeREST {
             abmManager.create(Ujieres.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Ujieres.class);
         }
         
     }
@@ -74,7 +74,7 @@ public class UjieresFacadeREST {
             abmManager.edit(Ujieres.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Ujieres.class);
         }
     }
 
@@ -87,7 +87,7 @@ public class UjieresFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Ujieres.class);
         }
     }
 
@@ -100,7 +100,7 @@ public class UjieresFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Ujieres.class);
         }
     }
     

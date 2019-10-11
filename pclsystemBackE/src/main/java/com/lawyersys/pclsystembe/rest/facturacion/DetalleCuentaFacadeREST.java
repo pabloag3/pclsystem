@@ -75,7 +75,7 @@ public class DetalleCuentaFacadeREST {
             abmManager.create(DetalleCuenta.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, DetalleCuenta.class);
         }
     }
 
@@ -94,7 +94,7 @@ public class DetalleCuentaFacadeREST {
             abmManager.edit(DetalleCuenta.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, DetalleCuenta.class);
         }
     }
 
@@ -107,7 +107,20 @@ public class DetalleCuentaFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, DetalleCuenta.class);
+        }
+    }
+    
+    @GET
+    @Path("traer-detalles-de-cuenta/{id}")
+    public Response traerDetallesDeCuenta(@PathParam("id") String id) throws JsonProcessingException {
+        try {
+            List<DetalleCuenta> elem = (List<DetalleCuenta>) (Object) abmManager.traerDetallesDeCuenta(id);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, DetalleCuenta.class);
         }
     }
 
@@ -120,7 +133,7 @@ public class DetalleCuentaFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, DetalleCuenta.class);
         }
     }
     

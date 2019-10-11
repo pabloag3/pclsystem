@@ -55,7 +55,7 @@ public class CuentasFacadeREST {
             abmManager.create(Cuentas.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Cuentas.class);
         }
     }
 
@@ -74,7 +74,7 @@ public class CuentasFacadeREST {
             abmManager.edit(Cuentas.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Cuentas.class);
         }
     }
 
@@ -87,7 +87,7 @@ public class CuentasFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Cuentas.class);
         }
     }
 
@@ -100,7 +100,7 @@ public class CuentasFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Cuentas.class);
         }
     }
     

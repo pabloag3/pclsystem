@@ -9,6 +9,10 @@ import com.lawyersys.pclsystembe.abm.ABMManagerExpedientes;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -22,6 +26,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -40,6 +46,8 @@ public class DocumentosEntregadosFacadeREST {
     @EJB
     private ABMManagerExpedientes abmManager;
 
+    private static String UPLOADED_FOLDER = "C:\\pclSystemFiles\\documentosEntregados\\";
+    
     @POST
     @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
@@ -52,9 +60,34 @@ public class DocumentosEntregadosFacadeREST {
             abmManager.create(DocumentosEntregados.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, DocumentosEntregados.class);
         }
     }
+
+    @POST
+    @Path("subir-archivo")
+    public Response singleFileUpload(@RequestParam("file") MultipartFile file) {
+
+        if (file.isEmpty()) {
+            //redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
+            return Response.ok("redirect:uploadStatus").build();
+        }
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy.HH.mm.ss");  
+        LocalDateTime now = LocalDateTime.now();
+        try {
+            // Get the file and save it somewhere
+            byte[] bytes = file.getBytes();
+            java.nio.file.Path path = (java.nio.file.Path) Paths.get(UPLOADED_FOLDER + dtf.format(now) +file.getOriginalFilename());
+            Files.write(path, bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        String mensaje = UPLOADED_FOLDER + dtf.format(now) +file.getOriginalFilename();
+        
+        return Response.ok(mensaje).build();
+    }
+    
 
     @PUT
     @Path("actualizar/{id}")
@@ -68,7 +101,7 @@ public class DocumentosEntregadosFacadeREST {
             abmManager.edit(DocumentosEntregados.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, DocumentosEntregados.class);
         }
     }
 
@@ -81,7 +114,7 @@ public class DocumentosEntregadosFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, DocumentosEntregados.class);
         }
     }
     
@@ -94,7 +127,7 @@ public class DocumentosEntregadosFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, DocumentosEntregados.class);
         }
     }
 
@@ -107,7 +140,7 @@ public class DocumentosEntregadosFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, DocumentosEntregados.class);
         }
     }
     
