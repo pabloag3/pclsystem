@@ -8,12 +8,16 @@ import com.lawyersys.pclsystembacke.entities.DocumentosEntregados;
 import com.lawyersys.pclsystembe.abm.ABMManagerExpedientes;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
@@ -24,10 +28,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import org.apache.commons.io.IOUtils;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+
+import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 /**
  *
@@ -62,32 +69,91 @@ public class DocumentosEntregadosFacadeREST {
         } catch (Exception e) {
             return ErrorManager.manejarError(e, DocumentosEntregados.class);
         }
-    }
-
-    @POST
-    @Path("subir-archivo")
-    public Response singleFileUpload(@RequestParam("file") MultipartFile file) {
-
-        if (file.isEmpty()) {
-            //redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
-            return Response.ok("redirect:uploadStatus").build();
-        }
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy.HH.mm.ss");  
-        LocalDateTime now = LocalDateTime.now();
-        try {
-            // Get the file and save it somewhere
-            byte[] bytes = file.getBytes();
-            java.nio.file.Path path = (java.nio.file.Path) Paths.get(UPLOADED_FOLDER + dtf.format(now) +file.getOriginalFilename());
-            Files.write(path, bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        
-        String mensaje = UPLOADED_FOLDER + dtf.format(now) +file.getOriginalFilename();
-        
-        return Response.ok(mensaje).build();
-    }
+    }    
     
+    @POST
+    @Path("/subir-archivo")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadFile(MultipartFormDataInput input) {
+
+        String fileName = "";
+
+        Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
+        List<InputPart> inputParts = uploadForm.get("file");
+
+        for (InputPart inputPart : inputParts) {
+
+            try {
+
+                MultivaluedMap<String, String> header = inputPart.getHeaders();
+                fileName = getFileName(header);
+
+                //convert the uploaded file to inputstream
+                InputStream inputStream = inputPart.getBody(InputStream.class,null);
+
+                byte [] bytes = IOUtils.toByteArray(inputStream);
+
+                //constructs upload file path
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy.HH.mm.ss");
+                LocalDateTime now = LocalDateTime.now();
+                
+                fileName = UPLOADED_FOLDER + dtf.format(now) + fileName;
+
+                writeFile(bytes,fileName);
+
+                System.out.println("fileName");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return Response.ok(fileName).build();
+
+    }
+
+    /**
+     * header sample
+     * {
+     * 	Content-Type=[image/png], 
+     * 	Content-Disposition=[form-data; name="file"; filename="filename.extension"]
+     * }
+     **/
+    //get uploaded filename, is there a easy way in RESTEasy?
+    private String getFileName(MultivaluedMap<String, String> header) {
+
+        String[] contentDisposition = header.getFirst("Content-Disposition").split(";");
+
+        for (String filename : contentDisposition) {
+                if ((filename.trim().startsWith("filename"))) {
+
+                        String[] name = filename.split("=");
+
+                        String finalFileName = name[1].trim().replaceAll("\"", "");
+                        return finalFileName;
+                }
+        }
+        
+        return "unknown";
+    }
+
+    //save to somewhere
+    private void writeFile(byte[] content, String filename) throws IOException {
+
+        File file = new File(filename);
+
+        if (!file.exists()) {
+                file.createNewFile();
+        }
+
+        FileOutputStream fop = new FileOutputStream(file);
+
+        fop.write(content);
+        fop.flush();
+        fop.close();
+
+    }
 
     @PUT
     @Path("actualizar/{id}")
