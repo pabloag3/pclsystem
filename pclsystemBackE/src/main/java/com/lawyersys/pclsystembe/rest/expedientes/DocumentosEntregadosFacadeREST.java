@@ -9,6 +9,7 @@ import com.lawyersys.pclsystembe.abm.ABMManagerExpedientes;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,14 +28,17 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import org.apache.commons.io.IOUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+import org.jboss.resteasy.spi.UnhandledException;
 
 /**
  *
@@ -152,6 +156,22 @@ public class DocumentosEntregadosFacadeREST {
         fop.write(content);
         fop.flush();
         fop.close();
+
+    }
+    
+    @GET
+    @Path("/download")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response downloadFileWithGet(@QueryParam("file") String file) {
+        
+        try {
+            File fileDownload = new File(file);
+            ResponseBuilder response = Response.ok((Object) fileDownload);
+            response.header("Content-Disposition", "attachment;filename=" + file);
+            return response.build();
+        } catch (NullPointerException e) {
+            return Response.noContent().build();
+        }
 
     }
 

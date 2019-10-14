@@ -26,6 +26,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.PathSegment;
@@ -180,6 +181,22 @@ public class DetalleExpedienteFacadeREST {
 
     }
     
+    @GET
+    @Path("/download")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response downloadFileWithGet(@QueryParam("file") String file) {
+        
+        try {
+            File fileDownload = new File(file);
+            Response.ResponseBuilder response = Response.ok((Object) fileDownload);
+            response.header("Content-Disposition", "attachment;filename=" + file);
+            return response.build();
+        } catch (NullPointerException e) {
+            return Response.noContent().build();
+        }
+
+    }
+
 
     @PUT
     @Path("actualizar/{id}")
