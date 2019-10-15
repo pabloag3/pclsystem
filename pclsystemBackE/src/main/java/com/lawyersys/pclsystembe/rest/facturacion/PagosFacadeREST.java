@@ -53,6 +53,41 @@ public class PagosFacadeREST {
             if ( elem.getCodTipoPago().getCodTipoPago() == 0 ) {
                 throw new FaltaCargarElemento("Error. Cargar tipo de pago.");
             }
+            
+            // en caso que se pague con cheque
+            if (elem.getCodTipoPago().getCodTipoPago() == 2) {
+                if (elem.getNroCuentaCheque() == null) {
+                    throw new FaltaCargarElemento("Error. Cargar nro de cuenta del cheque.");
+                }
+                if (elem.getFechaVencCheque() == null) {
+                    throw new FaltaCargarElemento("Error. Cargar fecha del vencimiento del cheque.");
+                }
+                if (elem.getNroSerieCheque() == null) {
+                    throw new FaltaCargarElemento("Error. Cargar nro de serie del cheque.");
+                }
+                if (elem.getEntidadFinanciera() == null) {
+                    throw new FaltaCargarElemento("Error. Cargar entidad financiera.");
+                }
+            } else if (elem.getCodTipoPago().getCodTipoPago() == 3 || elem.getCodTipoPago().getCodTipoPago() == 4) {
+                // en caso que se pague con tarjeta de credito o debito
+                if (elem.getEntidadFinanciera() == null) {
+                    throw new FaltaCargarElemento("Error. Cargar entidad financiera.");
+                }
+                if (elem.getNroComproBanco() == null) {
+                    throw new FaltaCargarElemento("Error. Cargar numero de comprobante del banco.");
+                }
+                if (elem.getNroTarjeta() == null) {
+                    throw new FaltaCargarElemento("Error. Cargar numero de tarjeta.");
+                }
+            } else if (elem.getCodTipoPago().getCodTipoPago() == 5) {
+                if (elem.getNroComproBanco() == null) {
+                    throw new FaltaCargarElemento("Error. Cargar numero de comprobante del banco.");
+                }
+                if (elem.getEntidadFinanciera() == null) {
+                    throw new FaltaCargarElemento("Error. Cargar entidad financiera.");
+                }
+            }
+
             abmManager.create(Pagos.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
@@ -78,6 +113,41 @@ public class PagosFacadeREST {
             if ( elem.getCodTipoPago().getCodTipoPago() == 0 ) {
                 throw new FaltaCargarElemento("Error. Cargar tipo de pago.");
             }
+            
+            // en caso que se pague con cheque
+            if (elem.getCodTipoPago().getCodTipoPago() == 2) {
+                if (elem.getNroCuentaCheque() == null) {
+                    throw new FaltaCargarElemento("Error. Cargar nro de cuenta del cheque.");
+                }
+                if (elem.getFechaVencCheque() == null) {
+                    throw new FaltaCargarElemento("Error. Cargar fecha del vencimiento del cheque.");
+                }
+                if (elem.getNroSerieCheque() == null) {
+                    throw new FaltaCargarElemento("Error. Cargar nro de serie del cheque.");
+                }
+                if (elem.getEntidadFinanciera() == null) {
+                    throw new FaltaCargarElemento("Error. Cargar entidad financiera.");
+                }
+            } else if (elem.getCodTipoPago().getCodTipoPago() == 3 || elem.getCodTipoPago().getCodTipoPago() == 4) {
+                // en caso que se pague con tarjeta de credito o debito
+                if (elem.getEntidadFinanciera() == null) {
+                    throw new FaltaCargarElemento("Error. Cargar entidad financiera.");
+                }
+                if (elem.getNroComproBanco() == null) {
+                    throw new FaltaCargarElemento("Error. Cargar numero de comprobante del banco.");
+                }
+                if (elem.getNroTarjeta() == null) {
+                    throw new FaltaCargarElemento("Error. Cargar numero de tarjeta.");
+                }
+            } else if (elem.getCodTipoPago().getCodTipoPago() == 5) {
+                if (elem.getNroComproBanco() == null) {
+                    throw new FaltaCargarElemento("Error. Cargar numero de comprobante del banco.");
+                }
+                if (elem.getEntidadFinanciera() == null) {
+                    throw new FaltaCargarElemento("Error. Cargar entidad financiera.");
+                }
+            }
+            
             abmManager.edit(Pagos.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
