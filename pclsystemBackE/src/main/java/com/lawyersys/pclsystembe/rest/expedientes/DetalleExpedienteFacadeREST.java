@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
@@ -84,12 +85,10 @@ public class DetalleExpedienteFacadeREST {
             if ( elem.getDescripcion()== null ) {
                 throw new FaltaCargarElemento("Error. Cargar descripcion.");
             }
-            if ( elem.getFecha() == null ) {
-                throw new FaltaCargarElemento("Error. Cargar fecha.");
+            if ( elem.getCodTipoActuacion().getCodTipoActuacion() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar tipo de actuacion.");
             }
-            if ( elem.getArchivo() == null ) {
-                throw new FaltaCargarElemento("Error. Cargar archivo.");
-            }
+            elem.setFecha(new Date());
             abmManager.create(DetalleExpediente.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
