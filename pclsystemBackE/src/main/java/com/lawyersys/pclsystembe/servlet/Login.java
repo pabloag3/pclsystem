@@ -86,7 +86,6 @@ public class Login extends HttpServlet {
                     List<Empleados> empleados = (List<Empleados>) (Object) abmManager.find("Empleados", usuario.getCedula().getCedula());
                     Empleados empleado = empleados.get(0);
                     
-                    
                     if (empleado.getCodEstado().getDescripcion().equals("HABILITADO") ) {
                         
                         String uuid = UUID.randomUUID().toString();

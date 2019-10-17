@@ -69,7 +69,7 @@ public class EmpleadosREST {
             abmManager.create(Empleados.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Empleados.class);
         }
         
     }
@@ -105,7 +105,7 @@ public class EmpleadosREST {
             abmManager.edit(Empleados.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Empleados.class);
         }
     }
 
@@ -119,7 +119,7 @@ public class EmpleadosREST {
             System.out.println(resp);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Empleados.class);
         }
     }
 
@@ -132,7 +132,7 @@ public class EmpleadosREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Empleados.class);
         }
     }
     

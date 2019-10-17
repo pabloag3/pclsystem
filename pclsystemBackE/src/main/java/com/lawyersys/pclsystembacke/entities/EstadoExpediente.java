@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author carlo
+ * @author tatoa
  */
 @Entity
 @Table(name = "estado_expediente")

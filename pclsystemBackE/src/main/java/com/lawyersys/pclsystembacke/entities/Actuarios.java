@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -53,22 +54,22 @@ public class Actuarios implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "apellido")
     private String apellido;
-   
+    
     @Size(max = 2147483647)
     @Column(name = "telefono_1")
     private String telefono1;
-   
+    
     @Size(max = 2147483647)
     @Column(name = "telefono_2")
     private String telefono2;
     
-    @OneToMany(mappedBy = "codActuario")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codActuario")
     @JsonIgnore
-    private List<DetalleExpediente> detalleExpedienteList;
+    private List<Despachos> despachosList;
     
     @OneToMany(mappedBy = "codActuario")
     @JsonIgnore
-    private List<Despachos> despachosList;
+    private List<DetalleExpediente> detalleExpedienteList;
 
     public Actuarios() {
     }
@@ -124,15 +125,6 @@ public class Actuarios implements Serializable {
     }
 
     @XmlTransient
-    public List<DetalleExpediente> getDetalleExpedienteList() {
-        return detalleExpedienteList;
-    }
-
-    public void setDetalleExpedienteList(List<DetalleExpediente> detalleExpedienteList) {
-        this.detalleExpedienteList = detalleExpedienteList;
-    }
-
-    @XmlTransient
     public List<Despachos> getDespachosList() {
         return despachosList;
     }
@@ -141,6 +133,15 @@ public class Actuarios implements Serializable {
         this.despachosList = despachosList;
     }
 
+    @XmlTransient
+    public List<DetalleExpediente> getDetalleExpedienteList() {
+        return detalleExpedienteList;
+    }
+
+    public void setDetalleExpedienteList(List<DetalleExpediente> detalleExpedienteList) {
+        this.detalleExpedienteList = detalleExpedienteList;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -163,7 +164,7 @@ public class Actuarios implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.Actuarios[ codActuario=" + codActuario + " ]";
+        return "com.lawyersys.pclsystembacke.Actuarios[ codActuario=" + codActuario + " ]";
     }
     
 }

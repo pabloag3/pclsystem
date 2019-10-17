@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembe.rest.facturacion;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,10 +11,7 @@ import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -34,10 +29,9 @@ import org.springframework.web.bind.annotation.RequestBody;
  */
 @Stateless
 @Path("detallecuenta")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class DetalleCuentaFacadeREST {
-
-    @PersistenceContext(unitName = "lawyersys")
-    private EntityManager em;
 
     private DetalleCuentaPK getPrimaryKey(PathSegment pathSegment) {
         /*
@@ -65,23 +59,23 @@ public class DetalleCuentaFacadeREST {
 
     @EJB
     private ABMManagerFacturacion abmManager;
-    
+
     @POST
     @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            DetalleCuenta elem = mapper.readValue(entity, DetalleCuenta.class);   
-            if ( elem.getMonto() == 0 ) {
-                throw new FaltaCargarElemento("Error. Cargar monto.");
-            }
+            DetalleCuenta elem = mapper.readValue(entity, DetalleCuenta.class);
             if ( elem.getDescripcion() == null ) {
                 throw new FaltaCargarElemento("Error. Cargar descripcion.");
+            }
+            if ( elem.getMonto() == 0 ) {
+                throw new FaltaCargarElemento("Error. Cargar monto.");
             }
             abmManager.create(DetalleCuenta.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, DetalleCuenta.class);
         }
     }
 
@@ -90,17 +84,17 @@ public class DetalleCuentaFacadeREST {
     public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            DetalleCuenta elem = mapper.readValue(entity, DetalleCuenta.class);  
-            if ( elem.getMonto() == 0 ) {
-                throw new FaltaCargarElemento("Error. Cargar monto.");
-            }
+            DetalleCuenta elem = mapper.readValue(entity, DetalleCuenta.class);
             if ( elem.getDescripcion() == null ) {
                 throw new FaltaCargarElemento("Error. Cargar descripcion.");
+            }
+            if ( elem.getMonto() == 0 ) {
+                throw new FaltaCargarElemento("Error. Cargar monto.");
             }
             abmManager.edit(DetalleCuenta.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, DetalleCuenta.class);
         }
     }
 
@@ -113,7 +107,20 @@ public class DetalleCuentaFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, DetalleCuenta.class);
+        }
+    }
+    
+    @GET
+    @Path("traer-detalles-de-cuenta/{id}")
+    public Response traerDetallesDeCuenta(@PathParam("id") String id) throws JsonProcessingException {
+        try {
+            List<DetalleCuenta> elem = (List<DetalleCuenta>) (Object) abmManager.traerDetallesDeCuenta(id);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, DetalleCuenta.class);
         }
     }
 
@@ -126,7 +133,7 @@ public class DetalleCuentaFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, DetalleCuenta.class);
         }
     }
     

@@ -1,4 +1,3 @@
-
 package com.lawyersys.pclsystembacke.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,7 +11,6 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumns;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -20,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -35,12 +34,19 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Facturas.findByCodFactura", query = "SELECT f FROM Facturas f WHERE f.facturasPK.codFactura = :codFactura")
     , @NamedQuery(name = "Facturas.findByCodCuenta", query = "SELECT f FROM Facturas f WHERE f.facturasPK.codCuenta = :codCuenta")
     , @NamedQuery(name = "Facturas.findByFechaEmision", query = "SELECT f FROM Facturas f WHERE f.fechaEmision = :fechaEmision")
-    , @NamedQuery(name = "Facturas.findByMontoTotal", query = "SELECT f FROM Facturas f WHERE f.montoTotal = :montoTotal")})
+    , @NamedQuery(name = "Facturas.findByMontoTotal", query = "SELECT f FROM Facturas f WHERE f.montoTotal = :montoTotal")
+    , @NamedQuery(name = "Facturas.findUltimaFactura", query = "SELECT f FROM Facturas f ORDER BY f.facturasPK.codFactura DESC")
+})
 public class Facturas implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
+    
     @EmbeddedId
     protected FacturasPK facturasPK;
+    
+    @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente")
+    @ManyToOne(optional = false)
+    private Clientes codCliente;
     
     @Basic(optional = false)
     @NotNull
@@ -52,21 +58,27 @@ public class Facturas implements Serializable {
     @NotNull
     @Column(name = "monto_total")
     private int montoTotal;
-    
-    @JoinColumns({
-        @JoinColumn(name = "cod_cuenta", referencedColumnName = "cod_cuenta", insertable = false, updatable = false),
-        @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente", insertable = false, updatable = false)
-    })
-    @ManyToOne(optional = false)
-    private Cuentas cuentas;
-    
+
     @JoinColumn(name = "cedula_emisor", referencedColumnName = "cedula")
     @ManyToOne(optional = false)
     private Empleados cedulaEmisor;
     
+    @JoinColumn(name = "cod_pago", referencedColumnName = "cod_pago")
+    @ManyToOne(optional = false)
+    private Pagos codPago;
+    
+    @Basic(optional = false)
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "archivo")
+    private String archivo;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "facturas")
     @JsonIgnore
     private List<DetalleFactura> detalleFacturaList;
+    
+    @JoinColumn(name = "cod_cuenta", referencedColumnName = "cod_cuenta", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Cuentas cuentas;
 
     public Facturas() {
     }
@@ -124,6 +136,14 @@ public class Facturas implements Serializable {
     public void setCedulaEmisor(Empleados cedulaEmisor) {
         this.cedulaEmisor = cedulaEmisor;
     }
+    
+    public Pagos getCodPago() {
+        return codPago;
+    }
+
+    public void setCodPago(Pagos codPago) {
+        this.codPago = codPago;
+    }
 
     @XmlTransient
     public List<DetalleFactura> getDetalleFacturaList() {
@@ -132,6 +152,22 @@ public class Facturas implements Serializable {
 
     public void setDetalleFacturaList(List<DetalleFactura> detalleFacturaList) {
         this.detalleFacturaList = detalleFacturaList;
+    }
+    
+    public String getArchivo() {
+        return archivo;
+    }
+
+    public void setArchivo(String archivo) {
+        this.archivo = archivo;
+    }
+
+    public Clientes getCodCliente() {
+        return codCliente;
+    }
+
+    public void setCodCliente(Clientes codCliente) {
+        this.codCliente = codCliente;
     }
 
     @Override
@@ -156,7 +192,7 @@ public class Facturas implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.Facturas[ facturasPK=" + facturasPK + " ]";
+        return "com.lawyersys.pclsystembacke.Facturas[ facturasPK=" + facturasPK + " ]";
     }
     
 }

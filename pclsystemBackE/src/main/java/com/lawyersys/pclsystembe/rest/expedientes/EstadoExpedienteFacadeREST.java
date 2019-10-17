@@ -1,11 +1,9 @@
-/*
- */
-package com.lawyersys.pclsystembe.rest.despachos;
+package com.lawyersys.pclsystembe.rest.expedientes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lawyersys.pclsystembacke.entities.Actuarios;
-import com.lawyersys.pclsystembe.abm.ABMManagerDespachos;
+import com.lawyersys.pclsystembacke.entities.EstadoExpediente;
+import com.lawyersys.pclsystembe.abm.ABMManagerExpedientes;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
 import java.io.IOException;
@@ -25,36 +23,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  *
- * @author Pablo Aguilar
+ * @author tatoa
  */
 @Stateless
-@Path("actuarios")
+@Path("estadosexpediente")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ActuariosFacadeREST {
+public class EstadoExpedienteFacadeREST {
 
-    public ActuariosFacadeREST() {
+    public EstadoExpedienteFacadeREST() {
     }
 
     @EJB
-    private ABMManagerDespachos abmManager;
+    private ABMManagerExpedientes abmManager;
 
     @POST
     @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            Actuarios elem = mapper.readValue(entity, Actuarios.class);   
-            if ( elem.getNombre()== null ) {
-                throw new FaltaCargarElemento("Error. Cargar nombre.");
+            EstadoExpediente elem = mapper.readValue(entity, EstadoExpediente.class);   
+            if ( elem.getDescripcion()== null ) {
+                throw new FaltaCargarElemento("Error. Cargar descripcion.");
             }
-            if ( elem.getApellido()== null ) {
-                throw new FaltaCargarElemento("Error. Cargar apellido.");
-            }
-            abmManager.create(Actuarios.class, elem);
+            abmManager.create(EstadoExpediente.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.manejarError(e, Actuarios.class);
+            return ErrorManager.manejarError(e, EstadoExpediente.class);
         }
     }
 
@@ -63,17 +58,14 @@ public class ActuariosFacadeREST {
     public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            Actuarios elem = mapper.readValue(entity, Actuarios.class);
-            if ( elem.getNombre()== null ) {
-                throw new FaltaCargarElemento("Error. Cargar nombre.");
+            EstadoExpediente elem = mapper.readValue(entity, EstadoExpediente.class);
+            if ( elem.getDescripcion()== null ) {
+                throw new FaltaCargarElemento("Error. Cargar descripcion.");
             }
-            if ( elem.getApellido()== null ) {
-                throw new FaltaCargarElemento("Error. Cargar apellido.");
-            }
-            abmManager.edit(Actuarios.class, elem);
+            abmManager.edit(EstadoExpediente.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.manejarError(e, Actuarios.class);
+            return ErrorManager.manejarError(e, EstadoExpediente.class);
         }
     }
 
@@ -81,12 +73,12 @@ public class ActuariosFacadeREST {
     @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         try {
-            List<Actuarios> elem = (List<Actuarios>) (Object) abmManager.find("Actuarios", id);
+            List<EstadoExpediente> elem = (List<EstadoExpediente>) (Object) abmManager.find("EstadoExpediente", id);
             ObjectMapper mapper = new ObjectMapper();
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.manejarError(e, Actuarios.class);
+            return ErrorManager.manejarError(e, EstadoExpediente.class);
         }
     }
 
@@ -94,12 +86,12 @@ public class ActuariosFacadeREST {
     @Path("listar")
     public Response findAll() throws JsonProcessingException {
         try {
-            List<Actuarios> elem = (List<Actuarios>) (Object) abmManager.findAll("Actuarios");
+            List<EstadoExpediente> elem = (List<EstadoExpediente>) (Object) abmManager.findAll("EstadoExpediente");
             ObjectMapper mapper = new ObjectMapper();
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.manejarError(e, Actuarios.class);
+            return ErrorManager.manejarError(e, EstadoExpediente.class);
         }
     }
     

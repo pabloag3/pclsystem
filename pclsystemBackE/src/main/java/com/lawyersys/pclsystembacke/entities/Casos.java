@@ -35,12 +35,13 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Casos implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_caso")
     private Integer codCaso;
-   
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 200)
@@ -50,17 +51,17 @@ public class Casos implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCaso")
     @JsonIgnore
     private List<Expedientes> expedientesList;
-   
+    
     @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente")
     @ManyToOne(optional = false)
     private Clientes codCliente;
-   
+    
     @JoinColumn(name = "cod_estado_caso", referencedColumnName = "cod_estado_caso")
     @ManyToOne(optional = false)
     private EstadosCaso codEstadoCaso;
-   
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCaso")
+    
     @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCaso")
     private List<Cuentas> cuentasList;
 
     public Casos() {
@@ -147,7 +148,7 @@ public class Casos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.Casos[ codCaso=" + codCaso + " ]";
+        return "com.lawyersys.pclsystembacke.Casos[ codCaso=" + codCaso + " ]";
     }
     
 }

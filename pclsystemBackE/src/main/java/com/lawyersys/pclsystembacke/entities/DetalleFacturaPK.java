@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
@@ -19,26 +14,19 @@ import javax.validation.constraints.NotNull;
 public class DetalleFacturaPK implements Serializable {
 
     @Basic(optional = false)
+    @Column(name = "cod_detalle_factura")
+    private int codDetalleFactura;
+    
+    @Basic(optional = false)
     @NotNull
     @Column(name = "cod_factura")
     private int codFactura;
-    @Basic(optional = false)
-    @Column(name = "cod_detalle_factura")
-    private int codDetalleFactura;
 
     public DetalleFacturaPK() {
     }
 
-    public DetalleFacturaPK(int codFactura, int codDetalleFactura) {
-        this.codFactura = codFactura;
+    public DetalleFacturaPK(int codDetalleFactura, int codFactura) {
         this.codDetalleFactura = codDetalleFactura;
-    }
-
-    public int getCodFactura() {
-        return codFactura;
-    }
-
-    public void setCodFactura(int codFactura) {
         this.codFactura = codFactura;
     }
 
@@ -50,11 +38,20 @@ public class DetalleFacturaPK implements Serializable {
         this.codDetalleFactura = codDetalleFactura;
     }
 
+    public int getCodFactura() {
+        return codFactura;
+    }
+
+    public void setCodFactura(int codFactura) {
+        this.codFactura = codFactura;
+    }
+
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) codFactura;
         hash += (int) codDetalleFactura;
+        hash += (int) codFactura;
         return hash;
     }
 
@@ -65,10 +62,10 @@ public class DetalleFacturaPK implements Serializable {
             return false;
         }
         DetalleFacturaPK other = (DetalleFacturaPK) object;
-        if (this.codFactura != other.codFactura) {
+        if (this.codDetalleFactura != other.codDetalleFactura) {
             return false;
         }
-        if (this.codDetalleFactura != other.codDetalleFactura) {
+        if (this.codFactura != other.codFactura) {
             return false;
         }
         return true;
@@ -76,7 +73,7 @@ public class DetalleFacturaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.DetalleFacturaPK[ codFactura=" + codFactura + ", codDetalleFactura=" + codDetalleFactura + " ]";
+        return "com.lawyersys.pclsystembacke.DetalleFacturaPK[ codDetalleFactura=" + codDetalleFactura + ", codFactura=" + codFactura + " ]";
     }
     
 }

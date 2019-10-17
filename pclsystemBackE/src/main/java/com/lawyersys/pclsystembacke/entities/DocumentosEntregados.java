@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author carlo
+ * @author tatoa
  */
 @Entity
 @Table(name = "documentos_entregados")
@@ -27,7 +27,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "DocumentosEntregados.findAll", query = "SELECT d FROM DocumentosEntregados d")
     , @NamedQuery(name = "DocumentosEntregados.findByCodDocumento", query = "SELECT d FROM DocumentosEntregados d WHERE d.codDocumento = :codDocumento")
-    , @NamedQuery(name = "DocumentosEntregados.findByDescripcion", query = "SELECT d FROM DocumentosEntregados d WHERE d.descripcion = :descripcion")})
+    , @NamedQuery(name = "DocumentosEntregados.findByDescripcion", query = "SELECT d FROM DocumentosEntregados d WHERE d.descripcion = :descripcion")
+    , @NamedQuery(name = "DocumentosEntregados.findByCodCliente", query = "SELECT d FROM DocumentosEntregados d WHERE d.codCliente.codCliente = :codCliente")
+})
 public class DocumentosEntregados implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,10 +45,11 @@ public class DocumentosEntregados implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "descripcion")
     private String descripcion;
-   
-    @Lob
+    
+    @Basic(optional = false)
+    @Size(min = 1, max = 2147483647)
     @Column(name = "archivo")
-    private byte[] archivo;
+    private String archivo;
     
     @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente")
     @ManyToOne(optional = false)
@@ -80,13 +83,6 @@ public class DocumentosEntregados implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public byte[] getArchivo() {
-        return archivo;
-    }
-
-    public void setArchivo(byte[] archivo) {
-        this.archivo = archivo;
-    }
 
     public Clientes getCodCliente() {
         return codCliente;
@@ -119,6 +115,14 @@ public class DocumentosEntregados implements Serializable {
     @Override
     public String toString() {
         return "com.lawyersys.pclsystembacke.entities.DocumentosEntregados[ codDocumento=" + codDocumento + " ]";
+    }
+
+    public String getArchivo() {
+        return archivo;
+    }
+
+    public void setArchivo(String archivo) {
+        this.archivo = archivo;
     }
     
 }

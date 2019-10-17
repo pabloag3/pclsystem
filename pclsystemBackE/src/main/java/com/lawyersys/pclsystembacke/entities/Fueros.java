@@ -109,7 +109,7 @@ public class Fueros implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.Fueros[ codFuero=" + codFuero + " ]";
+        return "com.lawyersys.pclsystembacke.Fueros[ codFuero=" + codFuero + " ]";
     }
     
 }

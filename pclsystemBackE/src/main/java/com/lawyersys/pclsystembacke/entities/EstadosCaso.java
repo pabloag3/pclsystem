@@ -109,7 +109,7 @@ public class EstadosCaso implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.EstadosCaso[ codEstadoCaso=" + codEstadoCaso + " ]";
+        return "com.lawyersys.pclsystembacke.EstadosCaso[ codEstadoCaso=" + codEstadoCaso + " ]";
     }
     
 }

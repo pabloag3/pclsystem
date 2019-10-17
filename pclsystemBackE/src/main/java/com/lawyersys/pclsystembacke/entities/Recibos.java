@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -31,14 +30,17 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Recibos.findByMonto", query = "SELECT r FROM Recibos r WHERE r.monto = :monto")})
 public class Recibos implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_recibo")
     private Integer codRecibo;
     
+    @JoinColumn(name = "cod_pago", referencedColumnName = "cod_pago")
+    @ManyToOne(optional = false)
+    private Pagos codPago;
+
+    private static final long serialVersionUID = 1L;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
@@ -49,22 +51,12 @@ public class Recibos implements Serializable {
     @NotNull
     @Column(name = "monto")
     private int monto;
-   
-    @JoinColumn(name = "cod_pago", referencedColumnName = "cod_pago")
-    @ManyToOne(optional = false)
-    private Pagos codPago;
 
     public Recibos() {
     }
-
+    
     public Recibos(Integer codRecibo) {
         this.codRecibo = codRecibo;
-    }
-
-    public Recibos(Integer codRecibo, String descripcion, int monto) {
-        this.codRecibo = codRecibo;
-        this.descripcion = descripcion;
-        this.monto = monto;
     }
 
     public Integer getCodRecibo() {
@@ -73,6 +65,20 @@ public class Recibos implements Serializable {
 
     public void setCodRecibo(Integer codRecibo) {
         this.codRecibo = codRecibo;
+    }
+
+    public Pagos getCodPago() {
+        return codPago;
+    }
+
+    public void setCodPago(Pagos codPago) {
+        this.codPago = codPago;
+    }
+
+    public Recibos(Integer codRecibo, String descripcion, int monto) {
+        this.codRecibo = codRecibo;
+        this.descripcion = descripcion;
+        this.monto = monto;
     }
 
     public String getDescripcion() {
@@ -89,14 +95,6 @@ public class Recibos implements Serializable {
 
     public void setMonto(int monto) {
         this.monto = monto;
-    }
-
-    public Pagos getCodPago() {
-        return codPago;
-    }
-
-    public void setCodPago(Pagos codPago) {
-        this.codPago = codPago;
     }
 
     @Override
@@ -121,7 +119,7 @@ public class Recibos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.Recibos[ codRecibo=" + codRecibo + " ]";
+        return "com.lawyersys.pclsystembacke.Recibos[ recibosPK=" + codRecibo + " ]";
     }
     
 }

@@ -1,24 +1,28 @@
 package com.lawyersys.pclsystembacke.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -37,9 +41,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Pagos.findByNroTarjeta", query = "SELECT p FROM Pagos p WHERE p.nroTarjeta = :nroTarjeta")
     , @NamedQuery(name = "Pagos.findByNroSerieCheque", query = "SELECT p FROM Pagos p WHERE p.nroSerieCheque = :nroSerieCheque")
     , @NamedQuery(name = "Pagos.findByNroCuentaCheque", query = "SELECT p FROM Pagos p WHERE p.nroCuentaCheque = :nroCuentaCheque")
-    , @NamedQuery(name = "Pagos.findByFechaVencCheque", query = "SELECT p FROM Pagos p WHERE p.fechaVencCheque = :fechaVencCheque")})
+    , @NamedQuery(name = "Pagos.findByFechaVencCheque", query = "SELECT p FROM Pagos p WHERE p.fechaVencCheque = :fechaVencCheque")
+    , @NamedQuery(name = "Pagos.findUltimoPago", query = "SELECT p FROM Pagos p ORDER BY p.codPago DESC")
+})
 public class Pagos implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     
     @Id
@@ -87,35 +93,25 @@ public class Pagos implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fechaVencCheque;
     
-//    @JoinColumns({
-//        @JoinColumn(name = "cod_cuenta", referencedColumnName = "cod_cuenta")
-//        , @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente")})
-//    @ManyToOne(optional = false)
-//    private Cuentas cuentas;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codRecibo")
+    @JsonIgnore
+    private List<Recibos> recibosList;
     
     @JoinColumn(name = "cod_tipo_pago", referencedColumnName = "cod_tipo_pago")
     @ManyToOne(optional = false)
     private TiposPagos codTipoPago;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codPago")
+    @JsonIgnore
+    private List<Facturas> facturasList;
 
     public Pagos() {
-    }
-
-    public Pagos(Integer codPago) {
-        this.codPago = codPago;
     }
 
     public Pagos(Integer codPago, Date fechaPago, int montoPagado) {
         this.codPago = codPago;
         this.fechaPago = fechaPago;
         this.montoPagado = montoPagado;
-    }
-
-    public Integer getCodPago() {
-        return codPago;
-    }
-
-    public void setCodPago(Integer codPago) {
-        this.codPago = codPago;
     }
 
     public Date getFechaPago() {
@@ -182,13 +178,14 @@ public class Pagos implements Serializable {
         this.fechaVencCheque = fechaVencCheque;
     }
 
-//    public Cuentas getCuentas() {
-//        return cuentas;
-//    }
-//
-//    public void setCuentas(Cuentas cuentas) {
-//        this.cuentas = cuentas;
-//    }
+    @XmlTransient
+    public List<Recibos> getRecibosList() {
+        return recibosList;
+    }
+
+    public void setRecibosList(List<Recibos> recibosList) {
+        this.recibosList = recibosList;
+    }
 
     public TiposPagos getCodTipoPago() {
         return codTipoPago;
@@ -196,6 +193,26 @@ public class Pagos implements Serializable {
 
     public void setCodTipoPago(TiposPagos codTipoPago) {
         this.codTipoPago = codTipoPago;
+    }
+
+    public Pagos(Integer codPago) {
+        this.codPago = codPago;
+    }
+
+    public Integer getCodPago() {
+        return codPago;
+    }
+
+    public void setCodPago(Integer codPago) {
+        this.codPago = codPago;
+    }
+
+    public Cuentas getCodCuenta() {
+        return codCuenta;
+    }
+
+    public void setCodCuenta(Cuentas codCuenta) {
+        this.codCuenta = codCuenta;
     }
 
     @Override
@@ -223,12 +240,13 @@ public class Pagos implements Serializable {
         return "com.lawyersys.pclsystembacke.entities.Pagos[ codPago=" + codPago + " ]";
     }
 
-    public Cuentas getCodCuenta() {
-        return codCuenta;
+    @XmlTransient
+    public List<Facturas> getFacturasList() {
+        return facturasList;
     }
 
-    public void setCodCuenta(Cuentas codCuenta) {
-        this.codCuenta = codCuenta;
+    public void setFacturasList(List<Facturas> facturasList) {
+        this.facturasList = facturasList;
     }
     
 }

@@ -109,7 +109,7 @@ public class TiposActividades implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.TiposActividades[ codTipoActividad=" + codTipoActividad + " ]";
+        return "com.lawyersys.pclsystembacke.TiposActividades[ codTipoActividad=" + codTipoActividad + " ]";
     }
     
 }

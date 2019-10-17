@@ -60,7 +60,7 @@ public class ExpedientesFacadeREST {
             abmManager.create(Expedientes.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Expedientes.class);
         }
     }
 
@@ -73,7 +73,7 @@ public class ExpedientesFacadeREST {
             abmManager.edit(Expedientes.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Expedientes.class);
         }
     }
 
@@ -86,7 +86,20 @@ public class ExpedientesFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Expedientes.class);
+        }
+    }
+    
+    @GET
+    @Path("listar-por-despachos/{id}")
+    public Response findPorDespachos(@PathParam("id") String id) throws JsonProcessingException {
+        try {
+            List<Expedientes> elem = (List<Expedientes>) (Object) abmManager.traerExpedientePorDespacho(id);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Expedientes.class);
         }
     }
 
@@ -99,7 +112,7 @@ public class ExpedientesFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Expedientes.class);
         }
     }
     

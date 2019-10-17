@@ -122,7 +122,7 @@ public class Departamentos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.Departamentos[ codDepartamento=" + codDepartamento + " ]";
+        return "com.lawyersys.pclsystembacke.Departamentos[ codDepartamento=" + codDepartamento + " ]";
     }
     
 }

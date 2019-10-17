@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
@@ -29,21 +24,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "DetalleFactura.findAll", query = "SELECT d FROM DetalleFactura d")
-    , @NamedQuery(name = "DetalleFactura.findByCodFactura", query = "SELECT d FROM DetalleFactura d WHERE d.detalleFacturaPK.codFactura = :codFactura")
     , @NamedQuery(name = "DetalleFactura.findByCodDetalleFactura", query = "SELECT d FROM DetalleFactura d WHERE d.detalleFacturaPK.codDetalleFactura = :codDetalleFactura")
+    , @NamedQuery(name = "DetalleFactura.findByCodFactura", query = "SELECT d FROM DetalleFactura d WHERE d.detalleFacturaPK.codFactura = :codFactura")
     , @NamedQuery(name = "DetalleFactura.findByPorcentajeIva", query = "SELECT d FROM DetalleFactura d WHERE d.porcentajeIva = :porcentajeIva")
     , @NamedQuery(name = "DetalleFactura.findByDescripcion", query = "SELECT d FROM DetalleFactura d WHERE d.descripcion = :descripcion")
     , @NamedQuery(name = "DetalleFactura.findByMontoIva", query = "SELECT d FROM DetalleFactura d WHERE d.montoIva = :montoIva")
     , @NamedQuery(name = "DetalleFactura.findByMonto", query = "SELECT d FROM DetalleFactura d WHERE d.monto = :monto")})
 public class DetalleFactura implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
     
     @EmbeddedId
     protected DetalleFacturaPK detalleFacturaPK;
+
     @Basic(optional = false)
     @NotNull
-    
     @Column(name = "porcentaje_iva")
     private int porcentajeIva;
     
@@ -63,19 +58,12 @@ public class DetalleFactura implements Serializable {
     @Column(name = "monto")
     private int monto;
     
+    @ManyToOne(optional = false)
     @JoinColumns({
         @JoinColumn(name = "cod_factura", referencedColumnName = "cod_factura", insertable = false, updatable = false),
         @JoinColumn(name = "cod_cuenta", referencedColumnName = "cod_cuenta", insertable = false, updatable = false)
     })
-    @ManyToOne(optional = false)
     private Facturas facturas;
-    
-    @JoinColumns({
-        @JoinColumn(name = "cod_pago", referencedColumnName = "cod_pago", insertable = false, updatable = false),
-        @JoinColumn(name = "cod_cuenta", referencedColumnName = "cod_cuenta", insertable = false, updatable = false)
-    })
-    @ManyToOne(optional = false)
-    private Pagos codPago;
 
     public DetalleFactura() {
     }
@@ -92,8 +80,8 @@ public class DetalleFactura implements Serializable {
         this.monto = monto;
     }
 
-    public DetalleFactura(int codFactura, int codDetalleFactura) {
-        this.detalleFacturaPK = new DetalleFacturaPK(codFactura, codDetalleFactura);
+    public DetalleFactura(int codDetalleFactura, int codFactura) {
+        this.detalleFacturaPK = new DetalleFacturaPK(codDetalleFactura, codFactura);
     }
 
     public DetalleFacturaPK getDetalleFacturaPK() {
@@ -144,14 +132,6 @@ public class DetalleFactura implements Serializable {
         this.facturas = facturas;
     }
 
-    public Pagos getCodPago() {
-        return codPago;
-    }
-
-    public void setCodPago(Pagos codPago) {
-        this.codPago = codPago;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -174,7 +154,7 @@ public class DetalleFactura implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.DetalleFactura[ detalleFacturaPK=" + detalleFacturaPK + " ]";
+        return "com.lawyersys.pclsystembacke.DetalleFactura[ detalleFacturaPK=" + detalleFacturaPK + " ]";
     }
     
 }

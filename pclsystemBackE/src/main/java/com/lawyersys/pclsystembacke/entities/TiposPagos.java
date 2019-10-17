@@ -1,4 +1,3 @@
-
 package com.lawyersys.pclsystembacke.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -110,7 +109,7 @@ public class TiposPagos implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.entities.TiposPagos[ codTipoPago=" + codTipoPago + " ]";
+        return "com.lawyersys.pclsystembacke.TiposPagos[ codTipoPago=" + codTipoPago + " ]";
     }
     
 }
