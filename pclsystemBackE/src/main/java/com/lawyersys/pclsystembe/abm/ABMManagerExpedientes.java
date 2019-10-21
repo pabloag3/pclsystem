@@ -50,6 +50,12 @@ public class ABMManagerExpedientes {
         return q.getResultList();
     }
     
+    public List<Object> traerDetallesDeExpedientePorExpediente(String codExpediente) {
+        Query q = em.createNamedQuery("DetalleExpediente.findByCodExpediente")
+                .setParameter("codExpediente", Integer.parseInt(codExpediente));
+        return q.getResultList();
+    }
+    
     public List<Object> find(String entidad, String id) {
         List<Object> elem = null;
         if (entidad == "Casos") {

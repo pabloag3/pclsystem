@@ -233,10 +233,10 @@ public class DetalleExpedienteFacadeREST {
     }
 
     @GET
-    @Path("listar")
-    public Response findAll() throws JsonProcessingException {
+    @Path("listar-por-expediente/{id}")
+    public Response findByExpediente(@PathParam("id") String id) throws JsonProcessingException {
         try {
-            List<DetalleExpediente> elem = (List<DetalleExpediente>) (Object) abmManager.findAll("DetalleExpediente");
+            List<DetalleExpediente> elem = (List<DetalleExpediente>) (Object) abmManager.traerDetallesDeExpedientePorExpediente(id);
             ObjectMapper mapper = new ObjectMapper();
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
