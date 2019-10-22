@@ -223,7 +223,26 @@ public class DetalleExpedienteFacadeREST {
     @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         try {
+//            DetalleExpediente deAux = null;
+            
+//            List<DetalleExpediente> listaAuxiliar = null;
             List<DetalleExpediente> elem = (List<DetalleExpediente>) (Object) abmManager.find("DetalleExpediente", id);
+            
+//            for (int i = 0; i < elem.size(); i++) {
+//                DetalleExpedientePK dePKaux = new DetalleExpedientePK(elem.get(i).getDetalleExpedientePK().getCodDetalleExpediente(),
+//                        elem.get(i).getDetalleExpedientePK().getCodExpediente());
+//                deAux.setDetalleExpedientePK(dePKaux);
+//                deAux.setDescripcion(elem.get(i).getDescripcion());
+//                deAux.setFecha(elem.get(i).getFecha());
+//                deAux.setArchivo(elem.get(i).getArchivo());
+//                deAux.setCodTipoActuacion(elem.get(i).getCodTipoActuacion());
+//                deAux.setCodDespacho(elem.get(i).getCodDespacho());
+//                deAux.setCodJuez(elem.get(i).getCodJuez());
+//                deAux.setCodActuario(elem.get(i).getCodActuario());
+//                deAux.setCodUjier(elem.get(i).getCodUjier());
+//                listaAuxiliar.add(deAux);
+//            }
+            
             ObjectMapper mapper = new ObjectMapper();
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
@@ -233,10 +252,10 @@ public class DetalleExpedienteFacadeREST {
     }
 
     @GET
-    @Path("listar")
-    public Response findAll() throws JsonProcessingException {
+    @Path("listar-por-expediente/{id}")
+    public Response findByExpediente(@PathParam("id") String id) throws JsonProcessingException {
         try {
-            List<DetalleExpediente> elem = (List<DetalleExpediente>) (Object) abmManager.findAll("DetalleExpediente");
+            List<DetalleExpediente> elem = (List<DetalleExpediente>) (Object) abmManager.traerDetallesDeExpedientePorExpediente(id);
             ObjectMapper mapper = new ObjectMapper();
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
