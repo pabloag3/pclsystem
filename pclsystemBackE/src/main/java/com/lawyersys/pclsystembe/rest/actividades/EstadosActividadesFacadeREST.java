@@ -51,7 +51,7 @@ public class EstadosActividadesFacadeREST {
             abmManager.create(EstadosActividades.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, EstadosActividades.class);
         }
     }
 
@@ -67,7 +67,7 @@ public class EstadosActividadesFacadeREST {
             abmManager.edit(EstadosActividades.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, EstadosActividades.class);
         }
         
     }
@@ -81,7 +81,7 @@ public class EstadosActividadesFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, EstadosActividades.class);
         }
     }
 
@@ -94,7 +94,7 @@ public class EstadosActividadesFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, EstadosActividades.class);
         }
     }
     

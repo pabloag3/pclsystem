@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembe.rest.facturacion;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,14 +23,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  *
- * @author Pablo Aguilar
+ * @author tatoa
  */
 @Stateless
 @Path("tipospagos")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class TiposPagosFacadeREST {
-
 
     public TiposPagosFacadeREST() {
     }
@@ -52,7 +49,7 @@ public class TiposPagosFacadeREST {
             abmManager.create(TiposPagos.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, TiposPagos.class);
         }
     }
 
@@ -68,7 +65,7 @@ public class TiposPagosFacadeREST {
             abmManager.edit(TiposPagos.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, TiposPagos.class);
         }
     }
 
@@ -81,7 +78,7 @@ public class TiposPagosFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, TiposPagos.class);
         }
     }
 
@@ -94,7 +91,7 @@ public class TiposPagosFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, TiposPagos.class);
         }
     }
     

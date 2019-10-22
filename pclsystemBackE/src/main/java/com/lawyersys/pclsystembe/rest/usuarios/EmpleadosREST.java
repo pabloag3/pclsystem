@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.lawyersys.pclsystembacke.entities.Empleados;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
+import com.lawyersys.pclsystembe.utilidades.Ruc;
 
 /**
  *
@@ -55,7 +56,9 @@ public class EmpleadosREST {
                 throw new FaltaCargarElemento("Error. Cargar apellido.");
             }
             if ( elem.getRuc() == null ) {
-                throw new FaltaCargarElemento("Error. Cargar ruc.");
+                // Genera el ruc con el modulo 11
+                elem.setRuc(Ruc.Pa_Calcular_Dv_11_A(elem.getCedula()));
+            
             }
             if ( elem.getFechaNacimiento()== null ) {
                 throw new FaltaCargarElemento("Error. Cargar fecha de nacimiento.");
@@ -69,7 +72,7 @@ public class EmpleadosREST {
             abmManager.create(Empleados.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Empleados.class);
         }
         
     }
@@ -105,7 +108,7 @@ public class EmpleadosREST {
             abmManager.edit(Empleados.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Empleados.class);
         }
     }
 
@@ -119,7 +122,7 @@ public class EmpleadosREST {
             System.out.println(resp);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Empleados.class);
         }
     }
 
@@ -132,7 +135,7 @@ public class EmpleadosREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Empleados.class);
         }
     }
     

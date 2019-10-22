@@ -7,6 +7,7 @@ import com.lawyersys.pclsystembacke.entities.RolesPermisos;
 import com.lawyersys.pclsystembacke.entities.RolesUsuario;
 import com.lawyersys.pclsystembacke.entities.Usuarios;
 import com.lawyersys.pclsystembe.dtos.RolesPermisosDTO;
+import java.sql.SQLException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -53,7 +54,7 @@ public class ABMManagerUsuarios {
             Query q = em.createNamedQuery(entidad + ".findByCodRol")
                     .setParameter("codRol", Integer.parseInt(id));
             return q.getResultList();
-        } else if (entidad == "EstadosEmpleados") {
+        } else if (entidad == "EstadoEmpleados") {
             Query q = em.createNamedQuery(entidad + ".findByCodEstado")
                     .setParameter("codEstado", Integer.parseInt(id));
             return q.getResultList();
@@ -75,7 +76,7 @@ public class ABMManagerUsuarios {
         return elem;
     }
 
-    public <S> void create(Class<S> clazz, S elem) {
+    public <S> void create(Class<S> clazz, S elem) throws SQLException, Exception {
         if (clazz == Usuarios.class) {
             Usuarios usu = (Usuarios) elem;
             em.persist(usu);
@@ -114,7 +115,7 @@ public class ABMManagerUsuarios {
         }
     }
 
-    public <S> void edit(Class<S> clazz, S elem) {
+    public <S> void edit(Class<S> clazz, S elem) throws SQLException, Exception {
         if (clazz == Usuarios.class) {
             Usuarios usu = (Usuarios) elem;
             em.merge(usu);

@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -206,6 +200,14 @@ public class Empleados implements Serializable {
     public void setUsuariosList(List<Usuarios> usuariosList) {
         this.usuariosList = usuariosList;
     }
+    
+    public EstadosEmpleados getCodEstado() {
+        return codEstado;
+    }
+
+    public void setCodEstado(EstadosEmpleados codEstado) {
+        this.codEstado = codEstado;
+    }
 
     @Override
     public int hashCode() {
@@ -230,14 +232,6 @@ public class Empleados implements Serializable {
     @Override
     public String toString() {
         return "com.lawyersys.pclsystembacke.Empleados[ cedula=" + cedula + " ]";
-    }
-
-    public EstadosEmpleados getCodEstado() {
-        return codEstado;
-    }
-
-    public void setCodEstado(EstadosEmpleados codEstado) {
-        this.codEstado = codEstado;
     }
     
 }

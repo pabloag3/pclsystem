@@ -51,7 +51,7 @@ public class DespachosFacadeREST {
             abmManager.create(Despachos.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Despachos.class);
         }
     }
 
@@ -67,7 +67,7 @@ public class DespachosFacadeREST {
             abmManager.edit(Despachos.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Despachos.class);
         }
     }
 
@@ -80,7 +80,21 @@ public class DespachosFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Despachos.class);
+        }
+    }
+    
+    @GET
+    @Path("{departamento}/{fuero}")
+    public Response buscarDespachoPorDepartamentoFuero(@PathParam("departamento") String codDepartamento,
+                                                        @PathParam("fuero") String codFuero) throws JsonProcessingException {
+        try {
+            List<Despachos> elem = (List<Despachos>) (Object) abmManager.buscarDespachoPorDepartamentoFuero(codDepartamento, codFuero);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Despachos.class);
         }
     }
 
@@ -93,7 +107,7 @@ public class DespachosFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Despachos.class);
         }
     }
     
