@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.lawyersys.pclsystembacke.entities.Empleados;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
+import com.lawyersys.pclsystembe.utilidades.Ruc;
 
 /**
  *
@@ -55,7 +56,9 @@ public class EmpleadosREST {
                 throw new FaltaCargarElemento("Error. Cargar apellido.");
             }
             if ( elem.getRuc() == null ) {
-                throw new FaltaCargarElemento("Error. Cargar ruc.");
+                // Genera el ruc con el modulo 11
+                elem.setRuc(Ruc.Pa_Calcular_Dv_11_A(elem.getCedula()));
+            
             }
             if ( elem.getFechaNacimiento()== null ) {
                 throw new FaltaCargarElemento("Error. Cargar fecha de nacimiento.");
