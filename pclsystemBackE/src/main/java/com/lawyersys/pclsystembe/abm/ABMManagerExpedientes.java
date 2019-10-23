@@ -5,11 +5,13 @@ package com.lawyersys.pclsystembe.abm;
 import com.lawyersys.pclsystembacke.entities.Casos;
 import com.lawyersys.pclsystembacke.entities.Clientes;
 import com.lawyersys.pclsystembacke.entities.DetalleExpediente;
+import com.lawyersys.pclsystembacke.entities.DetalleExpedientePK;
 import com.lawyersys.pclsystembacke.entities.DocumentosEntregados;
 import com.lawyersys.pclsystembacke.entities.EstadoExpediente;
 import com.lawyersys.pclsystembacke.entities.EstadosCaso;
 import com.lawyersys.pclsystembacke.entities.Expedientes;
 import com.lawyersys.pclsystembacke.entities.TiposActuaciones;
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -115,8 +117,13 @@ public class ABMManagerExpedientes {
             Clientes ta = (Clientes) elem;
             em.persist(ta);
         } else if (clazz == DetalleExpediente.class) {
-            DetalleExpediente ta = (DetalleExpediente) elem;
-            em.persist(ta);
+            DetalleExpediente de = (DetalleExpediente) elem;
+            
+            Query q = em.createNativeQuery("select nextval('detalle_expediente_cod_detalle_expediente_seq');");
+            int secuenciaSiguiente = ((BigInteger) q.getSingleResult()).intValue();
+            de.setDetalleExpedientePK(new DetalleExpedientePK(de.getDetalleExpedientePK().getCodExpediente(), secuenciaSiguiente+1));
+            
+            em.persist(de);
         } else if (clazz == EstadosCaso.class) {
             EstadosCaso ta = (EstadosCaso) elem;
             em.persist(ta);
