@@ -40,7 +40,7 @@ public class ABMManagerFacturacion {
                 .setParameter("codCuenta", Integer.parseInt(cuenta));
         return q.getResultList();
     }
-    
+
     public List<Object> find(String entidad, String id) {
         List<Object> elem = null;
         if (entidad == "TiposPagos") {
@@ -121,7 +121,9 @@ public class ABMManagerFacturacion {
             
             // capturo el ultimo pago realizado para la generacion del recibo
             Query q = em.createNamedQuery("Pagos.findUltimoPago");
-            Pagos ultimoPago = (Pagos) q.setMaxResults(1).getResultList();
+            List<Pagos> ultimoPagoAux = q.setMaxResults(1).getResultList();
+            Pagos ultimoPago = (Pagos) ultimoPagoAux.get(0);
+
             recibo.setCodPago(ultimoPago);
             
             em.persist(recibo);
