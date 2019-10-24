@@ -34,6 +34,7 @@
     <class>com.lawyersys.pclsystembacke.entities.Reportes</class>
     <class>com.lawyersys.pclsystembacke.entities.RolesPermisos</class>
     <class>com.lawyersys.pclsystembacke.entities.RolesUsuario</class>
+    <class>com.lawyersys.pclsystembacke.entities.Timbrados</class>
     <class>com.lawyersys.pclsystembacke.entities.TiposActividades</class>
     <class>com.lawyersys.pclsystembacke.entities.TiposActuaciones</class>
     <class>com.lawyersys.pclsystembacke.entities.TiposPagos</class>
