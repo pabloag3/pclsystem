@@ -1,3 +1,5 @@
+/*
+ */
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
@@ -5,30 +7,31 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
- * @author carlo
+ * @author Pablo Aguilar
  */
 @Embeddable
 public class FacturasPK implements Serializable {
 
     @Basic(optional = false)
-    @NotNull
     @Column(name = "cod_factura")
     private int codFactura;
     
     @Basic(optional = false)
     @NotNull
-    @Column(name = "cod_cuenta")
-    private int codCuenta;
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "nro_factura")
+    private String nroFactura;
 
     public FacturasPK() {
     }
 
-    public FacturasPK(int codFactura, int codCuenta) {
+    public FacturasPK(int codFactura, String nroFactura) {
         this.codFactura = codFactura;
-        this.codCuenta = codCuenta;
+        this.nroFactura = nroFactura;
     }
 
     public int getCodFactura() {
@@ -39,19 +42,19 @@ public class FacturasPK implements Serializable {
         this.codFactura = codFactura;
     }
 
-    public int getCodCuenta() {
-        return codCuenta;
+    public String getNroFactura() {
+        return nroFactura;
     }
 
-    public void setCodCuenta(int codCuenta) {
-        this.codCuenta = codCuenta;
+    public void setNroFactura(String nroFactura) {
+        this.nroFactura = nroFactura;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (int) codFactura;
-        hash += (int) codCuenta;
+        hash += (nroFactura != null ? nroFactura.hashCode() : 0);
         return hash;
     }
 
@@ -65,7 +68,7 @@ public class FacturasPK implements Serializable {
         if (this.codFactura != other.codFactura) {
             return false;
         }
-        if (this.codCuenta != other.codCuenta) {
+        if ((this.nroFactura == null && other.nroFactura != null) || (this.nroFactura != null && !this.nroFactura.equals(other.nroFactura))) {
             return false;
         }
         return true;
@@ -73,7 +76,7 @@ public class FacturasPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.FacturasPK[ codFactura=" + codFactura + ", codCuenta=" + codCuenta + " ]";
+        return "com.lawyersys.pclsystembacke.entities.FacturasPK[ codFactura=" + codFactura + ", nroFactura=" + nroFactura + " ]";
     }
     
 }

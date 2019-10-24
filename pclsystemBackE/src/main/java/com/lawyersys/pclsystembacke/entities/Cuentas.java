@@ -1,3 +1,5 @@
+/*
+ */
 package com.lawyersys.pclsystembacke.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -23,7 +25,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author carlo
+ * @author Pablo Aguilar
  */
 @Entity
 @Table(name = "cuentas")
@@ -33,7 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Cuentas.findByCodCuenta", query = "SELECT c FROM Cuentas c WHERE c.codCuenta = :codCuenta")
     , @NamedQuery(name = "Cuentas.findByTotal", query = "SELECT c FROM Cuentas c WHERE c.total = :total")
     , @NamedQuery(name = "Cuentas.findBySaldo", query = "SELECT c FROM Cuentas c WHERE c.saldo = :saldo")
-    , @NamedQuery(name = "Cuentas.findByEstado", query = "SELECT c FROM Cuentas c WHERE c.estado = :estado")})
+    , @NamedQuery(name = "Cuentas.findByEstado", query = "SELECT c FROM Cuentas c WHERE c.estado = :estado")
+    , @NamedQuery(name = "Cuentas.findByDescripcion", query = "SELECT c FROM Cuentas c WHERE c.descripcion = :descripcion")})
 public class Cuentas implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,12 +45,8 @@ public class Cuentas implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_cuenta")
+    
     private Integer codCuenta;
-    
-    @Size(max = 2147483647)
-    @Column(name = "descripcion")
-    private String descripcion;
-    
     @Basic(optional = false)
     @NotNull
     @Column(name = "total")
@@ -63,27 +62,35 @@ public class Cuentas implements Serializable {
     @Column(name = "estado")
     private boolean estado;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentas")
-    @JsonIgnore
-    private List<Facturas> facturasList;
+    @Size(max = 2147483647)
+    @Column(name = "descripcion")
+    private String descripcion;
     
     @JoinColumn(name = "cod_caso", referencedColumnName = "cod_caso")
     @ManyToOne(optional = false)
     private Casos codCaso;
     
-    @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente", insertable = false, updatable = false)
+    @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente")
     @ManyToOne(optional = false)
     private Clientes codCliente;
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCuenta")
-    @JsonIgnore
-    private List<Pagos> pagosList;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentas")
     @JsonIgnore
     private List<DetalleCuenta> detalleCuentaList;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCuenta")
+    @JsonIgnore
+    private List<Pagos> pagosList;
+
+    public List<DetalleCuenta> getDetalleCuentaList() {
+        return detalleCuentaList;
+    }
 
     public Cuentas() {
+    }
+
+    public Cuentas(Integer codCuenta) {
+        this.codCuenta = codCuenta;
     }
 
     public Cuentas(Integer codCuenta, int total, int saldo, boolean estado) {
@@ -91,6 +98,14 @@ public class Cuentas implements Serializable {
         this.total = total;
         this.saldo = saldo;
         this.estado = estado;
+    }
+
+    public Integer getCodCuenta() {
+        return codCuenta;
+    }
+
+    public void setCodCuenta(Integer codCuenta) {
+        this.codCuenta = codCuenta;
     }
 
     public int getTotal() {
@@ -117,13 +132,21 @@ public class Cuentas implements Serializable {
         this.estado = estado;
     }
 
-    @XmlTransient
-    public List<Facturas> getFacturasList() {
-        return facturasList;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setFacturasList(List<Facturas> facturasList) {
-        this.facturasList = facturasList;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    @XmlTransient
+    public List<Pagos> getPagosList() {
+        return pagosList;
+    }
+
+    public void setPagosList(List<Pagos> pagosList) {
+        this.pagosList = pagosList;
     }
 
     public Casos getCodCaso() {
@@ -138,46 +161,8 @@ public class Cuentas implements Serializable {
         return codCliente;
     }
 
-    public void setCodCliente(Clientes clientes) {
-        this.codCliente = clientes;
-    }
-
-    @XmlTransient
-    public List<Pagos> getPagosList() {
-        return pagosList;
-    }
-
-    public void setPagosList(List<Pagos> pagosList) {
-        this.pagosList = pagosList;
-    }
-
-    @XmlTransient
-    public List<DetalleCuenta> getDetalleCuentaList() {
-        return detalleCuentaList;
-    }
-
-    public void setDetalleCuentaList(List<DetalleCuenta> detalleCuentaList) {
-        this.detalleCuentaList = detalleCuentaList;
-    }
-
-    public Cuentas(Integer codCuenta) {
-        this.codCuenta = codCuenta;
-    }
-
-    public Integer getCodCuenta() {
-        return codCuenta;
-    }
-
-    public void setCodCuenta(Integer codCuenta) {
-        this.codCuenta = codCuenta;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setCodCliente(Clientes codCliente) {
+        this.codCliente = codCliente;
     }
 
     @Override
