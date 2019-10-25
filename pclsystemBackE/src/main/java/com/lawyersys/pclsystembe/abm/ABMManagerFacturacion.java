@@ -8,6 +8,7 @@ import com.lawyersys.pclsystembacke.entities.DetalleCuentaPK;
 import com.lawyersys.pclsystembacke.entities.DetalleFactura;
 import com.lawyersys.pclsystembacke.entities.DetalleFacturaPK;
 import com.lawyersys.pclsystembacke.entities.Facturas;
+import com.lawyersys.pclsystembacke.entities.FacturasPK;
 import com.lawyersys.pclsystembacke.entities.Pagos;
 import com.lawyersys.pclsystembacke.entities.Recibos;
 import com.lawyersys.pclsystembacke.entities.TiposPagos;
@@ -38,6 +39,12 @@ public class ABMManagerFacturacion {
     public List<Object> traerDetallesDeCuenta(String cuenta) {
         Query q = em.createNamedQuery("DetalleCuenta.findByCodCuenta")
                 .setParameter("codCuenta", Integer.parseInt(cuenta));
+        return q.getResultList();
+    }
+    
+    public List<Object> traerDetallesDeFactura(String factura) {
+        Query q = em.createNamedQuery("DetalleFactura.findByCodFactura")
+                .setParameter("codFactura", Integer.parseInt(factura));
         return q.getResultList();
     }
 
@@ -89,28 +96,76 @@ public class ABMManagerFacturacion {
             em.persist(ta);
         } else if (clazz == DetalleCuenta.class) {
             DetalleCuenta dc = (DetalleCuenta) elem;
+            
             Query q = em.createNativeQuery("select nextval('detalle_cuenta_cod_detalle_cuenta_seq');");
             int secuenciaSiguiente = ((BigInteger) q.getSingleResult()).intValue();
             dc.setDetalleCuentaPK(new DetalleCuentaPK(secuenciaSiguiente+1, dc.getDetalleCuentaPK().getCodCuenta()));
+            
             em.persist(dc);
         } else if (clazz == Facturas.class) {
             Facturas factura = (Facturas) elem;
+
+            // preparamos la pk de factura
+            
+            // traemos el siguiente valor del codigo de factura
+            Query q = em.createNativeQuery("select nextval('facturas_cod_factura_seq');");
+            int secuenciaSiguiente = ((BigInteger) q.getSingleResult()).intValue();
+
+            // armamos la secuencia de numeros pertenecientes al numero de factura
+            q = em.createNativeQuery("SELECT t.nro_establecimiento FROM timbrados t"
+                    + " WHERE t.cedula = '" + factura.getCedulaEmisor().getCedula() + "'"
+                    + " LIMIT 1;");
+            String nroEstablecimiento = q.getSingleResult().toString();
+            nroEstablecimiento = String.format("%3s", nroEstablecimiento).replace(' ','0');
+            
+            q = em.createNativeQuery("SELECT t.nro_punto_expedicion FROM timbrados t"
+                    + " WHERE t.cedula = '" + factura.getCedulaEmisor().getCedula() + "'"
+                    + " LIMIT 1;");
+            String nroPuntoExpedicion = q.getSingleResult().toString();
+            nroPuntoExpedicion = String.format("%3s", nroPuntoExpedicion).replace(' ','0');
+            
+            q = em.createNativeQuery("SELECT t.nro_sec_actual + 1 FROM timbrados t"
+                    + " WHERE t.cedula = '" + factura.getCedulaEmisor().getCedula() + "'"
+                    + " LIMIT 1;");
+            String nroSecActual = q.getSingleResult().toString();
+            nroSecActual = String.format("%7s", nroSecActual).replace(' ','0');
+            
+            String nroFactura = nroEstablecimiento + "-" + nroPuntoExpedicion + "-" + nroSecActual;
+            
+            factura.setFacturasPK(new FacturasPK(secuenciaSiguiente+1, nroFactura));
+            
             factura.setFechaEmision(new Date());
             
             // capturo el ultimo pago realizado para la generacion de la factura
-            Query q = em.createNamedQuery("Pagos.findUltimoPago");
-            Pagos ultimoPago = (Pagos) q.setMaxResults(1).getResultList();
+            q = em.createNamedQuery("Pagos.findUltimoPago");
+            List<Pagos> ultimoPagoAux = q.setMaxResults(1).getResultList();
+            Pagos ultimoPago = (Pagos) ultimoPagoAux.get(0);
             factura.setCodPago(ultimoPago);
             
             em.persist(factura);
+            
+            q = em.createNativeQuery("UPDATE timbrados"
+                    + " SET nro_sec_actual = nro_sec_actual + 1"
+                    + " WHERE cedula = '" + factura.getCedulaEmisor().getCedula() + "';");
+            q.executeUpdate();
         } else if (clazz == DetalleFactura.class) {
             DetalleFactura detalleFactura = (DetalleFactura) elem;
             
+            // traemos la ultima factura generada
             Query q = em.createNamedQuery("Facturas.findUltimaFactura");
-            Facturas ultimaFactura = (Facturas) q.setMaxResults(1).getResultList();
+            List<Facturas> ultimaFacturaAux = q.setMaxResults(1).getResultList();
+            Facturas ultimaFactura = (Facturas) ultimaFacturaAux.get(0);
             
-            DetalleFacturaPK detalleFacturaPK = null;
+            // preparamos la pk del detalle de factura
+            
+            // traemos el siguiente valor del codigo de factura
+            q = em.createNativeQuery("select nextval('detalle_factura_cod_detalle_factura_seq');");
+            int secuenciaSiguiente = ((BigInteger) q.getSingleResult()).intValue();
+            
+            DetalleFacturaPK detalleFacturaPK = new DetalleFacturaPK();
+            detalleFacturaPK.setCodDetalleFactura(secuenciaSiguiente);
             detalleFacturaPK.setCodFactura(ultimaFactura.getFacturasPK().getCodFactura());
+            detalleFacturaPK.setNroFactura(ultimaFactura.getFacturasPK().getNroFactura());
             detalleFactura.setDetalleFacturaPK(detalleFacturaPK);
             
             detalleFactura.setMontoIva((detalleFactura.getMonto() * detalleFactura.getPorcentajeIva() / 100));

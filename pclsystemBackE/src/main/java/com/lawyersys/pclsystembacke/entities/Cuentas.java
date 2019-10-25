@@ -82,6 +82,7 @@ public class Cuentas implements Serializable {
     @JsonIgnore
     private List<Pagos> pagosList;
 
+    @XmlTransient
     public List<DetalleCuenta> getDetalleCuentaList() {
         return detalleCuentaList;
     }

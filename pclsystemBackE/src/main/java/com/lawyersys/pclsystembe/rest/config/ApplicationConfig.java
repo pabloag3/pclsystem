@@ -46,6 +46,8 @@ public class ApplicationConfig extends Application {
         resources.add(com.lawyersys.pclsystembe.rest.expedientes.TiposActuacionesFacadeREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.facturacion.CuentasFacadeREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.facturacion.DetalleCuentaFacadeREST.class);
+        resources.add(com.lawyersys.pclsystembe.rest.facturacion.DetalleFacturaFacadeREST.class);
+        resources.add(com.lawyersys.pclsystembe.rest.facturacion.FacturasFacadeREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.facturacion.PagosFacadeREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.facturacion.RecibosFacadeREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.facturacion.TiposPagosFacadeREST.class);

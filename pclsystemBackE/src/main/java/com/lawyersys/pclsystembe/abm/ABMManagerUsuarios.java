@@ -135,8 +135,11 @@ public class ABMManagerUsuarios {
             Empleados emp = (Empleados) elem;
             em.merge(emp);
         }  else if (clazz == Timbrados.class) {
-            Timbrados est = (Timbrados) elem;
-            em.merge(est);
+            Timbrados timbrado = (Timbrados) elem;
+            
+            timbrado.setNroSecActual(timbrado.getNroSecInicio());
+            
+            em.merge(timbrado);
         } else if (clazz == EstadosEmpleados.class) {
             EstadosEmpleados est = (EstadosEmpleados) elem;
             em.merge(est);
