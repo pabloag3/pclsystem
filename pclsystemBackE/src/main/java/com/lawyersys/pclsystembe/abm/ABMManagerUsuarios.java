@@ -94,6 +94,16 @@ public class ABMManagerUsuarios {
             
             timbrado.setNroSecActual(timbrado.getNroSecInicio());
             
+            Query q;
+            // quito la vigencia de los timbrados anteriores del empleado
+            q = em.createNativeQuery("UPDATE timbrados"
+                    + " SET vigente = FALSE"
+                    + " WHERE cedula = '" + timbrado.getCedula().getCedula() + "';"
+                );
+            q.executeUpdate();
+            
+            timbrado.setVigente(true);
+            
             em.persist(timbrado);
         } else if (clazz == EstadosEmpleados.class) {
             EstadosEmpleados est = (EstadosEmpleados) elem;

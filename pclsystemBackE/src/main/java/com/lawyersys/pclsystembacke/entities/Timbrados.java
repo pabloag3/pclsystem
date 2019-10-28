@@ -82,6 +82,11 @@ public class Timbrados implements Serializable {
     @Column(name = "nro_sec_actual")
     private int nroSecActual;
     
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "vigente")
+    private boolean vigente;
+    
     @JoinColumn(name = "cedula", referencedColumnName = "cedula")
     @ManyToOne(optional = false)
     private Empleados cedula;
@@ -174,6 +179,14 @@ public class Timbrados implements Serializable {
 
     public void setCedula(Empleados cedula) {
         this.cedula = cedula;
+    }
+    
+    public boolean getVigente() {
+        return vigente;
+    }
+
+    public void setVigente(boolean vigente) {
+        this.vigente = vigente;
     }
 
     @Override

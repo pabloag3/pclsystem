@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Facturas.findUltimaFactura", query = "SELECT f FROM Facturas f ORDER BY f.facturasPK.codFactura DESC")
 })
 public class Facturas implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
     
     @EmbeddedId
@@ -61,6 +61,11 @@ public class Facturas implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "archivo")
     private String archivo;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "vigente")
+    private boolean vigente;
     
     @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente")
     @ManyToOne(optional = false)
@@ -158,6 +163,14 @@ public class Facturas implements Serializable {
 
     public void setCodPago(Pagos codPago) {
         this.codPago = codPago;
+    }
+    
+    public boolean getVigente() {
+        return vigente;
+    }
+
+    public void setVigente(boolean vigente) {
+        this.vigente = vigente;
     }
 
     @Override

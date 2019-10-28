@@ -114,18 +114,21 @@ public class ABMManagerFacturacion {
             // armamos la secuencia de numeros pertenecientes al numero de factura
             q = em.createNativeQuery("SELECT t.nro_establecimiento FROM timbrados t"
                     + " WHERE t.cedula = '" + factura.getCedulaEmisor().getCedula() + "'"
+                    + " AND t.vigente = TRUE"
                     + " LIMIT 1;");
             String nroEstablecimiento = q.getSingleResult().toString();
             nroEstablecimiento = String.format("%3s", nroEstablecimiento).replace(' ','0');
             
             q = em.createNativeQuery("SELECT t.nro_punto_expedicion FROM timbrados t"
                     + " WHERE t.cedula = '" + factura.getCedulaEmisor().getCedula() + "'"
+                    + " AND t.vigente = TRUE"
                     + " LIMIT 1;");
             String nroPuntoExpedicion = q.getSingleResult().toString();
             nroPuntoExpedicion = String.format("%3s", nroPuntoExpedicion).replace(' ','0');
             
             q = em.createNativeQuery("SELECT t.nro_sec_actual + 1 FROM timbrados t"
                     + " WHERE t.cedula = '" + factura.getCedulaEmisor().getCedula() + "'"
+                    + " AND t.vigente = TRUE"
                     + " LIMIT 1;");
             String nroSecActual = q.getSingleResult().toString();
             nroSecActual = String.format("%7s", nroSecActual).replace(' ','0');
@@ -141,6 +144,8 @@ public class ABMManagerFacturacion {
             List<Pagos> ultimoPagoAux = q.setMaxResults(1).getResultList();
             Pagos ultimoPago = (Pagos) ultimoPagoAux.get(0);
             factura.setCodPago(ultimoPago);
+            
+            factura.setVigente(true);
             
             em.persist(factura);
             
@@ -202,7 +207,9 @@ public class ABMManagerFacturacion {
             em.merge(ta);
         } else if (clazz == Facturas.class) {
             Facturas factura = (Facturas) elem;
-            factura.setFechaEmision(new Date());
+            
+            factura.setVigente(false);
+            
             em.merge(factura);
         } else if (clazz == DetalleFactura.class) {
             DetalleFactura detalleFactura = (DetalleFactura) elem;
