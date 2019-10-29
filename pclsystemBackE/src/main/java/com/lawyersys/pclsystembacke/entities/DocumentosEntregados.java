@@ -1,3 +1,5 @@
+/*
+ */
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
@@ -8,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -19,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author tatoa
+ * @author Pablo Aguilar
  */
 @Entity
 @Table(name = "documentos_entregados")
@@ -29,6 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "DocumentosEntregados.findByCodDocumento", query = "SELECT d FROM DocumentosEntregados d WHERE d.codDocumento = :codDocumento")
     , @NamedQuery(name = "DocumentosEntregados.findByDescripcion", query = "SELECT d FROM DocumentosEntregados d WHERE d.descripcion = :descripcion")
     , @NamedQuery(name = "DocumentosEntregados.findByCodCliente", query = "SELECT d FROM DocumentosEntregados d WHERE d.codCliente.codCliente = :codCliente")
+    , @NamedQuery(name = "DocumentosEntregados.findByArchivo", query = "SELECT d FROM DocumentosEntregados d WHERE d.archivo = :archivo")
 })
 public class DocumentosEntregados implements Serializable {
 
@@ -46,8 +48,7 @@ public class DocumentosEntregados implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
     
-    @Basic(optional = false)
-    @Size(min = 1, max = 2147483647)
+    @Size(max = 2147483647)
     @Column(name = "archivo")
     private String archivo;
     
@@ -83,6 +84,13 @@ public class DocumentosEntregados implements Serializable {
         this.descripcion = descripcion;
     }
 
+    public String getArchivo() {
+        return archivo;
+    }
+
+    public void setArchivo(String archivo) {
+        this.archivo = archivo;
+    }
 
     public Clientes getCodCliente() {
         return codCliente;
@@ -115,14 +123,6 @@ public class DocumentosEntregados implements Serializable {
     @Override
     public String toString() {
         return "com.lawyersys.pclsystembacke.entities.DocumentosEntregados[ codDocumento=" + codDocumento + " ]";
-    }
-
-    public String getArchivo() {
-        return archivo;
-    }
-
-    public void setArchivo(String archivo) {
-        this.archivo = archivo;
     }
     
 }

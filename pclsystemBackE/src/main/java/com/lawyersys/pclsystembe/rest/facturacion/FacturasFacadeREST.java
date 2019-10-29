@@ -8,7 +8,6 @@ import com.lawyersys.pclsystembe.abm.ABMManagerFacturacion;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -26,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  *
- * @author tatoa
+ * @author Pablo Aguilar
  */
 @Stateless
 @Path("facturas")
@@ -37,7 +36,7 @@ public class FacturasFacadeREST {
     private FacturasPK getPrimaryKey(PathSegment pathSegment) {
         /*
          * pathSemgent represents a URI path segment and any associated matrix parameters.
-         * URI path part is supposed to be in form of 'somePath;codFactura=codFacturaValue;codCuenta=codCuentaValue'.
+         * URI path part is supposed to be in form of 'somePath;codFactura=codFacturaValue;nroFactura=nroFacturaValue'.
          * Here 'somePath' is a result of getPath() method invocation and
          * it is ignored in the following code.
          * Matrix parameters are used as field names to build a primary key instance.
@@ -48,9 +47,9 @@ public class FacturasFacadeREST {
         if (codFactura != null && !codFactura.isEmpty()) {
             key.setCodFactura(new java.lang.Integer(codFactura.get(0)));
         }
-        java.util.List<String> codCuenta = map.get("codCuenta");
-        if (codCuenta != null && !codCuenta.isEmpty()) {
-            key.setCodCuenta(new java.lang.Integer(codCuenta.get(0)));
+        java.util.List<String> nroFactura = map.get("nroFactura");
+        if (nroFactura != null && !nroFactura.isEmpty()) {
+            key.setNroFactura(nroFactura.get(0));
         }
         return key;
     }
@@ -66,18 +65,16 @@ public class FacturasFacadeREST {
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            Facturas elem = mapper.readValue(entity, Facturas.class);
-            
-            if ( elem.getCodCliente().getRuc() == "" ) {
-                throw new FaltaCargarElemento("Error. Cargar RUC del cliente.");
-            }
-            if ( elem.getFechaEmision() == null ) {
-                throw new FaltaCargarElemento("Error. Cargar fecha de emision de factura.");
+            Facturas elem = mapper.readValue(entity, Facturas.class);   
+            if ( elem.getCodCliente().getCodCliente() == 0 ) {
+                throw new FaltaCargarElemento("Error. Cargar cliente.");
             }
             if ( elem.getMontoTotal() == 0 ) {
-                throw new FaltaCargarElemento("Error. Cargar monto.");
+                throw new FaltaCargarElemento("Error. Cargar monto total.");
             }
-            
+            if ( elem.getCedulaEmisor().getCedula() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar cedula del emisor.");
+            }
             abmManager.create(Facturas.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
@@ -91,14 +88,15 @@ public class FacturasFacadeREST {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Facturas elem = mapper.readValue(entity, Facturas.class);
-            
-            if ( elem.getFechaEmision() == null ) {
-                throw new FaltaCargarElemento("Error. Cargar fecha de emision de factura.");
+            if ( elem.getCodCliente().getCodCliente() == 0 ) {
+                throw new FaltaCargarElemento("Error. Cargar cliente.");
             }
             if ( elem.getMontoTotal() == 0 ) {
-                throw new FaltaCargarElemento("Error. Cargar monto.");
+                throw new FaltaCargarElemento("Error. Cargar monto total.");
             }
-            
+            if ( elem.getCedulaEmisor().getCedula() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar cedula del emisor.");
+            }
             abmManager.edit(Facturas.class, elem);
             return Response.ok().build();
         } catch (Exception e) {

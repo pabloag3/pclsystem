@@ -5,11 +5,13 @@ package com.lawyersys.pclsystembe.abm;
 import com.lawyersys.pclsystembacke.entities.Casos;
 import com.lawyersys.pclsystembacke.entities.Clientes;
 import com.lawyersys.pclsystembacke.entities.DetalleExpediente;
+import com.lawyersys.pclsystembacke.entities.DetalleExpedientePK;
 import com.lawyersys.pclsystembacke.entities.DocumentosEntregados;
 import com.lawyersys.pclsystembacke.entities.EstadoExpediente;
 import com.lawyersys.pclsystembacke.entities.EstadosCaso;
 import com.lawyersys.pclsystembacke.entities.Expedientes;
 import com.lawyersys.pclsystembacke.entities.TiposActuaciones;
+import java.math.BigInteger;
 import java.sql.SQLException;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -44,9 +46,27 @@ public class ABMManagerExpedientes {
         return q.getResultList();
     }
     
+    public List<Object> traerExpedientesPorCaso(String codCaso) {
+        Query q = em.createNamedQuery("Expedientes.findBycodCaso")
+                .setParameter("codCaso", Integer.parseInt(codCaso));
+        return q.getResultList();
+    }
+    
     public List<Object> traerExpedientePorDespacho(String codDespacho) {
         Query q = em.createNamedQuery("Expedientes.findBycodDespacho")
                 .setParameter("codDespacho", Integer.parseInt(codDespacho));
+        return q.getResultList();
+    }
+    
+    public List<Object> traerDetallesDeExpedientePorExpediente(String codExpediente) {
+//        Query q = em.createNamedQuery("DetalleExpediente.findByCodExpediente")
+//                .setParameter("codExpediente", Integer.parseInt(codExpediente));
+        
+        Query q = em.createNativeQuery("SELECT *\n" 
+                + "FROM public.detalle_expediente p\n"
+                + "WHERE p.cod_expediente = (?1);");
+        q.setParameter(1, Integer.parseInt(codExpediente));
+        
         return q.getResultList();
     }
     
@@ -61,8 +81,15 @@ public class ABMManagerExpedientes {
                     .setParameter("codCliente", Integer.parseInt(id));
             return q.getResultList();
         } else if (entidad == "DetalleExpediente") {
-            Query q = em.createNamedQuery(entidad + ".findByCodDetalleExpediente")
-                    .setParameter("codDetalleExpediente", Integer.parseInt(id));
+//            Query q = em.createNamedQuery(entidad + ".findByCodDetalleExpediente")
+//                    .setParameter("codDetalleExpediente", Integer.parseInt(id));
+            
+            Query q = em.createNativeQuery("SELECT *\n" 
+                + "FROM public.detalle_expediente p\n"
+                + "WHERE p.cod_detalle_expediente = (?1);");
+            q.setParameter(1, Integer.parseInt(id));
+            
+            
             return q.getResultList();
         } else if (entidad == "EstadosCaso") {
             Query q = em.createNamedQuery(entidad + ".findByCodEstadoCaso")
@@ -96,8 +123,13 @@ public class ABMManagerExpedientes {
             Clientes ta = (Clientes) elem;
             em.persist(ta);
         } else if (clazz == DetalleExpediente.class) {
-            DetalleExpediente ta = (DetalleExpediente) elem;
-            em.persist(ta);
+            DetalleExpediente de = (DetalleExpediente) elem;
+            
+            Query q = em.createNativeQuery("select nextval('detalle_expediente_cod_detalle_expediente_seq');");
+            int secuenciaSiguiente = ((BigInteger) q.getSingleResult()).intValue();
+            de.setDetalleExpedientePK(new DetalleExpedientePK(de.getDetalleExpedientePK().getCodExpediente(), secuenciaSiguiente+1));
+            
+            em.persist(de);
         } else if (clazz == EstadosCaso.class) {
             EstadosCaso ta = (EstadosCaso) elem;
             em.persist(ta);

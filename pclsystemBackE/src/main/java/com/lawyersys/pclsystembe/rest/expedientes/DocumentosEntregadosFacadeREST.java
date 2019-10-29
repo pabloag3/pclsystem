@@ -68,6 +68,9 @@ public class DocumentosEntregadosFacadeREST {
             if ( elem.getDescripcion()== null ) {
                 throw new FaltaCargarElemento("Error. Cargar descripcion.");
             }
+            if ( elem.getCodCliente() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar cliente.");
+            }
             abmManager.create(DocumentosEntregados.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
@@ -184,6 +187,9 @@ public class DocumentosEntregadosFacadeREST {
             if ( elem.getDescripcion()== null ) {
                 throw new FaltaCargarElemento("Error. Cargar descripcion.");
             }
+            if ( elem.getCodCliente() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar cliente.");
+            }
             abmManager.edit(DocumentosEntregados.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
@@ -192,7 +198,7 @@ public class DocumentosEntregadosFacadeREST {
     }
 
     @GET
-    @Path("traer-por-cliente/{id}")
+    @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         try {
             List<DocumentosEntregados> elem = (List<DocumentosEntregados>) (Object) abmManager.find("DocumentosEntregados", id);
@@ -205,7 +211,7 @@ public class DocumentosEntregadosFacadeREST {
     }
     
     @GET
-    @Path("traer-documentos-por-cliente/{id}")
+    @Path("traer-documentos-del-cliente/{id}")
     public Response traerDocumentosPorCliente(@PathParam("id") String id) throws JsonProcessingException {
         try {
             List<DocumentosEntregados> elem = (List<DocumentosEntregados>) (Object) abmManager.findDocumentosPorCliente(id);

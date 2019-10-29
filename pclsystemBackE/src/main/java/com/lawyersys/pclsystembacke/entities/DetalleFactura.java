@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author carlo
+ * @author Pablo Aguilar
  */
 @Entity
 @Table(name = "detalle_factura")
@@ -26,17 +26,18 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "DetalleFactura.findAll", query = "SELECT d FROM DetalleFactura d")
     , @NamedQuery(name = "DetalleFactura.findByCodDetalleFactura", query = "SELECT d FROM DetalleFactura d WHERE d.detalleFacturaPK.codDetalleFactura = :codDetalleFactura")
     , @NamedQuery(name = "DetalleFactura.findByCodFactura", query = "SELECT d FROM DetalleFactura d WHERE d.detalleFacturaPK.codFactura = :codFactura")
+    , @NamedQuery(name = "DetalleFactura.findByNroFactura", query = "SELECT d FROM DetalleFactura d WHERE d.detalleFacturaPK.nroFactura = :nroFactura")
     , @NamedQuery(name = "DetalleFactura.findByPorcentajeIva", query = "SELECT d FROM DetalleFactura d WHERE d.porcentajeIva = :porcentajeIva")
     , @NamedQuery(name = "DetalleFactura.findByDescripcion", query = "SELECT d FROM DetalleFactura d WHERE d.descripcion = :descripcion")
     , @NamedQuery(name = "DetalleFactura.findByMontoIva", query = "SELECT d FROM DetalleFactura d WHERE d.montoIva = :montoIva")
     , @NamedQuery(name = "DetalleFactura.findByMonto", query = "SELECT d FROM DetalleFactura d WHERE d.monto = :monto")})
 public class DetalleFactura implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     
     @EmbeddedId
     protected DetalleFacturaPK detalleFacturaPK;
-
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "porcentaje_iva")
@@ -58,11 +59,10 @@ public class DetalleFactura implements Serializable {
     @Column(name = "monto")
     private int monto;
     
-    @ManyToOne(optional = false)
     @JoinColumns({
-        @JoinColumn(name = "cod_factura", referencedColumnName = "cod_factura", insertable = false, updatable = false),
-        @JoinColumn(name = "cod_cuenta", referencedColumnName = "cod_cuenta", insertable = false, updatable = false)
-    })
+        @JoinColumn(name = "cod_factura", referencedColumnName = "cod_factura", insertable = false, updatable = false)
+        , @JoinColumn(name = "nro_factura", referencedColumnName = "nro_factura", insertable = false, updatable = false)})
+    @ManyToOne(optional = false)
     private Facturas facturas;
 
     public DetalleFactura() {
@@ -80,8 +80,8 @@ public class DetalleFactura implements Serializable {
         this.monto = monto;
     }
 
-    public DetalleFactura(int codDetalleFactura, int codFactura) {
-        this.detalleFacturaPK = new DetalleFacturaPK(codDetalleFactura, codFactura);
+    public DetalleFactura(int codDetalleFactura, int codFactura, String nroFactura) {
+        this.detalleFacturaPK = new DetalleFacturaPK(codDetalleFactura, codFactura, nroFactura);
     }
 
     public DetalleFacturaPK getDetalleFacturaPK() {
@@ -154,7 +154,7 @@ public class DetalleFactura implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.DetalleFactura[ detalleFacturaPK=" + detalleFacturaPK + " ]";
+        return "com.lawyersys.pclsystembacke.entities.DetalleFactura[ detalleFacturaPK=" + detalleFacturaPK + " ]";
     }
     
 }
