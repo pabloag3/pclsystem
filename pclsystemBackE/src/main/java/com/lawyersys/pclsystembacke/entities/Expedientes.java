@@ -187,6 +187,7 @@ public class Expedientes implements Serializable {
         this.expedientesList = expedientesList;
     }
 
+    @JsonIgnore
     public Expedientes getParentCodExpediente() {
         return parentCodExpediente;
     }
