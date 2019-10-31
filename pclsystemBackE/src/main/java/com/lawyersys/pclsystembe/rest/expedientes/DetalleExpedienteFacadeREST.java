@@ -187,7 +187,7 @@ public class DetalleExpedienteFacadeREST {
     @Path("/download")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response downloadFileWithGet(@QueryParam("file") String file) {
-        
+        System.out.println("entro");
         try {
             File fileDownload = new File(file);
             Response.ResponseBuilder response = Response.ok((Object) fileDownload);

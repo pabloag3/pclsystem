@@ -59,13 +59,13 @@ public class ABMManagerExpedientes {
     }
     
     public List<Object> traerDetallesDeExpedientePorExpediente(String codExpediente) {
-//        Query q = em.createNamedQuery("DetalleExpediente.findByCodExpediente")
-//                .setParameter("codExpediente", Integer.parseInt(codExpediente));
+        Query q = em.createNamedQuery("DetalleExpediente.findByCodExpediente")
+                .setParameter("codExpediente", Integer.parseInt(codExpediente));
         
-        Query q = em.createNativeQuery("SELECT *\n" 
-                + "FROM public.detalle_expediente p\n"
-                + "WHERE p.cod_expediente = (?1);");
-        q.setParameter(1, Integer.parseInt(codExpediente));
+//        Query q = em.createNativeQuery("SELECT *\n" 
+//                + "FROM public.detalle_expediente p\n"
+//                + "WHERE p.cod_expediente = (?1);");
+//        q.setParameter(1, Integer.parseInt(codExpediente));
         
         return q.getResultList();
     }
@@ -81,14 +81,14 @@ public class ABMManagerExpedientes {
                     .setParameter("codCliente", Integer.parseInt(id));
             return q.getResultList();
         } else if (entidad == "DetalleExpediente") {
-//            Query q = em.createNamedQuery(entidad + ".findByCodDetalleExpediente")
-//                    .setParameter("codDetalleExpediente", Integer.parseInt(id));
+            Query q = em.createNamedQuery(entidad + ".findByCodDetalleExpediente")
+                    .setParameter("codDetalleExpediente", Integer.parseInt(id));
             
-            Query q = em.createNativeQuery("SELECT *\n" 
-                + "FROM public.detalle_expediente p\n"
-                + "WHERE p.cod_detalle_expediente = (?1);");
-            q.setParameter(1, Integer.parseInt(id));
-            
+//            Query q = em.createNativeQuery("SELECT *\n" 
+//                + "FROM public.detalle_expediente p\n"
+//                + "WHERE p.cod_detalle_expediente = (?1);");
+//            q.setParameter(1, Integer.parseInt(id));
+//            
             
             return q.getResultList();
         } else if (entidad == "EstadosCaso") {

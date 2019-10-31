@@ -76,6 +76,7 @@ public class Despachos implements Serializable {
     private Ujieres codUjier;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codDespacho")
+    @JsonIgnore
     private List<DetalleExpediente> detalleExpedienteList;
 
     public Despachos() {
