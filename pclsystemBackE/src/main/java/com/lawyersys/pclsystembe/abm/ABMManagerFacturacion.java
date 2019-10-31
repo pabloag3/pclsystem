@@ -151,7 +151,8 @@ public class ABMManagerFacturacion {
             
             q = em.createNativeQuery("UPDATE timbrados"
                     + " SET nro_sec_actual = nro_sec_actual + 1"
-                    + " WHERE cedula = '" + factura.getCedulaEmisor().getCedula() + "';");
+                    + " WHERE cedula = '" + factura.getCedulaEmisor().getCedula() + "'"
+                    + " AND vigente = TRUE;");
             q.executeUpdate();
         } else if (clazz == DetalleFactura.class) {
             DetalleFactura detalleFactura = (DetalleFactura) elem;
