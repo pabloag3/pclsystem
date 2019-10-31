@@ -91,6 +91,19 @@ public class ExpedientesFacadeREST {
     }
     
     @GET
+    @Path("listar-por-caso/{id}")
+    public Response findPorCaso(@PathParam("id") String id) throws JsonProcessingException {
+        try {
+            List<Expedientes> elem = (List<Expedientes>) (Object) abmManager.traerExpedientesPorCaso(id);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Expedientes.class);
+        }
+    }
+    
+    @GET
     @Path("listar-por-despachos/{id}")
     public Response findPorDespachos(@PathParam("id") String id) throws JsonProcessingException {
         try {

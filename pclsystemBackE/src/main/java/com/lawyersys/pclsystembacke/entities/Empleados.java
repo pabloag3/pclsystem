@@ -100,6 +100,10 @@ public class Empleados implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cedula")
     @JsonIgnore
     private List<Usuarios> usuariosList;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cedula")
+    @JsonIgnore
+    private List<Timbrados> timbradosList;
 
     public Empleados() {
     }
@@ -207,6 +211,15 @@ public class Empleados implements Serializable {
 
     public void setCodEstado(EstadosEmpleados codEstado) {
         this.codEstado = codEstado;
+    }
+    
+    @XmlTransient
+    public List<Timbrados> getTimbradosList() {
+        return timbradosList;
+    }
+
+    public void setTimbradosList(List<Timbrados> timbradosList) {
+        this.timbradosList = timbradosList;
     }
 
     @Override

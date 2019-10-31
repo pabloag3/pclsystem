@@ -5,6 +5,7 @@ import com.lawyersys.pclsystembacke.entities.EstadosEmpleados;
 import com.lawyersys.pclsystembacke.entities.Permisos;
 import com.lawyersys.pclsystembacke.entities.RolesPermisos;
 import com.lawyersys.pclsystembacke.entities.RolesUsuario;
+import com.lawyersys.pclsystembacke.entities.Timbrados;
 import com.lawyersys.pclsystembacke.entities.Usuarios;
 import com.lawyersys.pclsystembe.dtos.RolesPermisosDTO;
 import java.sql.SQLException;
@@ -62,7 +63,12 @@ public class ABMManagerUsuarios {
             Query q = em.createNamedQuery(entidad + ".findByCodPermiso")
                     .setParameter("codPermiso", Integer.parseInt(id));
             return q.getResultList();
+        } else if (entidad == "Timbrados") {
+            Query q = em.createNamedQuery(entidad + ".findByNroTimbrado")
+                    .setParameter("nroTimbrado", Integer.parseInt(id));
+            return q.getResultList();
         }
+        
         return elem;
     }
     
@@ -83,6 +89,22 @@ public class ABMManagerUsuarios {
         } else if (clazz == Empleados.class) {
             Empleados emp = (Empleados) elem;
             em.persist(emp);
+        }  else if (clazz == Timbrados.class) {
+            Timbrados timbrado = (Timbrados) elem;
+            
+            timbrado.setNroSecActual(timbrado.getNroSecInicio());
+            
+            Query q;
+            // quito la vigencia de los timbrados anteriores del empleado
+            q = em.createNativeQuery("UPDATE timbrados"
+                    + " SET vigente = FALSE"
+                    + " WHERE cedula = '" + timbrado.getCedula().getCedula() + "';"
+                );
+            q.executeUpdate();
+            
+            timbrado.setVigente(true);
+            
+            em.persist(timbrado);
         } else if (clazz == EstadosEmpleados.class) {
             EstadosEmpleados est = (EstadosEmpleados) elem;
             em.persist(est);
@@ -122,6 +144,12 @@ public class ABMManagerUsuarios {
         } else if (clazz == Empleados.class) {
             Empleados emp = (Empleados) elem;
             em.merge(emp);
+        }  else if (clazz == Timbrados.class) {
+            Timbrados timbrado = (Timbrados) elem;
+            
+            timbrado.setNroSecActual(timbrado.getNroSecInicio());
+            
+            em.merge(timbrado);
         } else if (clazz == EstadosEmpleados.class) {
             EstadosEmpleados est = (EstadosEmpleados) elem;
             em.merge(est);

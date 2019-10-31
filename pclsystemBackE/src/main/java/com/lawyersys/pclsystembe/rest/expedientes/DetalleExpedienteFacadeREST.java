@@ -88,6 +88,9 @@ public class DetalleExpedienteFacadeREST {
             if ( elem.getCodTipoActuacion().getCodTipoActuacion() == null ) {
                 throw new FaltaCargarElemento("Error. Cargar tipo de actuacion.");
             }
+            if ( elem.getCodDespacho().getCodDespacho() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar despacho.");
+            }
             elem.setFecha(new Date());
             abmManager.create(DetalleExpediente.class, elem);
             return Response.ok().build();
@@ -206,12 +209,13 @@ public class DetalleExpedienteFacadeREST {
             if ( elem.getDescripcion()== null ) {
                 throw new FaltaCargarElemento("Error. Cargar descripcion.");
             }
-            if ( elem.getFecha() == null ) {
-                throw new FaltaCargarElemento("Error. Cargar fecha.");
+            if ( elem.getCodDespacho().getCodDespacho() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar despacho.");
             }
-            if ( elem.getArchivo() == null ) {
-                throw new FaltaCargarElemento("Error. Cargar archivo.");
+            if ( elem.getCodTipoActuacion().getCodTipoActuacion() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar tipo de actuacion.");
             }
+            elem.setFecha(new Date());
             abmManager.edit(DetalleExpediente.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
