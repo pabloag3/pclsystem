@@ -8,6 +8,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -99,7 +100,7 @@ public class Expedientes implements Serializable {
     private List<Expedientes> expedientesList;
     
     @JoinColumn(name = "parent_cod_expediente", referencedColumnName = "cod_expediente")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
     private Expedientes parentCodExpediente;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "expedientes")

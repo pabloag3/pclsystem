@@ -2,12 +2,15 @@
  */
 package com.lawyersys.pclsystembacke.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -65,7 +68,8 @@ public class DetalleExpediente implements Serializable {
     private Despachos codDespacho;
     
     @JoinColumn(name = "cod_expediente", referencedColumnName = "cod_expediente", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch= FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @JsonIgnore
     private Expedientes expedientes;
     
     @JoinColumn(name = "cod_juez", referencedColumnName = "cod_juez")

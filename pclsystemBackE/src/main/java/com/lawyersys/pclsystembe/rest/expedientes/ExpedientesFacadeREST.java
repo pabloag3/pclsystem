@@ -83,7 +83,9 @@ public class ExpedientesFacadeREST {
         try {
             List<Expedientes> elem = (List<Expedientes>) (Object) abmManager.find("Expedientes", id);
             ObjectMapper mapper = new ObjectMapper();
+            System.out.println("List: " + elem.toString());
             String resp = mapper.writeValueAsString(elem);
+            System.out.println("Despues de mapear");            
             return Response.ok(resp).build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Expedientes.class);
@@ -107,6 +109,7 @@ public class ExpedientesFacadeREST {
     @Path("listar-por-despachos/{id}")
     public Response findPorDespachos(@PathParam("id") String id) throws JsonProcessingException {
         try {
+            System.out.println("Antes de reventar y crear el list");
             List<Expedientes> elem = (List<Expedientes>) (Object) abmManager.traerExpedientePorDespacho(id);
             ObjectMapper mapper = new ObjectMapper();
             String resp = mapper.writeValueAsString(elem);

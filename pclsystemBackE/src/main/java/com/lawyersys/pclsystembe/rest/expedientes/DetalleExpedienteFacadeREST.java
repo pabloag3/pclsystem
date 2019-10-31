@@ -91,7 +91,10 @@ public class DetalleExpedienteFacadeREST {
             if ( elem.getCodDespacho().getCodDespacho() == null ) {
                 throw new FaltaCargarElemento("Error. Cargar despacho.");
             }
-            elem.setFecha(new Date());
+            if ( elem.getFecha() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar fecha.");
+            }
+            //elem.setFecha(new Date());
             abmManager.create(DetalleExpediente.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
@@ -187,7 +190,7 @@ public class DetalleExpedienteFacadeREST {
     @Path("/download")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response downloadFileWithGet(@QueryParam("file") String file) {
-        
+        System.out.println("entro");
         try {
             File fileDownload = new File(file);
             Response.ResponseBuilder response = Response.ok((Object) fileDownload);
@@ -215,7 +218,10 @@ public class DetalleExpedienteFacadeREST {
             if ( elem.getCodTipoActuacion().getCodTipoActuacion() == null ) {
                 throw new FaltaCargarElemento("Error. Cargar tipo de actuacion.");
             }
-            elem.setFecha(new Date());
+            if ( elem.getFecha() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar fecha.");
+            }
+            //elem.setFecha(new Date());
             abmManager.edit(DetalleExpediente.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
