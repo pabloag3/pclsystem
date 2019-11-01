@@ -41,6 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Expedientes.findByNroExpediente", query = "SELECT e FROM Expedientes e WHERE e.nroExpediente = :nroExpediente")
     , @NamedQuery(name = "Expedientes.findBycodDespacho", query = "SELECT e FROM Expedientes e WHERE e.codDespacho.codDespacho = :codDespacho")
     , @NamedQuery(name = "Expedientes.findBycodCaso", query = "SELECT e FROM Expedientes e WHERE e.codCaso.codCaso = :codCaso")
+    , @NamedQuery(name = "Expedientes.findHijosDeExpediente", query = "SELECT e FROM Expedientes e WHERE e.parentCodExpediente.codExpediente = :codExpediente")
 })
 public class Expedientes implements Serializable {
     

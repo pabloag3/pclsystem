@@ -58,6 +58,12 @@ public class ABMManagerExpedientes {
         return q.getResultList();
     }
     
+    public List<Object> findHijosDeExpediente(String codPadreExpediente) {
+        Query q = em.createNamedQuery("Expedientes.findHijosDeExpediente")
+                .setParameter("codExpediente", Integer.parseInt(codPadreExpediente));
+        return q.getResultList();
+    }
+    
     public List<Object> traerDetallesDeExpedientePorExpediente(String codExpediente) {
         Query q = em.createNamedQuery("DetalleExpediente.findByCodExpediente")
                 .setParameter("codExpediente", Integer.parseInt(codExpediente));
