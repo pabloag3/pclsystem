@@ -47,6 +47,12 @@ public class ABMManagerFacturacion {
                 .setParameter("codFactura", Integer.parseInt(factura));
         return q.getResultList();
     }
+    
+    public List<Object> traerCuentasPorCaso(String codCaso) {
+        Query q = em.createNamedQuery("Cuentas.findByCodCaso")
+                .setParameter("codCaso", Integer.parseInt(codCaso));
+        return q.getResultList();
+    }
 
     public List<Object> find(String entidad, String id) {
         List<Object> elem = null;
