@@ -51,6 +51,10 @@ public class Recibos implements Serializable {
     @NotNull
     @Column(name = "monto")
     private int monto;
+    
+    @Size(max = 2147483647)
+    @Column(name = "archivo")
+    private String archivo;
 
     public Recibos() {
     }
@@ -96,6 +100,14 @@ public class Recibos implements Serializable {
     public void setMonto(int monto) {
         this.monto = monto;
     }
+    
+    public String getArchivo() {
+        return archivo;
+    }
+
+    public void setArchivo(String archivo) {
+        this.archivo = archivo;
+    }
 
     @Override
     public int hashCode() {
@@ -116,10 +128,11 @@ public class Recibos implements Serializable {
         }
         return true;
     }
-
+    
     @Override
     public String toString() {
         return "com.lawyersys.pclsystembacke.Recibos[ recibosPK=" + codRecibo + " ]";
     }
+
     
 }

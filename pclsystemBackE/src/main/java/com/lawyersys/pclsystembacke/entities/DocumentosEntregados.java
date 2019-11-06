@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
@@ -52,6 +50,11 @@ public class DocumentosEntregados implements Serializable {
     @Column(name = "archivo")
     private String archivo;
     
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "devuelto")
+    private boolean devuelto;
+    
     @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente")
     @ManyToOne(optional = false)
     private Clientes codCliente;
@@ -100,6 +103,14 @@ public class DocumentosEntregados implements Serializable {
         this.codCliente = codCliente;
     }
 
+    public boolean getDevuelto() {
+        return devuelto;
+    }
+
+    public void setDevuelto(boolean devuelto) {
+        this.devuelto = devuelto;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

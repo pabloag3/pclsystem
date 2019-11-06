@@ -1,14 +1,10 @@
 package com.lawyersys.pclsystembacke.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,18 +12,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author carlo
+ * @author Pablo Aguilar
  */
 @Entity
 @Table(name = "expedientes")
@@ -39,12 +33,14 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Expedientes.findByCaratula", query = "SELECT e FROM Expedientes e WHERE e.caratula = :caratula")
     , @NamedQuery(name = "Expedientes.findByFecha", query = "SELECT e FROM Expedientes e WHERE e.fecha = :fecha")
     , @NamedQuery(name = "Expedientes.findByNroExpediente", query = "SELECT e FROM Expedientes e WHERE e.nroExpediente = :nroExpediente")
+    , @NamedQuery(name = "Expedientes.findByFechaFin", query = "SELECT e FROM Expedientes e WHERE e.fechaFin = :fechaFin")
+    , @NamedQuery(name = "Expedientes.findByParentCodExpediente", query = "SELECT e FROM Expedientes e WHERE e.parentCodExpediente = :parentCodExpediente")
     , @NamedQuery(name = "Expedientes.findBycodDespacho", query = "SELECT e FROM Expedientes e WHERE e.codDespacho.codDespacho = :codDespacho")
     , @NamedQuery(name = "Expedientes.findBycodCaso", query = "SELECT e FROM Expedientes e WHERE e.codCaso.codCaso = :codCaso")
-    , @NamedQuery(name = "Expedientes.findHijosDeExpediente", query = "SELECT e FROM Expedientes e WHERE e.parentCodExpediente.codExpediente = :codExpediente")
+    , @NamedQuery(name = "Expedientes.findHijosDeExpediente", query = "SELECT e FROM Expedientes e WHERE e.parentCodExpediente = :codExpediente")
 })
 public class Expedientes implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     
     @Id
@@ -76,6 +72,13 @@ public class Expedientes implements Serializable {
     @Column(name = "nro_expediente")
     private int nroExpediente;
     
+    @Column(name = "fecha_fin")
+    @Temporal(TemporalType.DATE)
+    private Date fechaFin;
+    
+    @Column(name = "parent_cod_expediente")
+    private Integer parentCodExpediente;
+    
     @JoinColumn(name = "cod_caso", referencedColumnName = "cod_caso")
     @ManyToOne(optional = false)
     private Casos codCaso;
@@ -85,28 +88,12 @@ public class Expedientes implements Serializable {
     private Despachos codDespacho;
     
     @JoinColumn(name = "camara_sorteada", referencedColumnName = "cod_despacho")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Despachos camaraSorteada;
-    
-    @Column(name = "fecha_fin")
-    @Temporal(TemporalType.DATE)
-    private Date fechaFin;
     
     @JoinColumn(name = "cod_estado_expediente", referencedColumnName = "cod_estado_expediente")
     @ManyToOne(optional = false)
     private EstadoExpediente codEstadoExpediente;
-    
-    @OneToMany(mappedBy = "parentCodExpediente")
-    @JsonIgnore
-    private List<Expedientes> expedientesList;
-    
-    @JoinColumn(name = "parent_cod_expediente", referencedColumnName = "cod_expediente")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
-    private Expedientes parentCodExpediente;
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "expedientes")
-    @JsonIgnore
-    private List<DetalleExpediente> detalleExpedienteList;
 
     public Expedientes() {
     }
@@ -163,6 +150,22 @@ public class Expedientes implements Serializable {
         this.nroExpediente = nroExpediente;
     }
 
+    public Date getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(Date fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public Integer getParentCodExpediente() {
+        return parentCodExpediente;
+    }
+
+    public void setParentCodExpediente(Integer parentCodExpediente) {
+        this.parentCodExpediente = parentCodExpediente;
+    }
+
     public Casos getCodCaso() {
         return codCaso;
     }
@@ -179,31 +182,20 @@ public class Expedientes implements Serializable {
         this.codDespacho = codDespacho;
     }
 
-    @XmlTransient
-    public List<Expedientes> getExpedientesList() {
-        return expedientesList;
+    public Despachos getCamaraSorteada() {
+        return camaraSorteada;
     }
 
-    public void setExpedientesList(List<Expedientes> expedientesList) {
-        this.expedientesList = expedientesList;
+    public void setCamaraSorteada(Despachos camaraSorteada) {
+        this.camaraSorteada = camaraSorteada;
     }
 
-    @JsonIgnore
-    public Expedientes getParentCodExpediente() {
-        return parentCodExpediente;
+    public EstadoExpediente getCodEstadoExpediente() {
+        return codEstadoExpediente;
     }
 
-    public void setParentCodExpediente(Expedientes parentCodExpediente) {
-        this.parentCodExpediente = parentCodExpediente;
-    }
-
-    @XmlTransient
-    public List<DetalleExpediente> getDetalleExpedienteList() {
-        return detalleExpedienteList;
-    }
-
-    public void setDetalleExpedienteList(List<DetalleExpediente> detalleExpedienteList) {
-        this.detalleExpedienteList = detalleExpedienteList;
+    public void setCodEstadoExpediente(EstadoExpediente codEstadoExpediente) {
+        this.codEstadoExpediente = codEstadoExpediente;
     }
 
     @Override
@@ -228,31 +220,7 @@ public class Expedientes implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.Expedientes[ codExpediente=" + codExpediente + " ]";
-    }
-
-    public Despachos getCamaraSorteada() {
-        return camaraSorteada;
-    }
-
-    public void setCamaraSorteada(Despachos camaraSorteada) {
-        this.camaraSorteada = camaraSorteada;
-    }
-
-    public Date getFechaFin() {
-        return fechaFin;
-    }
-
-    public void setFechaFin(Date fechaFin) {
-        this.fechaFin = fechaFin;
-    }
-
-    public EstadoExpediente getCodEstadoExpediente() {
-        return codEstadoExpediente;
-    }
-
-    public void setCodEstadoExpediente(EstadoExpediente codEstadoExpediente) {
-        this.codEstadoExpediente = codEstadoExpediente;
+        return "com.lawyersys.pclsystembacke.entities.Expedientes[ codExpediente=" + codExpediente + " ]";
     }
     
 }

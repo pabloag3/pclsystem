@@ -168,8 +168,12 @@ public class ABMManagerExpedientes {
             EstadosCaso ta = (EstadosCaso) elem;
             em.merge(ta);
         } else if (clazz == Expedientes.class) {
-            Expedientes ta = (Expedientes) elem;
-            em.merge(ta);
+            Expedientes expediente = (Expedientes) elem;
+//            System.out.println("expediente: " + expediente.toString());
+            
+//            expediente.setCodExpediente(expediente.getCodExpediente());
+            em.merge(expediente);
+            
         } else if (clazz == TiposActuaciones.class) {
             TiposActuaciones ta = (TiposActuaciones) elem;
             em.merge(ta);
