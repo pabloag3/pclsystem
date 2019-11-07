@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembe.rest.usuarios;
 
 import com.lawyersys.pclsystembe.abm.ABMManagerUsuarios;
@@ -45,7 +43,17 @@ public class EmpleadosREST {
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            Empleados elem = mapper.readValue(entity, Empleados.class);   
+            Empleados elem = mapper.readValue(entity, Empleados.class);
+            
+            List<Empleados> empleadoAuxList = (List<Empleados>) (Object) abmManager.find("Empleados", elem.getCedula());
+            
+            if (!empleadoAuxList.isEmpty()) {
+                Empleados empleadoAux = empleadoAuxList.get(0);
+                if ( empleadoAux.getCedula().contains(elem.getCedula()) ) {
+                    throw new FaltaCargarElemento("Error. Empleado ya existe.");
+                }
+            }
+            
             if ( elem.getCedula() == null ) {
                 throw new FaltaCargarElemento("Error. Cargar cedula.");
             }
