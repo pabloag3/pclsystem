@@ -7,8 +7,15 @@ import com.lawyersys.pclsystembacke.entities.FacturasPK;
 import com.lawyersys.pclsystembe.abm.ABMManagerFacturacion;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
@@ -21,6 +28,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
@@ -33,6 +46,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Produces(MediaType.APPLICATION_JSON)
 public class FacturasFacadeREST {
 
+    private static String UPLOADED_FACTURAS = "C:\\pclSystemFiles\\facturasRecibos\\";
+    
     private FacturasPK getPrimaryKey(PathSegment pathSegment) {
         /*
          * pathSemgent represents a URI path segment and any associated matrix parameters.
@@ -116,7 +131,72 @@ public class FacturasFacadeREST {
             return ErrorManager.manejarError(e, Facturas.class);
         }
     }
+    
+    @GET
+    @Path("/traer-archivo-factura/{codFactura}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response downloadFileWithGet(@PathParam("codFactura") String codFactura) throws JRException, ClassNotFoundException, SQLException, IOException {
+        
+        try {
+            
+            // EMPIEZA A GENERAR EL ARCHIVO DE LA FACTURA
+            // compilar el archivo del reporte jasper
+            String sourceFileName = "C:\\pclSystemFiles\\facturasRecibos\\Factura.jrxml";
+            String jasperReport =  JasperCompileManager.compileReportToFile(sourceFileName);
+            
+            // traemos la factura solicitada
+            Facturas factura = new Facturas();
+            List<Facturas> facturaAux = (List<Facturas>) (Object) abmManager.find("Facturas", codFactura);
+            if (!facturaAux.isEmpty()) {
+                factura = facturaAux.get(0);
+            } else {
+                throw new FaltaCargarElemento("Error. La factura no existe.");
+            }
+            
+            // mapea los parametros que pasara al archivo jasper
+            Map parameters = new HashMap();
+            parameters.put("v_cod_factura",(factura.getFacturasPK().getCodFactura()));
+            
+            // establece la conexion a la base de datos
+            String cadenaConexion = "jdbc:postgresql://localhost:5432/lawyersys";
+            Class.forName("org.postgresql.Driver");
+            Connection connection = DriverManager.getConnection(cadenaConexion, "postgres", "postgres");
+            
+            //Aqui se llena el reporte (se ejecuta la consulta)
+            JasperPrint print = new JasperPrint();
+            print = JasperFillManager.fillReport(jasperReport, parameters, connection);
+            byte[] pdfBytes = JasperExportManager.exportReportToPdf(print);
 
+            String fileName = UPLOADED_FACTURAS + factura.getCedulaEmisor().getCedula() 
+                    + " " + factura.getFacturasPK().getNroFactura() + ".pdf";
+            writeFile(pdfBytes, fileName);
+            
+            ResponseBuilder response = Response.ok((Object) new File(fileName));
+            response.header("Content-Disposition", "attachment;filename=" + fileName);
+            return response.build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Facturas.class);
+        }
+
+    }
+
+    //save to somewhere
+    private void writeFile(byte[] content, String filename) throws IOException {
+
+        File file = new File(filename);
+
+        if (!file.exists()) {
+                file.createNewFile();
+        }
+
+        FileOutputStream fop = new FileOutputStream(file);
+
+        fop.write(content);
+        fop.flush();
+        fop.close();
+
+    }
+    
     @GET
     @Path("listar")
     public Response findAll() throws JsonProcessingException {
