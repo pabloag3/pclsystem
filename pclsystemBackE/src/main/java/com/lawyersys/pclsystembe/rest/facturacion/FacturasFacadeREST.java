@@ -130,4 +130,17 @@ public class FacturasFacadeREST {
         }
     }
     
+    @GET
+    @Path("traer-facturas-de-cuenta/{id}")
+    public Response traerFacturasDeCuenta(@PathParam("id") String codCuenta) throws JsonProcessingException {
+        try {
+            List<Facturas> elem = (List<Facturas>) (Object) abmManager.traerFacturasDeCuenta(codCuenta);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Facturas.class);
+        }
+    }
+    
 }

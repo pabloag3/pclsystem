@@ -101,4 +101,17 @@ public class RecibosFacadeREST  {
         }
     }
     
+    @GET
+    @Path("traer-recibos-de-cuenta/{id}")
+    public Response traerFacturasDeCuenta(@PathParam("id") String codCuenta) throws JsonProcessingException {
+        try {
+            List<Recibos> elem = (List<Recibos>) (Object) abmManager.traerRecibosDeCuenta(codCuenta);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Recibos.class);
+        }
+    }
+    
 }

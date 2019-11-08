@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembe.abm;
 
 import com.lawyersys.pclsystembacke.entities.Cuentas;
@@ -51,6 +49,24 @@ public class ABMManagerFacturacion {
     public List<Object> traerCuentasPorCaso(String codCaso) {
         Query q = em.createNamedQuery("Cuentas.findByCodCaso")
                 .setParameter("codCaso", Integer.parseInt(codCaso));
+        return q.getResultList();
+    }
+    
+    public List<Object> traerFacturasDeCuenta(String codCuenta) {
+        Query q = em.createNativeQuery("SELECT * \n"
+                + "FROM facturas f\n"
+                + "JOIN pagos p ON p.cod_pago = f.cod_pago\n"
+                + "WHERE p.cod_cuenta = (?1);", Facturas.class);
+        q.setParameter(1, Integer.parseInt(codCuenta));
+        return q.getResultList();
+    }
+    
+    public List<Object> traerRecibosDeCuenta(String codCuenta) {
+        Query q = em.createNativeQuery("SELECT * \n"
+                + "FROM recibos r\n"
+                + "JOIN pagos p ON p.cod_pago = r.cod_pago\n"
+                + "WHERE p.cod_cuenta = (?1);", Recibos.class);
+        q.setParameter(1, Integer.parseInt(codCuenta));
         return q.getResultList();
     }
 
@@ -159,7 +175,7 @@ public class ABMManagerFacturacion {
                     + " SET nro_sec_actual = nro_sec_actual + 1"
                     + " WHERE cedula = '" + factura.getCedulaEmisor().getCedula() + "'"
                     + " AND vigente = TRUE;");
-            q.executeUpdate();
+            q.executeUpdate();            
         } else if (clazz == DetalleFactura.class) {
             DetalleFactura detalleFactura = (DetalleFactura) elem;
             
