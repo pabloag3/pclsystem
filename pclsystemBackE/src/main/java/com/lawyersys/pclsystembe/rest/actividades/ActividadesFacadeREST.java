@@ -102,6 +102,19 @@ public class ActividadesFacadeREST {
             return ErrorManager.manejarError(e, Actividades.class);
         }
     }
+    
+    @GET
+    @Path("traer-pendientes-caducados")
+    public Response traerPendientesCaducados () throws JsonProcessingException {
+        try {
+            List<Actividades> elem = (List<Actividades>) (Object) abmManager.traerPendientesCaducados();
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Actividades.class);
+        }
+    }
 
     @GET
     @Path("listar")

@@ -36,6 +36,16 @@ public class ABMManagerActividades {
         return q.getResultList();
     }
     
+    public List<Object> traerPendientesCaducados() {
+
+        Query q = em.createNativeQuery("SELECT *" +
+                " FROM actividades a" +
+                " WHERE (a.cod_estado = 4" +
+                " 	OR  ( (a.cod_estado = 1) AND (DATE(now()) - DATE(a.fecha)) <= a.dia_notificable))" +
+                " 	;", Actividades.class);
+        return q.getResultList();
+    }
+    
     public List<Object> find(String entidad, String id) {
         List<Object> elem = null;
         if (entidad == "TiposActividades") {
