@@ -41,6 +41,12 @@ public class ABMManagerUsuarios {
         return q.getResultList();
     }
     
+    public List<Object> traerUsuarioPorCedula(String cedula) {
+        Query q = em.createNamedQuery("Usuarios.findUsuarioByCedula")
+                .setParameter("cedula", cedula);
+        return q.getResultList();
+    }
+    
     public List<Object> find(String entidad, String id) {
         List<Object> elem = null;
         if (entidad == "Usuarios") {
