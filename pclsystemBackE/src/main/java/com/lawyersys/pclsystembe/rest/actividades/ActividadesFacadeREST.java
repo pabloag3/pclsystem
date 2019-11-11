@@ -4,6 +4,7 @@ package com.lawyersys.pclsystembe.rest.actividades;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.lawyersys.pclsystembacke.entities.Actividades;
 import com.lawyersys.pclsystembe.abm.ABMManagerActividades;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
@@ -109,6 +110,7 @@ public class ActividadesFacadeREST {
         try {
             List<Actividades> elem = (List<Actividades>) (Object) abmManager.traerPendientesCaducados();
             ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
