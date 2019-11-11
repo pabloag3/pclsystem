@@ -55,6 +55,17 @@ public class Recibos implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "archivo")
     private String archivo;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "facturado")
+    private boolean facturado;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "monto_texto")
+    private String montoTexto;
 
     public Recibos() {
     }
@@ -108,6 +119,22 @@ public class Recibos implements Serializable {
     public void setArchivo(String archivo) {
         this.archivo = archivo;
     }
+    
+    public boolean getFacturado() {
+        return facturado;
+    }
+
+    public void setFacturado(boolean facturado) {
+        this.facturado = facturado;
+    }
+
+    public String getMontoTexto() {
+        return montoTexto;
+    }
+
+    public void setMontoTexto(String montoTexto) {
+        this.montoTexto = montoTexto;
+    }
 
     @Override
     public int hashCode() {
@@ -133,6 +160,5 @@ public class Recibos implements Serializable {
     public String toString() {
         return "com.lawyersys.pclsystembacke.Recibos[ recibosPK=" + codRecibo + " ]";
     }
-
     
 }

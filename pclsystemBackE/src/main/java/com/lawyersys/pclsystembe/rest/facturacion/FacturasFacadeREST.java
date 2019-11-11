@@ -96,6 +96,31 @@ public class FacturasFacadeREST {
             return ErrorManager.manejarError(e, Facturas.class);
         }
     }
+    
+    @POST
+    @Path("crear-factura-de-recibo")
+    public Response crearFacturaDeRecibo(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Facturas elem = mapper.readValue(entity, Facturas.class);   
+            if ( elem.getCodCliente().getCodCliente() == 0 ) {
+                throw new FaltaCargarElemento("Error. Cargar cliente.");
+            }
+            if ( elem.getMontoTotal() == 0 ) {
+                throw new FaltaCargarElemento("Error. Cargar monto total.");
+            }
+            if ( elem.getCedulaEmisor().getCedula() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar cedula del emisor.");
+            }
+            if ( elem.getCodPago().getCodPago() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar codigo del pago.");
+            }
+            abmManager.crearFacturaDeRecibo(elem);
+            return Response.ok().build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Facturas.class);
+        }
+    }
 
     @PUT
     @Path("actualizar/{id}")
