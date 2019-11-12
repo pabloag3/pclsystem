@@ -133,6 +133,20 @@ public class EmpleadosREST {
             return ErrorManager.manejarError(e, Empleados.class);
         }
     }
+    
+    @GET
+    @Path("traer-empleados-con-timbrado-vigente")
+    public Response findEmpleadosConTimbradoVigente() throws JsonProcessingException {
+        try {
+            List<Empleados> elem = (List<Empleados>) (Object) abmManager.findEmpleadosConTimbradoVigente();
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            System.out.println(resp);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Empleados.class);
+        }
+    }
 
     @GET
     @Path("listar")
