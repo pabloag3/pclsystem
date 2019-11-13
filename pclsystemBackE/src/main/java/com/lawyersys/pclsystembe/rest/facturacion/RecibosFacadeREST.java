@@ -64,6 +64,9 @@ public class RecibosFacadeREST  {
             if ( elem.getMonto() == 0 ) {
                 throw new FaltaCargarElemento("Error. Cargar monto.");
             }
+            if ( elem.getMontoTexto() == "" ) {
+                throw new FaltaCargarElemento("Error. Cargar el monto en letras.");
+            }
             abmManager.create(Recibos.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
@@ -110,9 +113,9 @@ public class RecibosFacadeREST  {
         
         try {
             
-            // EMPIEZA A GENERAR EL ARCHIVO DE LA FACTURA
+            // EMPIEZA A GENERAR EL ARCHIVO DEL RECIBO
             // compilar el archivo del reporte jasper
-            String sourceFileName = "C:\\pclSystemFiles\\facturasRecibos\\Recibo.jrxml";
+            String sourceFileName = "C:\\pclSystemFiles\\jasperFiles\\Recibo.jrxml";
             String jasperReport =  JasperCompileManager.compileReportToFile(sourceFileName);
             
             // traemos la factura solicitada

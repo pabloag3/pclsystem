@@ -166,7 +166,7 @@ public class FacturasFacadeREST {
             
             // EMPIEZA A GENERAR EL ARCHIVO DE LA FACTURA
             // compilar el archivo del reporte jasper
-            String sourceFileName = "C:\\pclSystemFiles\\facturasRecibos\\Factura.jrxml";
+            String sourceFileName = "C:\\pclSystemFiles\\jasperFiles\\Factura.jrxml";
             String jasperReport =  JasperCompileManager.compileReportToFile(sourceFileName);
             
             // traemos la factura solicitada

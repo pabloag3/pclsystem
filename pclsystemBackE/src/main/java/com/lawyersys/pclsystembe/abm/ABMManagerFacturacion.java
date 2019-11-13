@@ -211,6 +211,8 @@ public class ABMManagerFacturacion {
             
             recibo.setFacturado(false);
             
+            recibo.setFechaEmision(new Date());
+            
             em.persist(recibo);
         }
     }
