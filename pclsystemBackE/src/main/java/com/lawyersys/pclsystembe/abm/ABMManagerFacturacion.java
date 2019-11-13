@@ -259,6 +259,13 @@ public class ABMManagerFacturacion {
                 + " SET facturado = true"
                 + " WHERE cod_pago = " + factura.getCodPago().getCodPago() + ";");
         q.executeUpdate();
+        
+        q = em.createNativeQuery("UPDATE timbrados"
+                    + " SET nro_sec_actual = nro_sec_actual + 1"
+                    + " WHERE cedula = '" + factura.getCedulaEmisor().getCedula() + "'"
+                    + " AND vigente = TRUE;");
+            q.executeUpdate();    
+        
     }
 
     public <S> void edit(Class<S> clazz, S elem) throws SQLException, Exception {

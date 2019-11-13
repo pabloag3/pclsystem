@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembe.rest.despachos;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -8,8 +6,15 @@ import com.lawyersys.pclsystembacke.entities.Fueros;
 import com.lawyersys.pclsystembe.abm.ABMManagerDespachos;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
@@ -21,6 +26,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
@@ -95,6 +106,60 @@ public class FuerosFacadeREST {
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Fueros.class);
         }
+    }
+    
+    @GET
+    @Path("/reporte-monto-por-fuero")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response traerReporteClientesACobrar() throws JRException, ClassNotFoundException, SQLException, IOException {
+        
+        try {
+            
+            // EMPIEZA A GENERAR EL ARCHIVO DEL REPORTE
+            // compilar el archivo del reporte jasper
+            String sourceFileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\MontoPorFuero.jrxml";
+            String jasperReport =  JasperCompileManager.compileReportToFile(sourceFileName);
+            
+            // mapea los parametros que pasara al archivo jasper
+            Map parameters = new HashMap();
+            
+            // establece la conexion a la base de datos
+            String cadenaConexion = "jdbc:postgresql://localhost:5432/lawyersys";
+            Class.forName("org.postgresql.Driver");
+            Connection connection = DriverManager.getConnection(cadenaConexion, "postgres", "postgres");
+            
+            //Aqui se llena el reporte (se ejecuta la consulta)
+            JasperPrint print = new JasperPrint();
+            print = JasperFillManager.fillReport(jasperReport, parameters, connection);
+            byte[] pdfBytes = JasperExportManager.exportReportToPdf(print);
+
+            String fileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\montoPorFuero.pdf";
+            writeFile(pdfBytes, fileName);
+            
+            ResponseBuilder response = Response.ok((Object) new File(fileName));
+            response.header("Content-Disposition", "attachment;filename=" + fileName);
+            return response.build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Fueros.class);
+        }
+
+    }
+
+    //save to somewhere
+    private void writeFile(byte[] content, String filename) throws IOException {
+
+        File file = new File(filename);
+
+        if (!file.exists()) {
+                file.createNewFile();
+        }
+
+        FileOutputStream fop = new FileOutputStream(file);
+
+        fop.write(content);
+        fop.flush();
+        fop.close();
+
     }
     
 }
