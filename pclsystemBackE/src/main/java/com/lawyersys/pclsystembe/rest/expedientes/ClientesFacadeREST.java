@@ -9,6 +9,7 @@ import com.lawyersys.pclsystembe.utilidades.ErrorManager;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -28,10 +29,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
@@ -128,11 +131,17 @@ public class ClientesFacadeREST {
     }
     
     @GET
-    @Path("/reporte-clientes-a-cobrar")
+    @Path("/reporte-clientes-a-cobrar/{formato}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response traerReporteClientesACobrar() throws JRException, ClassNotFoundException, SQLException, IOException {
+    public Response traerReporteClientesACobrar(
+            @PathParam("formato") String formato
+    ) throws JRException, ClassNotFoundException, SQLException, IOException {
         
         try {
+            
+            if (!formato.equals("pdf") && !formato.equals("docx") && !formato.equals("xls")) {
+                throw new FaltaCargarElemento("Error. El formato de archivo no es aceptado.");
+            }
             
             // EMPIEZA A GENERAR EL ARCHIVO DEL REPORTE
             // compilar el archivo del reporte jasper
@@ -150,14 +159,35 @@ public class ClientesFacadeREST {
             //Aqui se llena el reporte (se ejecuta la consulta)
             JasperPrint print = new JasperPrint();
             print = JasperFillManager.fillReport(jasperReport, parameters, connection);
-            byte[] pdfBytes = JasperExportManager.exportReportToPdf(print);
-
-            String fileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\clientesASerCobrados" + ".pdf";
-            writeFile(pdfBytes, fileName);
             
-            ResponseBuilder response = Response.ok((Object) new File(fileName));
+            ResponseBuilder response = null;
+            String fileName = "";
+            
+            if (formato.equals("pdf")) {
+                
+                byte[] pdfBytes = JasperExportManager.exportReportToPdf(print);
+                fileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\clientesASerCobrados.pdf";
+                writeFile(pdfBytes, fileName);
+                
+            } else if (formato.equals("docx")) {
+                
+                JRDocxExporter exporter = new JRDocxExporter();
+                exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
+                exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
+                        "C:\\pclSystemFiles\\jasperFiles\\reporte\\clientesASerCobrados.docx");
+                exporter.exportReport();
+                
+                File file = new File("C:\\pclSystemFiles\\jasperFiles\\reporte\\clientesASerCobrados.docx");
+                byte[] fileContent = Files.readAllBytes(file.toPath());
+                fileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\clientesASerCobrados.docx";
+                writeFile(fileContent, fileName);
+                
+            }
+            
+            response = Response.ok((Object) new File(fileName));
             response.header("Content-Disposition", "attachment;filename=" + fileName);
             return response.build();
+            
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Clientes.class);
         }
