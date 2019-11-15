@@ -7,9 +7,11 @@ import com.lawyersys.pclsystembacke.entities.Actividades;
 import com.lawyersys.pclsystembe.abm.ABMManagerActividades;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -36,6 +38,11 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
+import net.sf.jasperreports.export.Exporter;
+import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
+import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
@@ -154,7 +161,7 @@ public class ActividadesFacadeREST {
         
         try {
             
-            if (!formato.equals("pdf") && !formato.equals("docx") && !formato.equals("xls")) {
+            if (!formato.equals("pdf") && !formato.equals("docx") && !formato.equals("xlsx")) {
                 throw new FaltaCargarElemento("Error. El formato de archivo no es aceptado.");
             }
             
@@ -185,15 +192,39 @@ public class ActividadesFacadeREST {
                 
             } else if (formato.equals("docx")) {
                 
+                fileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\actividadesAVencer.docx";
+                
                 JRDocxExporter exporter = new JRDocxExporter();
                 exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
-                exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-                        "C:\\pclSystemFiles\\jasperFiles\\reporte\\actividadesAVencer.docx");
+                exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, fileName);
                 exporter.exportReport();
                 
-                File file = new File("C:\\pclSystemFiles\\jasperFiles\\reporte\\actividadesAVencer.docx");
+                File file = new File(fileName);
                 byte[] fileContent = Files.readAllBytes(file.toPath());
-                fileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\actividadesAVencer.docx";
+                
+                writeFile(fileContent, fileName);
+                
+            } else if (formato.equals("xlsx")) {
+                
+                fileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\actividadesAVencer.xlsx";
+                
+                SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
+                configuration.setOnePagePerSheet(true);
+                configuration.setIgnoreGraphics(false);
+                
+                try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    OutputStream fileOutputStream = new FileOutputStream(fileName)) {
+                    Exporter exporter = new JRXlsxExporter();
+                    exporter.setExporterInput(new SimpleExporterInput(print));
+                    exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(byteArrayOutputStream));
+                    exporter.setConfiguration(configuration);
+                    exporter.exportReport();
+                    byteArrayOutputStream.writeTo(fileOutputStream);
+                }
+                
+                File file = new File(fileName);
+                byte[] fileContent = Files.readAllBytes(file.toPath());
+                fileName = fileName;
                 writeFile(fileContent, fileName);
                 
             }
@@ -217,7 +248,7 @@ public class ActividadesFacadeREST {
         
         try {
             
-            if (!formato.equals("pdf") && !formato.equals("docx") && !formato.equals("xls")) {
+            if (!formato.equals("pdf") && !formato.equals("docx") && !formato.equals("xlsx")) {
                 throw new FaltaCargarElemento("Error. El formato de archivo no es aceptado.");
             }
             
@@ -249,15 +280,39 @@ public class ActividadesFacadeREST {
                 
             } else if (formato.equals("docx")) {
                 
+                fileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\PresentacionNotificacionAVencer.docx";
+                
                 JRDocxExporter exporter = new JRDocxExporter();
                 exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
-                exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-                        "C:\\pclSystemFiles\\jasperFiles\\reporte\\PresentacionNotificacionAVencer.docx");
+                exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, fileName);
                 exporter.exportReport();
                 
-                File file = new File("C:\\pclSystemFiles\\jasperFiles\\reporte\\PresentacionNotificacionAVencer.docx");
+                File file = new File(fileName);
                 byte[] fileContent = Files.readAllBytes(file.toPath());
-                fileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\PresentacionNotificacionAVencer.docx";
+                
+                writeFile(fileContent, fileName);
+                
+            } else if (formato.equals("xlsx")) {
+                
+                fileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\PresentacionNotificacionAVencer.xlsx";
+                
+                SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
+                configuration.setOnePagePerSheet(true);
+                configuration.setIgnoreGraphics(false);
+                
+                try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    OutputStream fileOutputStream = new FileOutputStream(fileName)) {
+                    Exporter exporter = new JRXlsxExporter();
+                    exporter.setExporterInput(new SimpleExporterInput(print));
+                    exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(byteArrayOutputStream));
+                    exporter.setConfiguration(configuration);
+                    exporter.exportReport();
+                    byteArrayOutputStream.writeTo(fileOutputStream);
+                }
+                
+                File file = new File(fileName);
+                byte[] fileContent = Files.readAllBytes(file.toPath());
+                fileName = fileName;
                 writeFile(fileContent, fileName);
                 
             }
@@ -281,7 +336,7 @@ public class ActividadesFacadeREST {
         
         try {
             
-            if (!formato.equals("pdf") && !formato.equals("docx") && !formato.equals("xls")) {
+            if (!formato.equals("pdf") && !formato.equals("docx") && !formato.equals("xlsx")) {
                 throw new FaltaCargarElemento("Error. El formato de archivo no es aceptado.");
             }
             
@@ -312,15 +367,39 @@ public class ActividadesFacadeREST {
                 
             } else if (formato.equals("docx")) {
                 
+                fileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\AudienciasDelMes.docx";
+                
                 JRDocxExporter exporter = new JRDocxExporter();
                 exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
-                exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME,
-                        "C:\\pclSystemFiles\\jasperFiles\\reporte\\AudienciasDelMes.docx");
+                exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, fileName);
                 exporter.exportReport();
                 
-                File file = new File("C:\\pclSystemFiles\\jasperFiles\\reporte\\AudienciasDelMes.docx");
+                File file = new File(fileName);
                 byte[] fileContent = Files.readAllBytes(file.toPath());
-                fileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\AudienciasDelMes.docx";
+                
+                writeFile(fileContent, fileName);
+                
+            } else if (formato.equals("xlsx")) {
+                
+                fileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\AudienciasDelMes.xlsx";
+                
+                SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
+                configuration.setOnePagePerSheet(true);
+                configuration.setIgnoreGraphics(false);
+                
+                try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    OutputStream fileOutputStream = new FileOutputStream(fileName)) {
+                    Exporter exporter = new JRXlsxExporter();
+                    exporter.setExporterInput(new SimpleExporterInput(print));
+                    exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(byteArrayOutputStream));
+                    exporter.setConfiguration(configuration);
+                    exporter.exportReport();
+                    byteArrayOutputStream.writeTo(fileOutputStream);
+                }
+                
+                File file = new File(fileName);
+                byte[] fileContent = Files.readAllBytes(file.toPath());
+                fileName = fileName;
                 writeFile(fileContent, fileName);
                 
             }
