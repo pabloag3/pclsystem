@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembe.rest.usuarios;
 
 import com.lawyersys.pclsystembe.abm.ABMManagerUsuarios;
@@ -45,7 +43,17 @@ public class EmpleadosREST {
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            Empleados elem = mapper.readValue(entity, Empleados.class);   
+            Empleados elem = mapper.readValue(entity, Empleados.class);
+            
+            List<Empleados> empleadoAuxList = (List<Empleados>) (Object) abmManager.find("Empleados", elem.getCedula());
+            
+            if (!empleadoAuxList.isEmpty()) {
+                Empleados empleadoAux = empleadoAuxList.get(0);
+                if ( empleadoAux.getCedula().contains(elem.getCedula()) ) {
+                    throw new FaltaCargarElemento("Error. Empleado ya existe.");
+                }
+            }
+            
             if ( elem.getCedula() == null ) {
                 throw new FaltaCargarElemento("Error. Cargar cedula.");
             }
@@ -117,6 +125,20 @@ public class EmpleadosREST {
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         try {
             List<Empleados> elem = (List<Empleados>) (Object) abmManager.find("Empleados", id);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            System.out.println(resp);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Empleados.class);
+        }
+    }
+    
+    @GET
+    @Path("traer-empleados-con-timbrado-vigente")
+    public Response findEmpleadosConTimbradoVigente() throws JsonProcessingException {
+        try {
+            List<Empleados> elem = (List<Empleados>) (Object) abmManager.findEmpleadosConTimbradoVigente();
             ObjectMapper mapper = new ObjectMapper();
             String resp = mapper.writeValueAsString(elem);
             System.out.println(resp);

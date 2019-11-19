@@ -10,10 +10,7 @@ import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -83,6 +80,19 @@ public class CuentasFacadeREST {
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         try {
             List<Cuentas> elem = (List<Cuentas>) (Object) abmManager.find("Cuentas", id);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Cuentas.class);
+        }
+    }
+    
+    @GET
+    @Path("traer-cuentas-de-caso/{id}")
+    public Response traerCuentasPorCaso(@PathParam("id") String id) throws JsonProcessingException {
+        try {
+            List<Cuentas> elem = (List<Cuentas>) (Object) abmManager.traerCuentasPorCaso(id);
             ObjectMapper mapper = new ObjectMapper();
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();

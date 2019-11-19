@@ -58,6 +58,12 @@ public class ABMManagerExpedientes {
         return q.getResultList();
     }
     
+    public List<Object> findHijosDeExpediente(String codPadreExpediente) {
+        Query q = em.createNamedQuery("Expedientes.findHijosDeExpediente")
+                .setParameter("codExpediente", Integer.parseInt(codPadreExpediente));
+        return q.getResultList();
+    }
+    
     public List<Object> traerDetallesDeExpedientePorExpediente(String codExpediente) {
         Query q = em.createNamedQuery("DetalleExpediente.findByCodExpediente")
                 .setParameter("codExpediente", Integer.parseInt(codExpediente));
@@ -162,8 +168,12 @@ public class ABMManagerExpedientes {
             EstadosCaso ta = (EstadosCaso) elem;
             em.merge(ta);
         } else if (clazz == Expedientes.class) {
-            Expedientes ta = (Expedientes) elem;
-            em.merge(ta);
+            Expedientes expediente = (Expedientes) elem;
+//            System.out.println("expediente: " + expediente.toString());
+            
+//            expediente.setCodExpediente(expediente.getCodExpediente());
+            em.merge(expediente);
+            
         } else if (clazz == TiposActuaciones.class) {
             TiposActuaciones ta = (TiposActuaciones) elem;
             em.merge(ta);
