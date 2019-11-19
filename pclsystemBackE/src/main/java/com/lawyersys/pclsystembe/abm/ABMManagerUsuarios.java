@@ -41,6 +41,20 @@ public class ABMManagerUsuarios {
         return q.getResultList();
     }
     
+    public List<Object> traerUsuarioPorCedula(String cedula) {
+        Query q = em.createNamedQuery("Usuarios.findUsuarioByCedula")
+                .setParameter("cedula", cedula);
+        return q.getResultList();
+    }
+    
+    public List<Object> findEmpleadosConTimbradoVigente() {
+        Query q = em.createNativeQuery("SELECT *\n"
+                + "FROM empleados e\n"
+                + "JOIN timbrados t ON t.cedula = e.cedula\n"
+                + "WHERE t.vigente = TRUE;", Empleados.class);        
+        return q.getResultList();
+    }
+    
     public List<Object> find(String entidad, String id) {
         List<Object> elem = null;
         if (entidad == "Usuarios") {

@@ -1,6 +1,7 @@
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -51,6 +54,27 @@ public class Recibos implements Serializable {
     @NotNull
     @Column(name = "monto")
     private int monto;
+    
+    @Size(max = 2147483647)
+    @Column(name = "archivo")
+    private String archivo;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "facturado")
+    private boolean facturado;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "monto_texto")
+    private String montoTexto;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "fecha_emision")
+    @Temporal(TemporalType.DATE)
+    private Date fechaEmision;
 
     public Recibos() {
     }
@@ -96,6 +120,38 @@ public class Recibos implements Serializable {
     public void setMonto(int monto) {
         this.monto = monto;
     }
+    
+    public String getArchivo() {
+        return archivo;
+    }
+
+    public void setArchivo(String archivo) {
+        this.archivo = archivo;
+    }
+    
+    public boolean getFacturado() {
+        return facturado;
+    }
+
+    public void setFacturado(boolean facturado) {
+        this.facturado = facturado;
+    }
+
+    public String getMontoTexto() {
+        return montoTexto;
+    }
+
+    public void setMontoTexto(String montoTexto) {
+        this.montoTexto = montoTexto;
+    }
+    
+    public Date getFechaEmision() {
+        return fechaEmision;
+    }
+
+    public void setFechaEmision(Date fechaEmision) {
+        this.fechaEmision = fechaEmision;
+    }
 
     @Override
     public int hashCode() {
@@ -116,7 +172,7 @@ public class Recibos implements Serializable {
         }
         return true;
     }
-
+    
     @Override
     public String toString() {
         return "com.lawyersys.pclsystembacke.Recibos[ recibosPK=" + codRecibo + " ]";
