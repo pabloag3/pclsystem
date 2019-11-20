@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,11 +81,14 @@ public class RecibosFacadeREST  {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Recibos elem = mapper.readValue(entity, Recibos.class);
-            if ( elem.getMonto() == 0 ) {
-                throw new FaltaCargarElemento("Error. Cargar monto.");
+            if ( elem.getDescripcion()== null ) {
+                throw new FaltaCargarElemento("Error. Cargar descripcion.");
             }
             if ( elem.getMonto() == 0 ) {
                 throw new FaltaCargarElemento("Error. Cargar monto.");
+            }
+            if ( elem.getMontoTexto() == "" ) {
+                throw new FaltaCargarElemento("Error. Cargar el monto en letras.");
             }
             abmManager.edit(Recibos.class, elem);
             return Response.ok().build();
@@ -93,6 +97,19 @@ public class RecibosFacadeREST  {
         }
     }
 
+    @PUT
+    @Path("actualizar-a-facturados")
+    public Response actualizarRecibosAFacturados(@RequestBody() ArrayList<Integer> listaCodRecibos) throws IOException, FaltaCargarElemento {
+        try {
+            
+            abmManager.actualizarRecibosAFacturados(listaCodRecibos);
+
+            return Response.ok().build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Recibos.class);
+        }
+    }
+    
     @GET
     @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {

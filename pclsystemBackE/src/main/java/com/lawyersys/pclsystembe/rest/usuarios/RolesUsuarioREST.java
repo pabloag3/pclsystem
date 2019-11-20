@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembe.rest.usuarios;
 
 import com.lawyersys.pclsystembe.abm.ABMManagerUsuarios;
@@ -42,21 +40,6 @@ public class RolesUsuarioREST {
     @EJB
     private ABMManagerUsuarios abmManager;
 
-//    @POST
-//    @Path("guardar")
-//    public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
-//        try {
-//            ObjectMapper mapper = new ObjectMapper();
-//            RolesUsuario elem = mapper.readValue(entity, RolesUsuario.class);
-//            if ( elem.getDescripcion()== null ) {
-//                throw new FaltaCargarElemento("Error. Cargar descripcion.");
-//            }
-//            abmManager.create(RolesUsuario.class, elem);
-//            return Response.ok().build();
-//        } catch (Exception e) {
-//            return ErrorManager.tratarError(e);
-//        }
-//    }
     
     @POST
     @Path("guardar")

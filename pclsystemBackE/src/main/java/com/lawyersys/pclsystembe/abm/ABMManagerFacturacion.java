@@ -12,6 +12,7 @@ import com.lawyersys.pclsystembacke.entities.Recibos;
 import com.lawyersys.pclsystembacke.entities.TiposPagos;
 import java.math.BigInteger;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -268,6 +269,19 @@ public class ABMManagerFacturacion {
         
     }
 
+    public <S> void actualizarRecibosAFacturados (ArrayList<Integer> listaCodRecibos) throws SQLException, Exception {
+        
+        Query q = em.createNativeQuery("UPDATE recibos"
+                + " SET facturado = true"
+                + " WHERE cod_recibo = (?1);");
+            
+        for (Integer codRecibo : listaCodRecibos) {
+            q.setParameter(1, codRecibo);
+            q.executeUpdate();
+        }
+        
+    }
+    
     public <S> void edit(Class<S> clazz, S elem) throws SQLException, Exception {
         if (clazz == TiposPagos.class) {
             TiposPagos ta = (TiposPagos) elem;

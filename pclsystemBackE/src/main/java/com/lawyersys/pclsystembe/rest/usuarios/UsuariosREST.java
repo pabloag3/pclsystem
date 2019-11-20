@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembe.rest.usuarios;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
