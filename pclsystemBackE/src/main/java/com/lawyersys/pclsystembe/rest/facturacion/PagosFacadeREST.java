@@ -42,9 +42,12 @@ public class PagosFacadeREST {
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            Pagos elem = mapper.readValue(entity, Pagos.class);            
+            Pagos elem = mapper.readValue(entity, Pagos.class);    
             if ( elem.getMontoPagado() == 0 ) {
                 throw new FaltaCargarElemento("Error. Cargar monto pagado.");
+            }
+            if ( elem.getMontoPagado()== -1 ) {
+                elem.setMontoPagado(0);
             }
             if ( elem.getCodCuenta().getCodCuenta() == 0 ) {
                 throw new FaltaCargarElemento("Error. Cargar cuenta.");

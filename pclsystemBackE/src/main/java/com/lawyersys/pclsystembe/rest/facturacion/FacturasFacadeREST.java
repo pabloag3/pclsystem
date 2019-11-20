@@ -87,9 +87,6 @@ public class FacturasFacadeREST {
             if ( elem.getMontoTotal() == 0 ) {
                 throw new FaltaCargarElemento("Error. Cargar monto total.");
             }
-            if ( elem.getMontoTotal() == -1 ) {
-                elem.setMontoTotal(0);
-            }
             if ( elem.getCedulaEmisor().getCedula() == null ) {
                 throw new FaltaCargarElemento("Error. Cargar cedula del emisor.");
             }
