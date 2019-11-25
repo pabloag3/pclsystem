@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.lawyersys.pclsystembacke.entities.Empleados;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
+import com.lawyersys.pclsystembe.utilidades.Log;
 import com.lawyersys.pclsystembe.utilidades.Ruc;
 
 /**
@@ -34,7 +35,7 @@ public class EmpleadosREST {
 
     @EJB
     private ABMManagerUsuarios abmManager;
-    
+
     public EmpleadosREST() {
     }
 
@@ -78,6 +79,7 @@ public class EmpleadosREST {
                 throw new FaltaCargarElemento("Error. Cargar direccion.");
             }
             abmManager.create(Empleados.class, elem);
+            Log.escribir("INFORMACION", "Creacion de empleado con cedula: " + elem.getCedula());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Empleados.class);
@@ -114,6 +116,7 @@ public class EmpleadosREST {
                 throw new FaltaCargarElemento("Error. Cargar direccion.");
             }
             abmManager.edit(Empleados.class, elem);
+            Log.escribir("INFORMACION", "Edicion de empleado con cedula: " + elem.getCedula());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Empleados.class);
