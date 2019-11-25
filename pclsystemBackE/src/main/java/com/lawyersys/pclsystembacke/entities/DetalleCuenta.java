@@ -61,6 +61,10 @@ public class DetalleCuenta implements Serializable {
     @ManyToOne(optional = false)
     private Cuentas cuentas;
     
+    @JoinColumn(name = "cod_expediente", referencedColumnName = "cod_expediente")
+    @ManyToOne(optional = false)
+    private Expedientes codExpediente;
+    
     public DetalleCuenta() {
     }
 
@@ -126,6 +130,14 @@ public class DetalleCuenta implements Serializable {
 
     public void setCuentas(Cuentas cuentas) {
         this.cuentas = cuentas;
+    }
+    
+    public Expedientes getCodExpediente() {
+        return codExpediente;
+    }
+
+    public void setCodExpediente(Expedientes codExpediente) {
+        this.codExpediente = codExpediente;
     }
 
     @Override

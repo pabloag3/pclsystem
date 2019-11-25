@@ -79,6 +79,10 @@ public class Clientes implements Serializable {
     @Column(name = "tipo_cliente")
     private String tipoCliente;
     
+    @Size(max = 50)
+    @Column(name = "correo_electronico")
+    private String correoElectronico;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCliente")
     @JsonIgnore
     private List<Casos> casosList;
@@ -201,6 +205,14 @@ public class Clientes implements Serializable {
 
     public void setCodCiudad(Ciudades codCiudad) {
         this.codCiudad = codCiudad;
+    }
+    
+    public String getCorreoElectronico() {
+        return correoElectronico;
+    }
+
+    public void setCorreoElectronico(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
     }
     
     @XmlTransient

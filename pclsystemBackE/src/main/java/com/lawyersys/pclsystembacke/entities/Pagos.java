@@ -101,6 +101,10 @@ public class Pagos implements Serializable {
     @ManyToOne(optional = false)
     private TiposPagos codTipoPago;
     
+    @JoinColumn(name = "cod_expediente", referencedColumnName = "cod_expediente")
+    @ManyToOne(optional = false)
+    private Expedientes codExpediente;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codPago")
     @JsonIgnore
     private List<Facturas> facturasList;
@@ -213,6 +217,14 @@ public class Pagos implements Serializable {
 
     public void setCodCuenta(Cuentas codCuenta) {
         this.codCuenta = codCuenta;
+    }
+    
+    public Expedientes getCodExpediente() {
+        return codExpediente;
+    }
+
+    public void setCodExpediente(Expedientes codExpediente) {
+        this.codExpediente = codExpediente;
     }
 
     @Override

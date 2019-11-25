@@ -1,8 +1,11 @@
 package com.lawyersys.pclsystembacke.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,12 +15,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -94,6 +99,14 @@ public class Expedientes implements Serializable {
     @JoinColumn(name = "cod_estado_expediente", referencedColumnName = "cod_estado_expediente")
     @ManyToOne(optional = false)
     private EstadoExpediente codEstadoExpediente;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codExpediente")
+    @JsonIgnore
+    private List<Pagos> pagosList;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codExpediente")
+    @JsonIgnore
+    private List<DetalleCuenta> detalleCuentaList;
 
     public Expedientes() {
     }
@@ -196,6 +209,24 @@ public class Expedientes implements Serializable {
 
     public void setCodEstadoExpediente(EstadoExpediente codEstadoExpediente) {
         this.codEstadoExpediente = codEstadoExpediente;
+    }
+    
+    @XmlTransient
+    public List<Pagos> getPagosList() {
+        return pagosList;
+    }
+
+    public void setPagosList(List<Pagos> pagosList) {
+        this.pagosList = pagosList;
+    }
+
+    @XmlTransient
+    public List<DetalleCuenta> getDetalleCuentaList() {
+        return detalleCuentaList;
+    }
+
+    public void setDetalleCuentaList(List<DetalleCuenta> detalleCuentaList) {
+        this.detalleCuentaList = detalleCuentaList;
     }
 
     @Override
