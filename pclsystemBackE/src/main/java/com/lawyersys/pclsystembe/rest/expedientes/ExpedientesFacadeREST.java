@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembe.rest.expedientes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -8,6 +6,7 @@ import com.lawyersys.pclsystembacke.entities.Expedientes;
 import com.lawyersys.pclsystembe.abm.ABMManagerExpedientes;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
+import com.lawyersys.pclsystembe.utilidades.Log;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -40,8 +39,9 @@ public class ExpedientesFacadeREST {
     private ABMManagerExpedientes abmManager;
 
     @POST
-    @Path("guardar")
-    public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
+    @Path("guardar/{username}")
+    public Response create(@PathParam("username") String username,
+            @RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Expedientes elem = mapper.readValue(entity, Expedientes.class);   
@@ -58,6 +58,7 @@ public class ExpedientesFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar descripcion.");
             }
             abmManager.create(Expedientes.class, elem);
+            Log.escribir("INFORMACION", username + "Accion: Crear expediente: " + elem.getNroExpediente());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Expedientes.class);
@@ -65,12 +66,14 @@ public class ExpedientesFacadeREST {
     }
 
     @PUT
-    @Path("actualizar/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException {
+    @Path("actualizar/{id}/{username}")
+    public Response edit(@PathParam("username") String username,
+            @RequestBody() String entity) throws IOException {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Expedientes elem = mapper.readValue(entity, Expedientes.class);  
             abmManager.edit(Expedientes.class, elem);
+            Log.escribir("INFORMACION", username + "Accion: Modificar expediente: " + elem.getNroExpediente());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Expedientes.class);

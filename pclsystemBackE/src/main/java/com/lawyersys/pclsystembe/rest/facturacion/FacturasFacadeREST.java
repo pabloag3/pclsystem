@@ -7,6 +7,7 @@ import com.lawyersys.pclsystembacke.entities.FacturasPK;
 import com.lawyersys.pclsystembe.abm.ABMManagerFacturacion;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
+import com.lawyersys.pclsystembe.utilidades.Log;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -76,8 +77,9 @@ public class FacturasFacadeREST {
     private ABMManagerFacturacion abmManager;
 
     @POST
-    @Path("guardar")
-    public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
+    @Path("guardar/{username}")
+    public Response create(@PathParam("username") String username,
+            @RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Facturas elem = mapper.readValue(entity, Facturas.class);   
@@ -91,6 +93,7 @@ public class FacturasFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar cedula del emisor.");
             }
             abmManager.create(Facturas.class, elem);
+            Log.escribir("INFORMACION", username + "Accion: Crear factura");
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Facturas.class);
@@ -123,8 +126,9 @@ public class FacturasFacadeREST {
     }
 
     @PUT
-    @Path("actualizar/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
+    @Path("actualizar/{id}/{username}")
+    public Response edit(@PathParam("username") String username,
+            @RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Facturas elem = mapper.readValue(entity, Facturas.class);
@@ -138,6 +142,7 @@ public class FacturasFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar cedula del emisor.");
             }
             abmManager.edit(Facturas.class, elem);
+            Log.escribir("INFORMACION", username + "Accion: Anular factura: " + elem.getFacturasPK().getCodFactura());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Facturas.class);

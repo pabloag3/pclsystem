@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembe.rest.expedientes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -9,13 +7,13 @@ import com.lawyersys.pclsystembacke.entities.DetalleExpedientePK;
 import com.lawyersys.pclsystembe.abm.ABMManagerExpedientes;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
+import com.lawyersys.pclsystembe.utilidades.Log;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
@@ -77,8 +75,9 @@ public class DetalleExpedienteFacadeREST {
     private static String UPLOADED_FOLDER = "C:\\pclSystemFiles\\detallesExpedienteArchivos\\";
     
     @POST
-    @Path("guardar")
-    public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
+    @Path("guardar/{username}")
+    public Response create(@PathParam("username") String username,
+            @RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
             DetalleExpediente elem = mapper.readValue(entity, DetalleExpediente.class);   
@@ -94,8 +93,8 @@ public class DetalleExpedienteFacadeREST {
             if ( elem.getFecha() == null ) {
                 throw new FaltaCargarElemento("Error. Cargar fecha.");
             }
-            //elem.setFecha(new Date());
             abmManager.create(DetalleExpediente.class, elem);
+            Log.escribir("INFORMACION", username + "Accion: Crear detalle de expediente: " + elem.getDescripcion());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, DetalleExpediente.class);
@@ -204,8 +203,9 @@ public class DetalleExpedienteFacadeREST {
 
 
     @PUT
-    @Path("actualizar/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
+    @Path("actualizar/{id}/{username}")
+    public Response edit(@PathParam("username") String username,
+            @RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
             DetalleExpediente elem = mapper.readValue(entity, DetalleExpediente.class);  
@@ -223,6 +223,7 @@ public class DetalleExpedienteFacadeREST {
             }
             //elem.setFecha(new Date());
             abmManager.edit(DetalleExpediente.class, elem);
+            Log.escribir("INFORMACION", username + "Accion: Modificar detalle de expediente: " + elem.getDetalleExpedientePK().getCodDetalleExpediente());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, DetalleExpediente.class);
@@ -233,26 +234,7 @@ public class DetalleExpedienteFacadeREST {
     @Path("traer/{id}")
     public Response find(@PathParam("id") String id) throws JsonProcessingException {
         try {
-//            DetalleExpediente deAux = null;
-            
-//            List<DetalleExpediente> listaAuxiliar = null;
             List<DetalleExpediente> elem = (List<DetalleExpediente>) (Object) abmManager.find("DetalleExpediente", id);
-            
-//            for (int i = 0; i < elem.size(); i++) {
-//                DetalleExpedientePK dePKaux = new DetalleExpedientePK(elem.get(i).getDetalleExpedientePK().getCodDetalleExpediente(),
-//                        elem.get(i).getDetalleExpedientePK().getCodExpediente());
-//                deAux.setDetalleExpedientePK(dePKaux);
-//                deAux.setDescripcion(elem.get(i).getDescripcion());
-//                deAux.setFecha(elem.get(i).getFecha());
-//                deAux.setArchivo(elem.get(i).getArchivo());
-//                deAux.setCodTipoActuacion(elem.get(i).getCodTipoActuacion());
-//                deAux.setCodDespacho(elem.get(i).getCodDespacho());
-//                deAux.setCodJuez(elem.get(i).getCodJuez());
-//                deAux.setCodActuario(elem.get(i).getCodActuario());
-//                deAux.setCodUjier(elem.get(i).getCodUjier());
-//                listaAuxiliar.add(deAux);
-//            }
-            
             ObjectMapper mapper = new ObjectMapper();
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();

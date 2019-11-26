@@ -8,6 +8,7 @@ import com.lawyersys.pclsystembe.abm.ABMManagerDespachos;
 import com.lawyersys.pclsystembe.abm.ABMManagerExpedientes;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
+import com.lawyersys.pclsystembe.utilidades.Log;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -66,8 +67,9 @@ public class CasosFacadeREST {
     private ABMManagerDespachos abmManagerDespachos;
 
     @POST
-    @Path("guardar")
-    public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
+    @Path("guardar/{username}")
+    public Response create(@PathParam("username") String username,
+            @RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Casos elem = mapper.readValue(entity, Casos.class);   
@@ -75,6 +77,7 @@ public class CasosFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar descripcion.");
             }
             abmManager.create(Casos.class, elem);
+            Log.escribir("INFORMACION", username + "Accion: Crear caso: " + elem.getDescripcion());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Casos.class);
@@ -82,8 +85,9 @@ public class CasosFacadeREST {
     }
 
     @PUT
-    @Path("actualizar/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
+    @Path("actualizar/{id}/{username}")
+    public Response edit(@PathParam("username") String username,
+            @RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Casos elem = mapper.readValue(entity, Casos.class);
@@ -91,6 +95,7 @@ public class CasosFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar descripcion.");
             }
             abmManager.edit(Casos.class, elem);
+            Log.escribir("INFORMACION", username + "Accion: Crear caso: " + elem.getCodCaso());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Casos.class);

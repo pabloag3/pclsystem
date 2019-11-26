@@ -7,6 +7,7 @@ import com.lawyersys.pclsystembacke.entities.DetalleCuentaPK;
 import com.lawyersys.pclsystembe.abm.ABMManagerFacturacion;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
+import com.lawyersys.pclsystembe.utilidades.Log;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -61,8 +62,9 @@ public class DetalleCuentaFacadeREST {
     private ABMManagerFacturacion abmManager;
 
     @POST
-    @Path("guardar")
-    public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
+    @Path("guardar/{username}")
+    public Response create(@PathParam("username") String username,
+            @RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
             DetalleCuenta elem = mapper.readValue(entity, DetalleCuenta.class);
@@ -73,6 +75,7 @@ public class DetalleCuentaFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar monto.");
             }
             abmManager.create(DetalleCuenta.class, elem);
+            Log.escribir("INFORMACION", username + "Accion: Crear detalle de cuenta: " + elem.getDescripcion());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, DetalleCuenta.class);
@@ -80,8 +83,9 @@ public class DetalleCuentaFacadeREST {
     }
 
     @PUT
-    @Path("actualizar/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
+    @Path("actualizar/{id}/{username}")
+    public Response edit(@PathParam("username") String username,
+            @RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
             DetalleCuenta elem = mapper.readValue(entity, DetalleCuenta.class);
@@ -92,6 +96,7 @@ public class DetalleCuentaFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar monto.");
             }
             abmManager.edit(DetalleCuenta.class, elem);
+            Log.escribir("INFORMACION", username + "Accion: Crear detalle de cuenta: " + elem.getDetalleCuentaPK().getCodCuenta());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, DetalleCuenta.class);

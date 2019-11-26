@@ -6,6 +6,7 @@ import com.lawyersys.pclsystembacke.entities.Clientes;
 import com.lawyersys.pclsystembe.abm.ABMManagerExpedientes;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
+import com.lawyersys.pclsystembe.utilidades.Log;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -61,8 +62,9 @@ public class ClientesFacadeREST {
     private ABMManagerExpedientes abmManager;
 
     @POST
-    @Path("guardar")
-    public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
+    @Path("guardar/{username}")
+    public Response create(@PathParam("username") String username,
+            @RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Clientes elem = mapper.readValue(entity, Clientes.class);   
@@ -73,6 +75,7 @@ public class ClientesFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar tipo de cliente.");
             }
             abmManager.create(Clientes.class, elem);
+            Log.escribir("INFORMACION", username + "Accion: Crear cliente: " + elem.getNombre());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Clientes.class);
@@ -80,8 +83,9 @@ public class ClientesFacadeREST {
     }
 
     @PUT
-    @Path("actualizar/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
+    @Path("actualizar/{id}/{username}")
+    public Response edit(@PathParam("username") String username,
+            @RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Clientes elem = mapper.readValue(entity, Clientes.class);
@@ -92,6 +96,7 @@ public class ClientesFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar tipo de cliente.");
             }
             abmManager.edit(Clientes.class, elem);
+            Log.escribir("INFORMACION", username + "Accion: Modificar cliente: " + elem.getNombre());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Clientes.class);

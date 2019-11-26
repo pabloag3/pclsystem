@@ -6,6 +6,7 @@ import com.lawyersys.pclsystembacke.entities.Pagos;
 import com.lawyersys.pclsystembe.abm.ABMManagerFacturacion;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
+import com.lawyersys.pclsystembe.utilidades.Log;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -38,8 +39,9 @@ public class PagosFacadeREST {
     private ABMManagerFacturacion abmManager;
 
     @POST
-    @Path("guardar")
-    public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
+    @Path("guardar/{username}")
+    public Response create(@PathParam("username") String username,
+            @RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Pagos elem = mapper.readValue(entity, Pagos.class);    
@@ -91,6 +93,7 @@ public class PagosFacadeREST {
             }
 
             abmManager.create(Pagos.class, elem);
+            Log.escribir("INFORMACION", username + "Accion: Crear pago: " + elem.getFechaPago());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Pagos.class);
@@ -98,8 +101,9 @@ public class PagosFacadeREST {
     }
 
     @PUT
-    @Path("actualizar/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
+    @Path("actualizar/{id}/{username}")
+    public Response edit(@PathParam("username") String username,
+            @RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Pagos elem = mapper.readValue(entity, Pagos.class);
@@ -151,6 +155,7 @@ public class PagosFacadeREST {
             }
             
             abmManager.edit(Pagos.class, elem);
+            Log.escribir("INFORMACION", username + "Accion: Modificar pago: " + elem.getCodPago());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Pagos.class);

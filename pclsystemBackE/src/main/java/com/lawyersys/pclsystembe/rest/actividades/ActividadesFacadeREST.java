@@ -7,6 +7,7 @@ import com.lawyersys.pclsystembacke.entities.Actividades;
 import com.lawyersys.pclsystembe.abm.ABMManagerActividades;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
+import com.lawyersys.pclsystembe.utilidades.Log;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -62,10 +63,11 @@ public class ActividadesFacadeREST {
     private ABMManagerActividades abmManager;
 
     @POST
-    @Path("guardar")
-    public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
+    @Path("guardar/{username}")
+    public Response create(@PathParam("username") String username,
+            @RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
-             ObjectMapper mapper = new ObjectMapper();
+            ObjectMapper mapper = new ObjectMapper();
             Actividades elem = mapper.readValue(entity, Actividades.class);   
             if ( elem.getDescripcion()== null ) {
                 throw new FaltaCargarElemento("Error. Cargar descripcion.");
@@ -74,6 +76,7 @@ public class ActividadesFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar fecha.");
             }
             abmManager.create(Actividades.class, elem);
+            Log.escribir("INFORMACION", username + "Accion: Crear actividad: " + elem.getDescripcion());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Actividades.class);
@@ -81,8 +84,9 @@ public class ActividadesFacadeREST {
     }
 
     @PUT
-    @Path("actualizar/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
+    @Path("actualizar/{id}/{username}")
+    public Response edit(@PathParam("username") String username,
+            @RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Actividades elem = mapper.readValue(entity, Actividades.class);  
@@ -93,6 +97,7 @@ public class ActividadesFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar fecha.");
             }
             abmManager.edit(Actividades.class, elem);
+            Log.escribir("INFORMACION", username + "Accion: Editar actividad: " + elem.getCodActividad());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Actividades.class);
