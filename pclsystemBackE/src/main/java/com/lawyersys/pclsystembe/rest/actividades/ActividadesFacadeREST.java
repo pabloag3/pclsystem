@@ -76,7 +76,7 @@ public class ActividadesFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar fecha.");
             }
             abmManager.create(Actividades.class, elem);
-            Log.escribir("INFORMACION", username + "Accion: Crear actividad: " + elem.getDescripcion());
+            Log.escribir("INFORMACION", username + " Accion: Crear actividad: " + elem.getDescripcion());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Actividades.class);
@@ -97,7 +97,7 @@ public class ActividadesFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar fecha.");
             }
             abmManager.edit(Actividades.class, elem);
-            Log.escribir("INFORMACION", username + "Accion: Editar actividad: " + elem.getCodActividad());
+            Log.escribir("INFORMACION", username + " Accion: Editar actividad: " + elem.getCodActividad());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Actividades.class);

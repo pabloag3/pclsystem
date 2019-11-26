@@ -75,7 +75,7 @@ public class ClientesFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar tipo de cliente.");
             }
             abmManager.create(Clientes.class, elem);
-            Log.escribir("INFORMACION", username + "Accion: Crear cliente: " + elem.getNombre());
+            Log.escribir("INFORMACION", username + " Accion: Crear cliente: " + elem.getNombre());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Clientes.class);
@@ -96,7 +96,7 @@ public class ClientesFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar tipo de cliente.");
             }
             abmManager.edit(Clientes.class, elem);
-            Log.escribir("INFORMACION", username + "Accion: Modificar cliente: " + elem.getNombre());
+            Log.escribir("INFORMACION", username + " Accion: Modificar cliente: " + elem.getNombre());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Clientes.class);

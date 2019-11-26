@@ -93,7 +93,7 @@ public class FacturasFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar cedula del emisor.");
             }
             abmManager.create(Facturas.class, elem);
-            Log.escribir("INFORMACION", username + "Accion: Crear factura");
+            Log.escribir("INFORMACION", username + " Accion: Crear factura");
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Facturas.class);
@@ -142,7 +142,7 @@ public class FacturasFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar cedula del emisor.");
             }
             abmManager.edit(Facturas.class, elem);
-            Log.escribir("INFORMACION", username + "Accion: Anular factura: " + elem.getFacturasPK().getCodFactura());
+            Log.escribir("INFORMACION", username + " Accion: Anular factura: " + elem.getFacturasPK().getCodFactura());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Facturas.class);

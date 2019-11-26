@@ -74,8 +74,11 @@ public class DetalleCuentaFacadeREST {
             if ( elem.getMonto() == 0 ) {
                 throw new FaltaCargarElemento("Error. Cargar monto.");
             }
+            if (elem.getCodExpediente().getCodExpediente() == null || elem.getCodExpediente().getCodExpediente() == 0) {
+                throw new FaltaCargarElemento("Error. Cargar expediente.");
+            }
             abmManager.create(DetalleCuenta.class, elem);
-            Log.escribir("INFORMACION", username + "Accion: Crear detalle de cuenta: " + elem.getDescripcion());
+            Log.escribir("INFORMACION", username + " Accion: Crear detalle de cuenta: " + elem.getDescripcion());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, DetalleCuenta.class);
@@ -95,8 +98,11 @@ public class DetalleCuentaFacadeREST {
             if ( elem.getMonto() == 0 ) {
                 throw new FaltaCargarElemento("Error. Cargar monto.");
             }
+            if (elem.getCodExpediente().getCodExpediente() == null || elem.getCodExpediente().getCodExpediente() == 0) {
+                throw new FaltaCargarElemento("Error. Cargar expediente.");
+            }
             abmManager.edit(DetalleCuenta.class, elem);
-            Log.escribir("INFORMACION", username + "Accion: Crear detalle de cuenta: " + elem.getDetalleCuentaPK().getCodCuenta());
+            Log.escribir("INFORMACION", username + " Accion: Crear detalle de cuenta: " + elem.getDetalleCuentaPK().getCodCuenta());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, DetalleCuenta.class);

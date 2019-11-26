@@ -91,9 +91,12 @@ public class PagosFacadeREST {
                     throw new FaltaCargarElemento("Error. Cargar entidad financiera.");
                 }
             }
+            if (elem.getCodExpediente().getCodExpediente() == null || elem.getCodExpediente().getCodExpediente() == 0) {
+                throw new FaltaCargarElemento("Error. Cargar expediente.");
+            }
 
             abmManager.create(Pagos.class, elem);
-            Log.escribir("INFORMACION", username + "Accion: Crear pago: " + elem.getFechaPago());
+            Log.escribir("INFORMACION", username + " Accion: Crear pago: " + elem.getFechaPago());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Pagos.class);
@@ -153,9 +156,12 @@ public class PagosFacadeREST {
                     throw new FaltaCargarElemento("Error. Cargar entidad financiera.");
                 }
             }
+            if (elem.getCodExpediente().getCodExpediente() == null || elem.getCodExpediente().getCodExpediente() == 0) {
+                throw new FaltaCargarElemento("Error. Cargar expediente.");
+            }
             
             abmManager.edit(Pagos.class, elem);
-            Log.escribir("INFORMACION", username + "Accion: Modificar pago: " + elem.getCodPago());
+            Log.escribir("INFORMACION", username + " Accion: Modificar pago: " + elem.getCodPago());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Pagos.class);

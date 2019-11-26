@@ -94,7 +94,7 @@ public class DetalleExpedienteFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar fecha.");
             }
             abmManager.create(DetalleExpediente.class, elem);
-            Log.escribir("INFORMACION", username + "Accion: Crear detalle de expediente: " + elem.getDescripcion());
+            Log.escribir("INFORMACION", username + " Accion: Crear detalle de expediente: " + elem.getDescripcion());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, DetalleExpediente.class);
@@ -223,7 +223,7 @@ public class DetalleExpedienteFacadeREST {
             }
             //elem.setFecha(new Date());
             abmManager.edit(DetalleExpediente.class, elem);
-            Log.escribir("INFORMACION", username + "Accion: Modificar detalle de expediente: " + elem.getDetalleExpedientePK().getCodDetalleExpediente());
+            Log.escribir("INFORMACION", username + " Accion: Modificar detalle de expediente: " + elem.getDetalleExpedientePK().getCodDetalleExpediente());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, DetalleExpediente.class);

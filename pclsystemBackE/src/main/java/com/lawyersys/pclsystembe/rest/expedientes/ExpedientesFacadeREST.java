@@ -58,7 +58,7 @@ public class ExpedientesFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar descripcion.");
             }
             abmManager.create(Expedientes.class, elem);
-            Log.escribir("INFORMACION", username + "Accion: Crear expediente: " + elem.getNroExpediente());
+            Log.escribir("INFORMACION", username + " Accion: Crear expediente: " + elem.getNroExpediente());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Expedientes.class);
@@ -73,7 +73,7 @@ public class ExpedientesFacadeREST {
             ObjectMapper mapper = new ObjectMapper();
             Expedientes elem = mapper.readValue(entity, Expedientes.class);  
             abmManager.edit(Expedientes.class, elem);
-            Log.escribir("INFORMACION", username + "Accion: Modificar expediente: " + elem.getNroExpediente());
+            Log.escribir("INFORMACION", username + " Accion: Modificar expediente: " + elem.getNroExpediente());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Expedientes.class);

@@ -77,7 +77,7 @@ public class CasosFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar descripcion.");
             }
             abmManager.create(Casos.class, elem);
-            Log.escribir("INFORMACION", username + "Accion: Crear caso: " + elem.getDescripcion());
+            Log.escribir("INFORMACION", username + " Accion: Crear caso: " + elem.getDescripcion());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Casos.class);
@@ -95,7 +95,7 @@ public class CasosFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar descripcion.");
             }
             abmManager.edit(Casos.class, elem);
-            Log.escribir("INFORMACION", username + "Accion: Crear caso: " + elem.getCodCaso());
+            Log.escribir("INFORMACION", username + " Accion: Modificar caso: " + elem.getCodCaso());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Casos.class);
