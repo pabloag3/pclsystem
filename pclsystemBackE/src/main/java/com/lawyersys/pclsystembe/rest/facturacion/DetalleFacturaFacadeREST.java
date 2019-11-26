@@ -13,10 +13,7 @@ import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -30,19 +27,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  *
- * @author tatoa
+ * @author Pablo Aguilar
  */
 @Stateless
 @Path("detallefactura")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class DetalleFacturaFacadeREST {
-
-    @PersistenceContext(unitName = "lawyersys")
-    private EntityManager em;
 
     private DetalleFacturaPK getPrimaryKey(PathSegment pathSegment) {
         /*
          * pathSemgent represents a URI path segment and any associated matrix parameters.
-         * URI path part is supposed to be in form of 'somePath;codDetalleFactura=codDetalleFacturaValue;codFactura=codFacturaValue;codPago=codPagoValue'.
+         * URI path part is supposed to be in form of 'somePath;codDetalleFactura=codDetalleFacturaValue;codFactura=codFacturaValue;nroFactura=nroFacturaValue'.
          * Here 'somePath' is a result of getPath() method invocation and
          * it is ignored in the following code.
          * Matrix parameters are used as field names to build a primary key instance.
@@ -57,9 +53,9 @@ public class DetalleFacturaFacadeREST {
         if (codFactura != null && !codFactura.isEmpty()) {
             key.setCodFactura(new java.lang.Integer(codFactura.get(0)));
         }
-        java.util.List<String> codPago = map.get("codPago");
-        if (codPago != null && !codPago.isEmpty()) {
-            key.setCodPago(new java.lang.Integer(codPago.get(0)));
+        java.util.List<String> nroFactura = map.get("nroFactura");
+        if (nroFactura != null && !nroFactura.isEmpty()) {
+            key.setNroFactura(nroFactura.get(0));
         }
         return key;
     }
@@ -69,23 +65,26 @@ public class DetalleFacturaFacadeREST {
 
     @EJB
     private ABMManagerFacturacion abmManager;
-    
+
     @POST
     @Path("guardar")
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            DetalleFactura elem = mapper.readValue(entity, DetalleFactura.class);   
+            DetalleFactura elem = mapper.readValue(entity, DetalleFactura.class);
+            if ( elem.getDescripcion() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar descripcion.");
+            }
             if ( elem.getMonto() == 0 ) {
                 throw new FaltaCargarElemento("Error. Cargar monto.");
             }
-            if ( elem.getDescripcion() == null ) {
-                throw new FaltaCargarElemento("Error. Cargar descripcion.");
+            if ( elem.getPorcentajeIva() == 0 ) {
+                throw new FaltaCargarElemento("Error. Cargar porcentaje de IVA.");
             }
             abmManager.create(DetalleFactura.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, DetalleFactura.class);
         }
     }
 
@@ -94,17 +93,20 @@ public class DetalleFacturaFacadeREST {
     public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            DetalleFactura elem = mapper.readValue(entity, DetalleFactura.class);  
+            DetalleFactura elem = mapper.readValue(entity, DetalleFactura.class);
+            if ( elem.getDescripcion() == null ) {
+                throw new FaltaCargarElemento("Error. Cargar descripcion.");
+            }
             if ( elem.getMonto() == 0 ) {
                 throw new FaltaCargarElemento("Error. Cargar monto.");
             }
-            if ( elem.getDescripcion() == null ) {
-                throw new FaltaCargarElemento("Error. Cargar descripcion.");
+            if ( elem.getPorcentajeIva() == 0 ) {
+                throw new FaltaCargarElemento("Error. Cargar porcentaje de IVA.");
             }
             abmManager.edit(DetalleFactura.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, DetalleFactura.class);
         }
     }
 
@@ -117,7 +119,20 @@ public class DetalleFacturaFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, DetalleFactura.class);
+        }
+    }
+    
+    @GET
+    @Path("traer-detalles-de-factura/{id}")
+    public Response findByFactura(@PathParam("id") String id) throws JsonProcessingException {
+        try {
+            List<DetalleFactura> elem = (List<DetalleFactura>) (Object) abmManager.traerDetallesDeFactura(id);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, DetalleFactura.class);
         }
     }
 
@@ -130,7 +145,7 @@ public class DetalleFacturaFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, DetalleFactura.class);
         }
     }
     

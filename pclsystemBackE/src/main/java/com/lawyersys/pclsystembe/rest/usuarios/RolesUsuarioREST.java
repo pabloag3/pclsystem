@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembe.rest.usuarios;
 
 import com.lawyersys.pclsystembe.abm.ABMManagerUsuarios;
@@ -42,21 +40,6 @@ public class RolesUsuarioREST {
     @EJB
     private ABMManagerUsuarios abmManager;
 
-//    @POST
-//    @Path("guardar")
-//    public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
-//        try {
-//            ObjectMapper mapper = new ObjectMapper();
-//            RolesUsuario elem = mapper.readValue(entity, RolesUsuario.class);
-//            if ( elem.getDescripcion()== null ) {
-//                throw new FaltaCargarElemento("Error. Cargar descripcion.");
-//            }
-//            abmManager.create(RolesUsuario.class, elem);
-//            return Response.ok().build();
-//        } catch (Exception e) {
-//            return ErrorManager.tratarError(e);
-//        }
-//    }
     
     @POST
     @Path("guardar")
@@ -65,7 +48,7 @@ public class RolesUsuarioREST {
             abmManager.create(RolesPermisosDTO.class, entity);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, RolesUsuario.class);
         }
     }
 
@@ -76,7 +59,7 @@ public class RolesUsuarioREST {
             abmManager.edit(RolesPermisosDTO.class, entity);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, RolesUsuario.class);
         }
     }
 
@@ -89,7 +72,7 @@ public class RolesUsuarioREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, RolesUsuario.class);
         }
     }
 
@@ -102,7 +85,7 @@ public class RolesUsuarioREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, RolesUsuario.class);
         }
     }
     
@@ -115,7 +98,7 @@ public class RolesUsuarioREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, RolesUsuario.class);
         }
     }
     
@@ -128,7 +111,7 @@ public class RolesUsuarioREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, RolesUsuario.class);
         }
     }   
     

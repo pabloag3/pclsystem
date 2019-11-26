@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Empleados.findByApellido", query = "SELECT e FROM Empleados e WHERE e.apellido = :apellido")
     , @NamedQuery(name = "Empleados.findByFechaNacimiento", query = "SELECT e FROM Empleados e WHERE e.fechaNacimiento = :fechaNacimiento")
     , @NamedQuery(name = "Empleados.findByTelefono", query = "SELECT e FROM Empleados e WHERE e.telefono = :telefono")
-    , @NamedQuery(name = "Empleados.findByDireccion", query = "SELECT e FROM Empleados e WHERE e.direccion = :direccion")})
+    , @NamedQuery(name = "Empleados.findByDireccion", query = "SELECT e FROM Empleados e WHERE e.direccion = :direccion")
+})
 
 public class Empleados implements Serializable {
 
@@ -106,6 +101,10 @@ public class Empleados implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cedula")
     @JsonIgnore
     private List<Usuarios> usuariosList;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cedula")
+    @JsonIgnore
+    private List<Timbrados> timbradosList;
 
     public Empleados() {
     }
@@ -206,6 +205,23 @@ public class Empleados implements Serializable {
     public void setUsuariosList(List<Usuarios> usuariosList) {
         this.usuariosList = usuariosList;
     }
+    
+    public EstadosEmpleados getCodEstado() {
+        return codEstado;
+    }
+
+    public void setCodEstado(EstadosEmpleados codEstado) {
+        this.codEstado = codEstado;
+    }
+    
+    @XmlTransient
+    public List<Timbrados> getTimbradosList() {
+        return timbradosList;
+    }
+
+    public void setTimbradosList(List<Timbrados> timbradosList) {
+        this.timbradosList = timbradosList;
+    }
 
     @Override
     public int hashCode() {
@@ -230,14 +246,6 @@ public class Empleados implements Serializable {
     @Override
     public String toString() {
         return "com.lawyersys.pclsystembacke.Empleados[ cedula=" + cedula + " ]";
-    }
-
-    public EstadosEmpleados getCodEstado() {
-        return codEstado;
-    }
-
-    public void setCodEstado(EstadosEmpleados codEstado) {
-        this.codEstado = codEstado;
     }
     
 }

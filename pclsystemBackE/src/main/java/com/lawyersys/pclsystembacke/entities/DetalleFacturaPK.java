@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
@@ -10,10 +5,11 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
- * @author carlo
+ * @author Pablo Aguilar
  */
 @Embeddable
 public class DetalleFacturaPK implements Serializable {
@@ -21,22 +17,25 @@ public class DetalleFacturaPK implements Serializable {
     @Basic(optional = false)
     @Column(name = "cod_detalle_factura")
     private int codDetalleFactura;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "cod_factura")
     private int codFactura;
+    
     @Basic(optional = false)
     @NotNull
-    @Column(name = "cod_pago")
-    private int codPago;
+    @Size(min = 1, max = 2147483647)
+    @Column(name = "nro_factura")
+    private String nroFactura;
 
     public DetalleFacturaPK() {
     }
 
-    public DetalleFacturaPK(int codDetalleFactura, int codFactura, int codPago) {
+    public DetalleFacturaPK(int codDetalleFactura, int codFactura, String nroFactura) {
         this.codDetalleFactura = codDetalleFactura;
         this.codFactura = codFactura;
-        this.codPago = codPago;
+        this.nroFactura = nroFactura;
     }
 
     public int getCodDetalleFactura() {
@@ -55,12 +54,12 @@ public class DetalleFacturaPK implements Serializable {
         this.codFactura = codFactura;
     }
 
-    public int getCodPago() {
-        return codPago;
+    public String getNroFactura() {
+        return nroFactura;
     }
 
-    public void setCodPago(int codPago) {
-        this.codPago = codPago;
+    public void setNroFactura(String nroFactura) {
+        this.nroFactura = nroFactura;
     }
 
     @Override
@@ -68,7 +67,7 @@ public class DetalleFacturaPK implements Serializable {
         int hash = 0;
         hash += (int) codDetalleFactura;
         hash += (int) codFactura;
-        hash += (int) codPago;
+        hash += (nroFactura != null ? nroFactura.hashCode() : 0);
         return hash;
     }
 
@@ -85,7 +84,7 @@ public class DetalleFacturaPK implements Serializable {
         if (this.codFactura != other.codFactura) {
             return false;
         }
-        if (this.codPago != other.codPago) {
+        if ((this.nroFactura == null && other.nroFactura != null) || (this.nroFactura != null && !this.nroFactura.equals(other.nroFactura))) {
             return false;
         }
         return true;
@@ -93,7 +92,7 @@ public class DetalleFacturaPK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.DetalleFacturaPK[ codDetalleFactura=" + codDetalleFactura + ", codFactura=" + codFactura + ", codPago=" + codPago + " ]";
+        return "com.lawyersys.pclsystembacke.entities.DetalleFacturaPK[ codDetalleFactura=" + codDetalleFactura + ", codFactura=" + codFactura + ", nroFactura=" + nroFactura + " ]";
     }
     
 }

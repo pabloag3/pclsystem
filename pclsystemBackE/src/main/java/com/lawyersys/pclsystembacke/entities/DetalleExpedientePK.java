@@ -1,7 +1,4 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
  */
 package com.lawyersys.pclsystembacke.entities;
 
@@ -13,32 +10,25 @@ import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author carlo
+ * @author Pablo Aguilar
  */
 @Embeddable
 public class DetalleExpedientePK implements Serializable {
 
     @Basic(optional = false)
-    @Column(name = "cod_detalle_expediente")
-    private int codDetalleExpediente;
-    @Basic(optional = false)
     @NotNull
     @Column(name = "cod_expediente")
     private int codExpediente;
+    
+    @Basic(optional = false)
+    @Column(name = "cod_detalle_expediente")
+    private int codDetalleExpediente;
 
     public DetalleExpedientePK() {
     }
 
-    public DetalleExpedientePK(int codDetalleExpediente, int codExpediente) {
-        this.codDetalleExpediente = codDetalleExpediente;
+    public DetalleExpedientePK(int codExpediente, int codDetalleExpediente) {
         this.codExpediente = codExpediente;
-    }
-
-    public int getCodDetalleExpediente() {
-        return codDetalleExpediente;
-    }
-
-    public void setCodDetalleExpediente(int codDetalleExpediente) {
         this.codDetalleExpediente = codDetalleExpediente;
     }
 
@@ -50,11 +40,19 @@ public class DetalleExpedientePK implements Serializable {
         this.codExpediente = codExpediente;
     }
 
+    public int getCodDetalleExpediente() {
+        return codDetalleExpediente;
+    }
+
+    public void setCodDetalleExpediente(int codDetalleExpediente) {
+        this.codDetalleExpediente = codDetalleExpediente;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (int) codDetalleExpediente;
         hash += (int) codExpediente;
+        hash += (int) codDetalleExpediente;
         return hash;
     }
 
@@ -65,10 +63,10 @@ public class DetalleExpedientePK implements Serializable {
             return false;
         }
         DetalleExpedientePK other = (DetalleExpedientePK) object;
-        if (this.codDetalleExpediente != other.codDetalleExpediente) {
+        if (this.codExpediente != other.codExpediente) {
             return false;
         }
-        if (this.codExpediente != other.codExpediente) {
+        if (this.codDetalleExpediente != other.codDetalleExpediente) {
             return false;
         }
         return true;
@@ -76,7 +74,7 @@ public class DetalleExpedientePK implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.DetalleExpedientePK[ codDetalleExpediente=" + codDetalleExpediente + ", codExpediente=" + codExpediente + " ]";
+        return "com.lawyersys.pclsystembacke.entities.DetalleExpedientePK[ codExpediente=" + codExpediente + ", codDetalleExpediente=" + codDetalleExpediente + " ]";
     }
     
 }

@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembe.rest.usuarios;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -62,7 +60,7 @@ public class UsuariosREST {
             abmManager.create(Usuarios.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Usuarios.class);
         }
     }
 
@@ -93,7 +91,7 @@ public class UsuariosREST {
             abmManager.edit(Usuarios.class, elem);
         return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Usuarios.class);
         }
         
     }
@@ -107,9 +105,23 @@ public class UsuariosREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Usuarios.class);
         }
     }
+    
+    @GET
+    @Path("traer-por-cedula/{cedula}")
+    public Response traerUsuarioPorCedula(@PathParam("cedula") String cedula) throws JsonProcessingException {
+        try {
+            List<Usuarios> elem = (List<Usuarios>) (Object) abmManager.traerUsuarioPorCedula(cedula);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Usuarios.class);
+        }
+    }
+
 
     @GET
     @Path("listar")
@@ -120,7 +132,7 @@ public class UsuariosREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Usuarios.class);
         }
  
     }

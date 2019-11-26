@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -44,7 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Clientes.findByDireccion", query = "SELECT c FROM Clientes c WHERE c.direccion = :direccion")
     , @NamedQuery(name = "Clientes.findByTipoCliente", query = "SELECT c FROM Clientes c WHERE c.tipoCliente = :tipoCliente")})
 public class Clientes implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
     
     @Id
@@ -84,11 +79,15 @@ public class Clientes implements Serializable {
     @Column(name = "tipo_cliente")
     private String tipoCliente;
     
+    @Size(max = 50)
+    @Column(name = "correo_electronico")
+    private String correoElectronico;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCliente")
     @JsonIgnore
     private List<Casos> casosList;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "clientes")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCuenta")
     @JsonIgnore
     private List<Cuentas> cuentasList;
     
@@ -99,6 +98,11 @@ public class Clientes implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCliente")
     @JsonIgnore
     private List<DocumentosEntregados> documentosEntregadosList;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCliente")
+    @JsonIgnore
+    private List<Facturas> facturasList;
+
     
     public Clientes() {
     }
@@ -202,6 +206,32 @@ public class Clientes implements Serializable {
     public void setCodCiudad(Ciudades codCiudad) {
         this.codCiudad = codCiudad;
     }
+    
+    public String getCorreoElectronico() {
+        return correoElectronico;
+    }
+
+    public void setCorreoElectronico(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
+    }
+    
+    @XmlTransient
+    public List<DocumentosEntregados> getDocumentosEntregadosList() {
+        return documentosEntregadosList;
+    }
+
+    public void setDocumentosEntregadosList(List<DocumentosEntregados> documentosEntregadosList) {
+        this.documentosEntregadosList = documentosEntregadosList;
+    }
+    
+    @XmlTransient
+    public List<Facturas> getFacturasList() {
+        return facturasList;
+    }
+
+    public void setFacturasList(List<Facturas> facturasList) {
+        this.facturasList = facturasList;
+    }
 
     @Override
     public int hashCode() {
@@ -226,15 +256,6 @@ public class Clientes implements Serializable {
     @Override
     public String toString() {
         return "com.lawyersys.pclsystembacke.Clientes[ codCliente=" + codCliente + " ]";
-    }
-
-    @XmlTransient
-    public List<DocumentosEntregados> getDocumentosEntregadosList() {
-        return documentosEntregadosList;
-    }
-
-    public void setDocumentosEntregadosList(List<DocumentosEntregados> documentosEntregadosList) {
-        this.documentosEntregadosList = documentosEntregadosList;
     }
     
 }

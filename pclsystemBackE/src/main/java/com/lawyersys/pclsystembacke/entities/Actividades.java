@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
@@ -40,19 +35,23 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Actividades implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_actividad")
     private Integer codActividad;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "descripcion")
     private String descripcion;
+    
     @Size(max = 3000)
     @Column(name = "observacion")
     private String observacion;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha")
@@ -67,9 +66,11 @@ public class Actividades implements Serializable {
     @JoinColumn(name = "cedula_responsable", referencedColumnName = "cedula")
     @ManyToOne(optional = false)
     private Empleados cedulaResponsable;
+    
     @JoinColumn(name = "cod_estado", referencedColumnName = "cod_estado")
     @ManyToOne(optional = false)
     private EstadosActividades codEstado;
+    
     @JoinColumn(name = "cod_tipo_actividad", referencedColumnName = "cod_tipo_actividad")
     @ManyToOne(optional = false)
     private TiposActividades codTipoActividad;
@@ -142,6 +143,14 @@ public class Actividades implements Serializable {
     public void setCodTipoActividad(TiposActividades codTipoActividad) {
         this.codTipoActividad = codTipoActividad;
     }
+    
+    public int getDiaNotificable() {
+        return diaNotificable;
+    }
+
+    public void setDiaNotificable(int diaNotificable) {
+        this.diaNotificable = diaNotificable;
+    }
 
     @Override
     public int hashCode() {
@@ -166,14 +175,6 @@ public class Actividades implements Serializable {
     @Override
     public String toString() {
         return "com.lawyersys.pclsystembacke.Actividades[ codActividad=" + codActividad + " ]";
-    }
-
-    public int getDiaNotificable() {
-        return diaNotificable;
-    }
-
-    public void setDiaNotificable(int diaNotificable) {
-        this.diaNotificable = diaNotificable;
     }
 
 }

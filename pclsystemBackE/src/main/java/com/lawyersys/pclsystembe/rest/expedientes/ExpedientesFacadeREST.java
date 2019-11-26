@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembe.rest.expedientes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -8,6 +6,7 @@ import com.lawyersys.pclsystembacke.entities.Expedientes;
 import com.lawyersys.pclsystembe.abm.ABMManagerExpedientes;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
+import com.lawyersys.pclsystembe.utilidades.Log;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -40,8 +39,9 @@ public class ExpedientesFacadeREST {
     private ABMManagerExpedientes abmManager;
 
     @POST
-    @Path("guardar")
-    public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
+    @Path("guardar/{username}")
+    public Response create(@PathParam("username") String username,
+            @RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Expedientes elem = mapper.readValue(entity, Expedientes.class);   
@@ -58,22 +58,25 @@ public class ExpedientesFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar descripcion.");
             }
             abmManager.create(Expedientes.class, elem);
+            Log.escribir("INFORMACION", username + " Accion: Crear expediente: " + elem.getNroExpediente());
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Expedientes.class);
         }
     }
 
     @PUT
-    @Path("actualizar/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException {
+    @Path("actualizar/{id}/{username}")
+    public Response edit(@PathParam("username") String username,
+            @RequestBody() String entity) throws IOException {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Expedientes elem = mapper.readValue(entity, Expedientes.class);  
             abmManager.edit(Expedientes.class, elem);
+            Log.escribir("INFORMACION", username + " Accion: Modificar expediente: " + elem.getNroExpediente());
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Expedientes.class);
         }
     }
 
@@ -83,10 +86,51 @@ public class ExpedientesFacadeREST {
         try {
             List<Expedientes> elem = (List<Expedientes>) (Object) abmManager.find("Expedientes", id);
             ObjectMapper mapper = new ObjectMapper();
+            System.out.println("List: " + elem.toString());
+            String resp = mapper.writeValueAsString(elem);
+            System.out.println("Despues de mapear");            
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Expedientes.class);
+        }
+    }
+    
+    @GET
+    @Path("listar-por-caso/{id}")
+    public Response findPorCaso(@PathParam("id") String id) throws JsonProcessingException {
+        try {
+            List<Expedientes> elem = (List<Expedientes>) (Object) abmManager.traerExpedientesPorCaso(id);
+            ObjectMapper mapper = new ObjectMapper();
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Expedientes.class);
+        }
+    }
+    
+    @GET
+    @Path("listar-por-despachos/{id}")
+    public Response findPorDespachos(@PathParam("id") String id) throws JsonProcessingException {
+        try {
+            List<Expedientes> elem = (List<Expedientes>) (Object) abmManager.traerExpedientePorDespacho(id);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Expedientes.class);
+        }
+    }
+    
+    @GET
+    @Path("listar-hijos-de-expediente/{id}")
+    public Response findHijosDeExpediente(@PathParam("id") String id) throws JsonProcessingException {
+        try {
+            List<Expedientes> elem = (List<Expedientes>) (Object) abmManager.findHijosDeExpediente(id);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Expedientes.class);
         }
     }
 
@@ -99,7 +143,7 @@ public class ExpedientesFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Expedientes.class);
         }
     }
     

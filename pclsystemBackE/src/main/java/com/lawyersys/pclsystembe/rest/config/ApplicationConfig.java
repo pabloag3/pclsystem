@@ -40,6 +40,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.lawyersys.pclsystembe.rest.expedientes.ClientesFacadeREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.expedientes.DetalleExpedienteFacadeREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.expedientes.DocumentosEntregadosFacadeREST.class);
+        resources.add(com.lawyersys.pclsystembe.rest.expedientes.EstadoExpedienteFacadeREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.expedientes.EstadosCasoFacadeREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.expedientes.ExpedientesFacadeREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.expedientes.TiposActuacionesFacadeREST.class);
@@ -54,6 +55,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.lawyersys.pclsystembe.rest.usuarios.EstadosEmpleadosREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.usuarios.PermisosREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.usuarios.RolesUsuarioREST.class);
+        resources.add(com.lawyersys.pclsystembe.rest.usuarios.TimbradosFacadeREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.usuarios.UsuariosREST.class);
     }
     

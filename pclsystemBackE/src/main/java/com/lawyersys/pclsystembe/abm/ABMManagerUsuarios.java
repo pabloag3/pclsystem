@@ -5,8 +5,10 @@ import com.lawyersys.pclsystembacke.entities.EstadosEmpleados;
 import com.lawyersys.pclsystembacke.entities.Permisos;
 import com.lawyersys.pclsystembacke.entities.RolesPermisos;
 import com.lawyersys.pclsystembacke.entities.RolesUsuario;
+import com.lawyersys.pclsystembacke.entities.Timbrados;
 import com.lawyersys.pclsystembacke.entities.Usuarios;
 import com.lawyersys.pclsystembe.dtos.RolesPermisosDTO;
+import java.sql.SQLException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -39,6 +41,20 @@ public class ABMManagerUsuarios {
         return q.getResultList();
     }
     
+    public List<Object> traerUsuarioPorCedula(String cedula) {
+        Query q = em.createNamedQuery("Usuarios.findUsuarioByCedula")
+                .setParameter("cedula", cedula);
+        return q.getResultList();
+    }
+    
+    public List<Object> findEmpleadosConTimbradoVigente() {
+        Query q = em.createNativeQuery("SELECT *\n"
+                + "FROM empleados e\n"
+                + "JOIN timbrados t ON t.cedula = e.cedula\n"
+                + "WHERE t.vigente = TRUE;", Empleados.class);        
+        return q.getResultList();
+    }
+    
     public List<Object> find(String entidad, String id) {
         List<Object> elem = null;
         if (entidad == "Usuarios") {
@@ -53,7 +69,7 @@ public class ABMManagerUsuarios {
             Query q = em.createNamedQuery(entidad + ".findByCodRol")
                     .setParameter("codRol", Integer.parseInt(id));
             return q.getResultList();
-        } else if (entidad == "EstadosEmpleados") {
+        } else if (entidad == "EstadoEmpleados") {
             Query q = em.createNamedQuery(entidad + ".findByCodEstado")
                     .setParameter("codEstado", Integer.parseInt(id));
             return q.getResultList();
@@ -61,7 +77,12 @@ public class ABMManagerUsuarios {
             Query q = em.createNamedQuery(entidad + ".findByCodPermiso")
                     .setParameter("codPermiso", Integer.parseInt(id));
             return q.getResultList();
+        } else if (entidad == "Timbrados") {
+            Query q = em.createNamedQuery(entidad + ".findByNroTimbrado")
+                    .setParameter("nroTimbrado", Integer.parseInt(id));
+            return q.getResultList();
         }
+        
         return elem;
     }
     
@@ -75,13 +96,29 @@ public class ABMManagerUsuarios {
         return elem;
     }
 
-    public <S> void create(Class<S> clazz, S elem) {
+    public <S> void create(Class<S> clazz, S elem) throws SQLException, Exception {
         if (clazz == Usuarios.class) {
             Usuarios usu = (Usuarios) elem;
             em.persist(usu);
         } else if (clazz == Empleados.class) {
             Empleados emp = (Empleados) elem;
             em.persist(emp);
+        }  else if (clazz == Timbrados.class) {
+            Timbrados timbrado = (Timbrados) elem;
+            
+            timbrado.setNroSecActual(timbrado.getNroSecInicio());
+            
+            Query q;
+            // quito la vigencia de los timbrados anteriores del empleado
+            q = em.createNativeQuery("UPDATE timbrados"
+                    + " SET vigente = FALSE"
+                    + " WHERE cedula = '" + timbrado.getCedula().getCedula() + "';"
+                );
+            q.executeUpdate();
+            
+            timbrado.setVigente(true);
+            
+            em.persist(timbrado);
         } else if (clazz == EstadosEmpleados.class) {
             EstadosEmpleados est = (EstadosEmpleados) elem;
             em.persist(est);
@@ -114,13 +151,19 @@ public class ABMManagerUsuarios {
         }
     }
 
-    public <S> void edit(Class<S> clazz, S elem) {
+    public <S> void edit(Class<S> clazz, S elem) throws SQLException, Exception {
         if (clazz == Usuarios.class) {
             Usuarios usu = (Usuarios) elem;
             em.merge(usu);
         } else if (clazz == Empleados.class) {
             Empleados emp = (Empleados) elem;
             em.merge(emp);
+        }  else if (clazz == Timbrados.class) {
+            Timbrados timbrado = (Timbrados) elem;
+            
+            timbrado.setNroSecActual(timbrado.getNroSecInicio());
+            
+            em.merge(timbrado);
         } else if (clazz == EstadosEmpleados.class) {
             EstadosEmpleados est = (EstadosEmpleados) elem;
             em.merge(est);

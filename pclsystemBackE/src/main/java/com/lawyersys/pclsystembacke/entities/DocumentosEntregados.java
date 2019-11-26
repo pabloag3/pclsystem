@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
@@ -10,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -21,7 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author tatoa
+ * @author Pablo Aguilar
  */
 @Entity
 @Table(name = "documentos_entregados")
@@ -30,24 +27,34 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "DocumentosEntregados.findAll", query = "SELECT d FROM DocumentosEntregados d")
     , @NamedQuery(name = "DocumentosEntregados.findByCodDocumento", query = "SELECT d FROM DocumentosEntregados d WHERE d.codDocumento = :codDocumento")
     , @NamedQuery(name = "DocumentosEntregados.findByDescripcion", query = "SELECT d FROM DocumentosEntregados d WHERE d.descripcion = :descripcion")
-    , @NamedQuery(name = "DocumentosEntregados.findByCodCliente", query = "SELECT d FROM DocumentosEntregados d WHERE d.codCliente = :codCliente")
+    , @NamedQuery(name = "DocumentosEntregados.findByCodCliente", query = "SELECT d FROM DocumentosEntregados d WHERE d.codCliente.codCliente = :codCliente")
+    , @NamedQuery(name = "DocumentosEntregados.findByArchivo", query = "SELECT d FROM DocumentosEntregados d WHERE d.archivo = :archivo")
 })
 public class DocumentosEntregados implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "cod_documento")
     private Integer codDocumento;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "descripcion")
     private String descripcion;
-    @Lob
+    
+    @Size(max = 2147483647)
     @Column(name = "archivo")
-    private byte[] archivo;
+    private String archivo;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "devuelto")
+    private boolean devuelto;
+    
     @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente")
     @ManyToOne(optional = false)
     private Clientes codCliente;
@@ -80,11 +87,11 @@ public class DocumentosEntregados implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public byte[] getArchivo() {
+    public String getArchivo() {
         return archivo;
     }
 
-    public void setArchivo(byte[] archivo) {
+    public void setArchivo(String archivo) {
         this.archivo = archivo;
     }
 
@@ -96,6 +103,14 @@ public class DocumentosEntregados implements Serializable {
         this.codCliente = codCliente;
     }
 
+    public boolean getDevuelto() {
+        return devuelto;
+    }
+
+    public void setDevuelto(boolean devuelto) {
+        this.devuelto = devuelto;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

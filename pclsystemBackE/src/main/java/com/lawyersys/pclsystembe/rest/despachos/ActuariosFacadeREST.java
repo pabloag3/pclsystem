@@ -54,7 +54,7 @@ public class ActuariosFacadeREST {
             abmManager.create(Actuarios.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Actuarios.class);
         }
     }
 
@@ -73,7 +73,7 @@ public class ActuariosFacadeREST {
             abmManager.edit(Actuarios.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Actuarios.class);
         }
     }
 
@@ -86,7 +86,7 @@ public class ActuariosFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Actuarios.class);
         }
     }
 
@@ -99,7 +99,7 @@ public class ActuariosFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Actuarios.class);
         }
     }
     

@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembe.rest.usuarios;
 
 import com.lawyersys.pclsystembe.abm.ABMManagerUsuarios;
@@ -22,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.lawyersys.pclsystembacke.entities.Empleados;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
+import com.lawyersys.pclsystembe.utilidades.Log;
+import com.lawyersys.pclsystembe.utilidades.Ruc;
 
 /**
  *
@@ -35,7 +35,7 @@ public class EmpleadosREST {
 
     @EJB
     private ABMManagerUsuarios abmManager;
-    
+
     public EmpleadosREST() {
     }
 
@@ -44,7 +44,17 @@ public class EmpleadosREST {
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            Empleados elem = mapper.readValue(entity, Empleados.class);   
+            Empleados elem = mapper.readValue(entity, Empleados.class);
+            
+            List<Empleados> empleadoAuxList = (List<Empleados>) (Object) abmManager.find("Empleados", elem.getCedula());
+            
+            if (!empleadoAuxList.isEmpty()) {
+                Empleados empleadoAux = empleadoAuxList.get(0);
+                if ( empleadoAux.getCedula().contains(elem.getCedula()) ) {
+                    throw new FaltaCargarElemento("Error. Empleado ya existe.");
+                }
+            }
+            
             if ( elem.getCedula() == null ) {
                 throw new FaltaCargarElemento("Error. Cargar cedula.");
             }
@@ -55,7 +65,9 @@ public class EmpleadosREST {
                 throw new FaltaCargarElemento("Error. Cargar apellido.");
             }
             if ( elem.getRuc() == null ) {
-                throw new FaltaCargarElemento("Error. Cargar ruc.");
+                // Genera el ruc con el modulo 11
+                elem.setRuc(Ruc.Pa_Calcular_Dv_11_A(elem.getCedula()));
+            
             }
             if ( elem.getFechaNacimiento()== null ) {
                 throw new FaltaCargarElemento("Error. Cargar fecha de nacimiento.");
@@ -67,9 +79,10 @@ public class EmpleadosREST {
                 throw new FaltaCargarElemento("Error. Cargar direccion.");
             }
             abmManager.create(Empleados.class, elem);
+            Log.escribir("INFORMACION", "Creacion de empleado con cedula: " + elem.getCedula());
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Empleados.class);
         }
         
     }
@@ -103,9 +116,10 @@ public class EmpleadosREST {
                 throw new FaltaCargarElemento("Error. Cargar direccion.");
             }
             abmManager.edit(Empleados.class, elem);
+            Log.escribir("INFORMACION", "Edicion de empleado con cedula: " + elem.getCedula());
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Empleados.class);
         }
     }
 
@@ -119,7 +133,21 @@ public class EmpleadosREST {
             System.out.println(resp);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Empleados.class);
+        }
+    }
+    
+    @GET
+    @Path("traer-empleados-con-timbrado-vigente")
+    public Response findEmpleadosConTimbradoVigente() throws JsonProcessingException {
+        try {
+            List<Empleados> elem = (List<Empleados>) (Object) abmManager.findEmpleadosConTimbradoVigente();
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            System.out.println(resp);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Empleados.class);
         }
     }
 
@@ -132,7 +160,7 @@ public class EmpleadosREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Empleados.class);
         }
     }
     

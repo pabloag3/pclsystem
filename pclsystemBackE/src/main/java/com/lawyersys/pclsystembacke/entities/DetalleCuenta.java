@@ -1,18 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -39,32 +32,39 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class DetalleCuenta implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @EmbeddedId
     protected DetalleCuentaPK detalleCuentaPK;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "descripcion")
     private String descripcion;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "monto")
     private int monto;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "estado")
     private boolean estado;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "saldo_detalle_cta")
-    private BigInteger saldoDetalleCta;
+    private int saldoDetalleCta;
+    
+    @JoinColumn(name = "cod_cuenta", referencedColumnName = "cod_cuenta", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    @JoinColumns({
-        @JoinColumn(name = "cod_cuenta", referencedColumnName = "cod_cuenta", insertable = false, updatable = false),
-        @JoinColumn(name = "cod_cliente", referencedColumnName = "cod_cliente", insertable = false, updatable = false)
-    })
     private Cuentas cuentas;
-
+    
+    @JoinColumn(name = "cod_expediente", referencedColumnName = "cod_expediente")
+    @ManyToOne(optional = false)
+    private Expedientes codExpediente;
+    
     public DetalleCuenta() {
     }
 
@@ -72,7 +72,7 @@ public class DetalleCuenta implements Serializable {
         this.detalleCuentaPK = detalleCuentaPK;
     }
 
-    public DetalleCuenta(DetalleCuentaPK detalleCuentaPK, String descripcion, int monto, boolean estado, BigInteger saldoDetalleCta) {
+    public DetalleCuenta(DetalleCuentaPK detalleCuentaPK, String descripcion, int monto, boolean estado, int saldoDetalleCta) {
         this.detalleCuentaPK = detalleCuentaPK;
         this.descripcion = descripcion;
         this.monto = monto;
@@ -116,11 +116,11 @@ public class DetalleCuenta implements Serializable {
         this.estado = estado;
     }
 
-    public BigInteger getSaldoDetalleCta() {
+    public int getSaldoDetalleCta() {
         return saldoDetalleCta;
     }
 
-    public void setSaldoDetalleCta(BigInteger saldoDetalleCta) {
+    public void setSaldoDetalleCta(int saldoDetalleCta) {
         this.saldoDetalleCta = saldoDetalleCta;
     }
 
@@ -130,6 +130,14 @@ public class DetalleCuenta implements Serializable {
 
     public void setCuentas(Cuentas cuentas) {
         this.cuentas = cuentas;
+    }
+    
+    public Expedientes getCodExpediente() {
+        return codExpediente;
+    }
+
+    public void setCodExpediente(Expedientes codExpediente) {
+        this.codExpediente = codExpediente;
     }
 
     @Override

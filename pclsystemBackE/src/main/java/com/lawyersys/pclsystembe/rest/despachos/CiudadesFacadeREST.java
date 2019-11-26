@@ -51,7 +51,7 @@ public class CiudadesFacadeREST {
             abmManager.create(Ciudades.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Ciudades.class);
         }
     }
 
@@ -67,7 +67,7 @@ public class CiudadesFacadeREST {
             abmManager.edit(Ciudades.class, elem);
             return Response.ok().build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Ciudades.class);
         }
     }
 
@@ -80,7 +80,7 @@ public class CiudadesFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Ciudades.class);
         }
     }
 
@@ -93,7 +93,7 @@ public class CiudadesFacadeREST {
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
         } catch (Exception e) {
-            return ErrorManager.tratarError(e);
+            return ErrorManager.manejarError(e, Ciudades.class);
         }
     }
     
