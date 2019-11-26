@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembe.abm;
 
 import com.lawyersys.pclsystembacke.entities.Actuarios;
@@ -9,7 +7,9 @@ import com.lawyersys.pclsystembacke.entities.Despachos;
 import com.lawyersys.pclsystembacke.entities.Fueros;
 import com.lawyersys.pclsystembacke.entities.Jueces;
 import com.lawyersys.pclsystembacke.entities.Ujieres;
+import com.lawyersys.pclsystembe.dtos.ExpedientesPorFueroDTO;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -29,6 +29,37 @@ public class ABMManagerDespachos {
     public List<Object> findAll(String entidad) {
         Query q = em.createNamedQuery(entidad + ".findAll");
         return q.getResultList();
+    }
+    
+    public List<ExpedientesPorFueroDTO> cantExpedientesPorFuero() {
+        
+        List<ExpedientesPorFueroDTO> listaFinal = new ArrayList<ExpedientesPorFueroDTO>();
+        
+        List<Object[]> resultado = new ArrayList<Object[]>();
+        
+        Query q = em.createNativeQuery("SELECT f.cod_fuero, f.tipo_fuero, count(e.*)\n"
+                + "FROM fueros f\n"
+                + "JOIN despachos d ON d.cod_fuero = f.cod_fuero\n"
+                + "JOIN expedientes e ON e.cod_despacho = d.cod_despacho\n"
+                + "GROUP BY f.cod_fuero, f.tipo_fuero;");
+        resultado = (List<Object[]>)q.getResultList();
+        
+        if (resultado == null || resultado.isEmpty()) {
+            listaFinal = new ArrayList<ExpedientesPorFueroDTO>();
+        }
+        else {
+            for (Object[] linea : resultado) {
+                ExpedientesPorFueroDTO epf;
+                int codFuero = Integer.parseInt(linea[0].toString());
+                String tipoFuero = linea[1].toString();
+                int cantExpedientes = Integer.parseInt(linea[2].toString());
+                epf = new ExpedientesPorFueroDTO(codFuero, tipoFuero, cantExpedientes);
+                listaFinal.add(epf);
+            }
+        }
+        
+        return listaFinal;
+        
     }
     
     public List<Object> find(String entidad, String id) {
