@@ -7,6 +7,7 @@ import com.lawyersys.pclsystembe.abm.ABMManagerExpedientes;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
 import com.lawyersys.pclsystembe.utilidades.Log;
+import com.lawyersys.pclsystembe.utilidades.Ruc;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -73,6 +74,13 @@ public class ClientesFacadeREST {
             }
             if ( elem.getTipoCliente() == null ) {
                 throw new FaltaCargarElemento("Error. Cargar tipo de cliente.");
+            } else if (elem.getTipoCliente().equals("1")) {
+                elem.setRuc(Ruc.Pa_Calcular_Dv_11_A(elem.getCedula()));
+                System.out.println("Ruc generado: " + elem.getRuc());
+            } else if (elem.getTipoCliente().equals("2") && elem.getRuc().equals("")) {
+               throw new FaltaCargarElemento("Error. Cargar el ruc."); 
+            } else {
+               throw new FaltaCargarElemento("Error. Tipo de cliente no existe.");
             }
             abmManager.create(Clientes.class, elem);
             Log.escribir("INFORMACION", username + " Accion: Crear cliente: " + elem.getNombre());
@@ -94,6 +102,13 @@ public class ClientesFacadeREST {
             }
             if ( elem.getTipoCliente() == null ) {
                 throw new FaltaCargarElemento("Error. Cargar tipo de cliente.");
+            } else if (elem.getTipoCliente().equals("1")) {
+                elem.setRuc(Ruc.Pa_Calcular_Dv_11_A(elem.getCedula()));
+                System.out.println("Ruc generado: " + elem.getRuc());
+            } else if (elem.getTipoCliente().equals("2") && elem.getRuc().equals("")) {
+               throw new FaltaCargarElemento("Error. Cargar el ruc."); 
+            } else {
+               throw new FaltaCargarElemento("Error. Tipo de cliente no existe.");
             }
             abmManager.edit(Clientes.class, elem);
             Log.escribir("INFORMACION", username + " Accion: Modificar cliente: " + elem.getNombre());
