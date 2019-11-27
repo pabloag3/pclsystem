@@ -1,6 +1,7 @@
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -10,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -64,6 +67,12 @@ public class DetalleCuenta implements Serializable {
     @JoinColumn(name = "cod_expediente", referencedColumnName = "cod_expediente")
     @ManyToOne(optional = false)
     private Expedientes codExpediente;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "fecha")
+    @Temporal(TemporalType.DATE)
+    private Date fecha;
     
     public DetalleCuenta() {
     }
@@ -138,6 +147,14 @@ public class DetalleCuenta implements Serializable {
 
     public void setCodExpediente(Expedientes codExpediente) {
         this.codExpediente = codExpediente;
+    }
+    
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     @Override

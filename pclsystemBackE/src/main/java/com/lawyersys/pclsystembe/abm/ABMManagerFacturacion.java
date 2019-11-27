@@ -124,6 +124,8 @@ public class ABMManagerFacturacion {
             int secuenciaSiguiente = ((BigInteger) q.getSingleResult()).intValue();
             dc.setDetalleCuentaPK(new DetalleCuentaPK(secuenciaSiguiente+1, dc.getDetalleCuentaPK().getCodCuenta()));
             
+            dc.setFecha(new Date());
+            
             em.persist(dc);
         } else if (clazz == Facturas.class) {
             Facturas factura = (Facturas) elem;
@@ -295,8 +297,11 @@ public class ABMManagerFacturacion {
             Cuentas ta = (Cuentas) elem;
             em.merge(ta);
         } else if (clazz == DetalleCuenta.class) {
-            DetalleCuenta ta = (DetalleCuenta) elem;
-            em.merge(ta);
+            DetalleCuenta dc = (DetalleCuenta) elem;
+            
+            dc.setFecha(new Date());
+            
+            em.merge(dc);
         } else if (clazz == Facturas.class) {
             Facturas factura = (Facturas) elem;
             

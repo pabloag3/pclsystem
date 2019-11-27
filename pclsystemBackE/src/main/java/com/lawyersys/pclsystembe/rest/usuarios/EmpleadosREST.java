@@ -79,7 +79,6 @@ public class EmpleadosREST {
                 throw new FaltaCargarElemento("Error. Cargar direccion.");
             }
             abmManager.create(Empleados.class, elem);
-            Log.escribir("INFORMACION", "Creacion de empleado con cedula: " + elem.getCedula());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Empleados.class);
@@ -116,7 +115,6 @@ public class EmpleadosREST {
                 throw new FaltaCargarElemento("Error. Cargar direccion.");
             }
             abmManager.edit(Empleados.class, elem);
-            Log.escribir("INFORMACION", "Edicion de empleado con cedula: " + elem.getCedula());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Empleados.class);
