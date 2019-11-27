@@ -167,9 +167,9 @@ public class ABMManagerDespachos {
             "		AND ff.cod_fuero = f.cod_fuero\n" +
             "	) AS \"DICIEMBRE\"	\n" +
             "FROM fueros f\n" +
-            "JOIN despachos des ON des.cod_fuero = f.cod_fuero\n" +
-            "JOIN expedientes ex ON ex.cod_despacho = des.cod_despacho\n" +
-            "JOIN detalle_cuenta dc ON dc.cod_expediente = ex.cod_expediente\n" +
+            "LEFT OUTER JOIN despachos des ON des.cod_fuero = f.cod_fuero\n" +
+            "LEFT OUTER JOIN expedientes ex ON ex.cod_despacho = des.cod_despacho\n" +
+            "LEFT OUTER JOIN detalle_cuenta dc ON dc.cod_expediente = ex.cod_expediente\n" +
             "GROUP BY f.cod_fuero, f.tipo_fuero\n" +
             ";");
         resultado = (List<Object[]>)q.getResultList();
