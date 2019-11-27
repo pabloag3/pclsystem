@@ -6,20 +6,20 @@ package com.lawyersys.pclsystembe.dtos;
  */
 public class GastoPorFueroPorMesDTO {
     
-    int codFuero;
-    String tipoFuero;
-    int enero;
-    int febrero;
-    int marzo;
-    int abril;
-    int mayo;
-    int junio;
-    int julio;
-    int agosto;
-    int septiembre;
-    int octubre;
-    int noviembre;
-    int diciembre;
+    private int codFuero;
+    private String tipoFuero;
+    private int enero;
+    private int febrero;
+    private int marzo;
+    private int abril;
+    private int mayo;
+    private int junio;
+    private int julio;
+    private int agosto;
+    private int septiembre;
+    private int octubre;
+    private int noviembre;
+    private int diciembre;
 
     public GastoPorFueroPorMesDTO() {
     }
