@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawyersys.pclsystembacke.entities.Fueros;
 import com.lawyersys.pclsystembe.abm.ABMManagerDespachos;
 import com.lawyersys.pclsystembe.dtos.ExpedientesPorFueroDTO;
+import com.lawyersys.pclsystembe.dtos.GastoPorFueroPorMesDTO;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
 import java.io.ByteArrayOutputStream;
@@ -124,6 +125,20 @@ public class FuerosFacadeREST {
     public Response cantExpedientesPorFuero() throws JsonProcessingException {
         try {
             List<ExpedientesPorFueroDTO> elem = (List<ExpedientesPorFueroDTO>) (Object) abmManager.cantExpedientesPorFuero();
+            
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Fueros.class);
+        }
+    }
+    
+    @GET
+    @Path("reporte-gasto-por-fuero-por-mes")
+    public Response gastoPorFueroPorMes() throws JsonProcessingException {
+        try {
+            List<GastoPorFueroPorMesDTO> elem = (List<GastoPorFueroPorMesDTO>) (Object) abmManager.gastoPorFueroPorMes();
             
             ObjectMapper mapper = new ObjectMapper();
             String resp = mapper.writeValueAsString(elem);
