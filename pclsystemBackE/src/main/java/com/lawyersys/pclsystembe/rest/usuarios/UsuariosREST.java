@@ -43,7 +43,18 @@ public class UsuariosREST {
     public Response create(@RequestBody() String entity) throws IOException, FaltaCargarElemento{
         try {
             ObjectMapper mapper = new ObjectMapper();
-            Usuarios elem = mapper.readValue(entity, Usuarios.class);   
+            Usuarios elem = mapper.readValue(entity, Usuarios.class);
+            
+            List<Usuarios> usuarioAuxList = (List<Usuarios>) (Object) abmManager.traerUsuarioPorNombreUsuario(elem.getUsuario());
+            
+            if (!usuarioAuxList.isEmpty()) {
+                Usuarios usuarioAux = usuarioAuxList.get(0);
+                if ( usuarioAux.getUsuario().contains(elem.getUsuario()) ) {
+                    throw new FaltaCargarElemento("Error. Usuario ya existe.");
+                }
+            }
+            
+            
             if ( elem.getCedula() == null ) {
                 throw new FaltaCargarElemento("Error. Cargar cedula.");
             }
@@ -69,7 +80,17 @@ public class UsuariosREST {
     public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            Usuarios elem = mapper.readValue(entity, Usuarios.class);   
+            Usuarios elem = mapper.readValue(entity, Usuarios.class);  
+            
+            List<Usuarios> usuarioAuxList = (List<Usuarios>) (Object) abmManager.traerUsuarioPorNombreUsuario(elem.getUsuario());
+            
+            if (!usuarioAuxList.isEmpty()) {
+                Usuarios usuarioAux = usuarioAuxList.get(0);
+                if ( usuarioAux.getUsuario().contains(elem.getUsuario()) ) {
+                    throw new FaltaCargarElemento("Error. Usuario ya existe.");
+                }
+            }
+            
             if ( elem.getCedula() == null ) {
                 throw new FaltaCargarElemento("Error. Cargar cedula.");
             }

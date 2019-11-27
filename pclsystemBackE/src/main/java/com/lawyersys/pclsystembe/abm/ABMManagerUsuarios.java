@@ -47,6 +47,12 @@ public class ABMManagerUsuarios {
         return q.getResultList();
     }
     
+    public List<Object> traerUsuarioPorNombreUsuario(String nombreUsuario) {
+        Query q = em.createNamedQuery("Usuarios.findByUsuario")
+                .setParameter("usuario", nombreUsuario);
+        return q.getResultList();
+    }
+    
     public List<Object> findEmpleadosConTimbradoVigente() {
         Query q = em.createNativeQuery("SELECT *\n"
                 + "FROM empleados e\n"
