@@ -47,6 +47,21 @@ public class ABMManagerFacturacion {
         return q.getResultList();
     }
     
+    public List<Object> traerUltimaFactura() {
+        Query q = em.createNamedQuery("Facturas.findUltimaFactura");
+        return q.getResultList();
+    }
+    
+    public List<Object> traerUltimoPago() {
+        Query q = em.createNamedQuery("Pagos.findUltimoPago");
+        return q.getResultList();
+    }
+    
+    public List<Object> traerUltimoDetalleCuenta() {
+        Query q = em.createNamedQuery("DetalleCuenta.traerUltimoDetalleCta");
+        return q.getResultList();
+    }
+    
     public List<Object> traerCuentasPorCaso(String codCaso) {
         Query q = em.createNamedQuery("Cuentas.findByCodCaso")
                 .setParameter("codCaso", Integer.parseInt(codCaso));

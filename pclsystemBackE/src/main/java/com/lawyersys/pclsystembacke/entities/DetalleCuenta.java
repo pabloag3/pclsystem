@@ -31,7 +31,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "DetalleCuenta.findByDescripcion", query = "SELECT d FROM DetalleCuenta d WHERE d.descripcion = :descripcion")
     , @NamedQuery(name = "DetalleCuenta.findByMonto", query = "SELECT d FROM DetalleCuenta d WHERE d.monto = :monto")
     , @NamedQuery(name = "DetalleCuenta.findByEstado", query = "SELECT d FROM DetalleCuenta d WHERE d.estado = :estado")
-    , @NamedQuery(name = "DetalleCuenta.findBySaldoDetalleCta", query = "SELECT d FROM DetalleCuenta d WHERE d.saldoDetalleCta = :saldoDetalleCta")})
+    , @NamedQuery(name = "DetalleCuenta.findBySaldoDetalleCta", query = "SELECT d FROM DetalleCuenta d WHERE d.saldoDetalleCta = :saldoDetalleCta")
+    , @NamedQuery(name = "DetalleCuenta.traerUltimoDetalleCta", query = "SELECT d FROM DetalleCuenta d ORDER BY d.detalleCuentaPK.codDetalleCuenta DESC")
+})
 public class DetalleCuenta implements Serializable {
 
     private static final long serialVersionUID = 1L;

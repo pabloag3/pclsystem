@@ -96,7 +96,10 @@ public class PagosFacadeREST {
             }
 
             abmManager.create(Pagos.class, elem);
-            Log.escribir("INFORMACION", username + " Accion: Crear pago: " + elem.getFechaPago());
+            
+            List<Pagos> ultimoPago = (List<Pagos>) (Object) abmManager.traerUltimoPago();
+            
+            Log.escribir("INFORMACION", username + " Accion: Crear pago: " + ultimoPago.get(0).getCodPago());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Pagos.class);

@@ -93,7 +93,11 @@ public class FacturasFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar cedula del emisor.");
             }
             abmManager.create(Facturas.class, elem);
-            Log.escribir("INFORMACION", username + " Accion: Crear factura");
+            
+            List<Facturas> ultimaFactura = (List<Facturas>) (Object) abmManager.traerUltimaFactura();
+            
+            Log.escribir("INFORMACION", username + " Accion: Crear factura numero: " + ultimaFactura.get(0).getFacturasPK().getNroFactura()
+                    + " de emisor: " + ultimaFactura.get(0).getCedulaEmisor());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Facturas.class);
