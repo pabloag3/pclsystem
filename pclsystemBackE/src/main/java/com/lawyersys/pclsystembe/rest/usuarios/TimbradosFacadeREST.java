@@ -7,6 +7,8 @@ import com.lawyersys.pclsystembe.abm.ABMManagerUsuarios;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -132,9 +134,30 @@ public class TimbradosFacadeREST {
     public Response traerTimbradoVigente(@PathParam("cedula") String cedula) throws JsonProcessingException {
         try {
             List<Timbrados> elem = (List<Timbrados>) (Object) abmManager.traerTimbradoVigente(cedula);
+            
+            Timbrados timbrado = new Timbrados();
+            
+            if (!elem.isEmpty()) {
+                timbrado = elem.get(0);
+                
+                Date fechaFin = timbrado.getFechaFin();
+                Date fechaHoy = new Date();
+
+                if (timbrado.getNroSecActual() > timbrado.getNroSecFinal()) {
+                    timbrado.setVigente(false);
+                    abmManager.edit(Timbrados.class, timbrado);
+                    elem = (List<Timbrados>) (Object) abmManager.traerTimbradoVigente(cedula);
+                } 
+                else if (fechaHoy.compareTo(fechaFin) > 0) {
+                    timbrado.setVigente(false);
+                    abmManager.edit(Timbrados.class, timbrado);
+                    elem = (List<Timbrados>) (Object) abmManager.traerTimbradoVigente(cedula);
+                }
+            }
+            
             ObjectMapper mapper = new ObjectMapper();
             String resp = mapper.writeValueAsString(elem);
-            System.out.println(resp);
+
             return Response.ok(resp).build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Timbrados.class);

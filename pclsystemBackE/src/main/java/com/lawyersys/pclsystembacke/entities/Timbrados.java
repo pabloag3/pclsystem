@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Timbrados.findByNroSecInicio", query = "SELECT t FROM Timbrados t WHERE t.nroSecInicio = :nroSecInicio")
     , @NamedQuery(name = "Timbrados.findByNroSecFinal", query = "SELECT t FROM Timbrados t WHERE t.nroSecFinal = :nroSecFinal")
     , @NamedQuery(name = "Timbrados.findByNroSecActual", query = "SELECT t FROM Timbrados t WHERE t.nroSecActual = :nroSecActual")
-    , @NamedQuery(name = "Timbrados.traerTimradoVigenteDeEmpleado", query = "SELECT t FROM Timbrados t WHERE t.cedula.cedula = :cedula AND t.vigente = true")
+    , @NamedQuery(name = "Timbrados.traerTimbradoVigenteDeEmpleado", query = "SELECT t FROM Timbrados t WHERE t.cedula.cedula = :cedula AND t.vigente = true")
 })
 public class Timbrados implements Serializable {
 

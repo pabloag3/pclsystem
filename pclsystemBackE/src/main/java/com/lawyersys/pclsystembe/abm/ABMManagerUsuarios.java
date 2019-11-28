@@ -62,7 +62,7 @@ public class ABMManagerUsuarios {
     }
     
     public List<Object> traerTimbradoVigente(String cedula) {
-        Query q = em.createNamedQuery("Timbrados.traerTimradoVigenteDeEmpleado")
+        Query q = em.createNamedQuery("Timbrados.traerTimbradoVigenteDeEmpleado")
                 .setParameter("cedula", cedula);
         return q.getResultList();
     }
@@ -173,7 +173,6 @@ public class ABMManagerUsuarios {
         }  else if (clazz == Timbrados.class) {
             Timbrados timbrado = (Timbrados) elem;
             
-            timbrado.setNroSecActual(timbrado.getNroSecInicio());
             
             em.merge(timbrado);
         } else if (clazz == EstadosEmpleados.class) {
