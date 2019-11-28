@@ -40,8 +40,8 @@ public class ABMManagerDespachos {
         
         Query q = em.createNativeQuery("SELECT f.cod_fuero, f.tipo_fuero, count(e.*)\n"
                 + "FROM fueros f\n"
-                + "JOIN despachos d ON d.cod_fuero = f.cod_fuero\n"
-                + "JOIN expedientes e ON e.cod_despacho = d.cod_despacho\n"
+                + "LEFT OUTER JOIN despachos d ON d.cod_fuero = f.cod_fuero\n"
+                + "LEFT OUTER JOIN expedientes e ON e.cod_despacho = d.cod_despacho\n"
                 + "GROUP BY f.cod_fuero, f.tipo_fuero;");
         resultado = (List<Object[]>)q.getResultList();
         

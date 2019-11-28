@@ -166,7 +166,7 @@ public class ABMManagerFacturacion {
             String nroPuntoExpedicion = q.getSingleResult().toString();
             nroPuntoExpedicion = String.format("%3s", nroPuntoExpedicion).replace(' ','0');
             
-            q = em.createNativeQuery("SELECT t.nro_sec_actual + 1 FROM timbrados t"
+            q = em.createNativeQuery("SELECT t.nro_sec_actual FROM timbrados t"
                     + " WHERE t.cedula = '" + factura.getCedulaEmisor().getCedula() + "'"
                     + " AND t.vigente = TRUE"
                     + " LIMIT 1;");
