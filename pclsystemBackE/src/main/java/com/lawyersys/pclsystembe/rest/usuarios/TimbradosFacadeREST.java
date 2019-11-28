@@ -126,6 +126,20 @@ public class TimbradosFacadeREST {
             return ErrorManager.manejarError(e, Timbrados.class);
         }
     }
+    
+    @GET
+    @Path("traer-timbrado-vigente/{cedula}")
+    public Response traerTimbradoVigente(@PathParam("cedula") String cedula) throws JsonProcessingException {
+        try {
+            List<Timbrados> elem = (List<Timbrados>) (Object) abmManager.traerTimbradoVigente(cedula);
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            System.out.println(resp);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Timbrados.class);
+        }
+    }
 
     @GET
     @Path("listar")

@@ -61,6 +61,12 @@ public class ABMManagerUsuarios {
         return q.getResultList();
     }
     
+    public List<Object> traerTimbradoVigente(String cedula) {
+        Query q = em.createNamedQuery("Timbrados.traerTimradoVigenteDeEmpleado")
+                .setParameter("cedula", cedula);
+        return q.getResultList();
+    }
+    
     public List<Object> find(String entidad, String id) {
         List<Object> elem = null;
         if (entidad == "Usuarios") {
