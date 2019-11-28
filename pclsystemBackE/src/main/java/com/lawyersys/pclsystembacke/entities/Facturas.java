@@ -81,6 +81,10 @@ public class Facturas implements Serializable {
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "facturas")
     @JsonIgnore
+    private List<Recibos> recibosList;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "facturas")
+    @JsonIgnore
     private List<DetalleFactura> detalleFacturaList;
 
     public Facturas() {
@@ -171,6 +175,15 @@ public class Facturas implements Serializable {
 
     public void setVigente(boolean vigente) {
         this.vigente = vigente;
+    }
+    
+    @XmlTransient
+    public List<Recibos> getRecibosList() {
+        return recibosList;
+    }
+
+    public void setRecibosList(List<Recibos> recibosList) {
+        this.recibosList = recibosList;
     }
 
     @Override

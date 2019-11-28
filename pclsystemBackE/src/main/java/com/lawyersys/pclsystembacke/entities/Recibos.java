@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -75,6 +76,12 @@ public class Recibos implements Serializable {
     @Column(name = "fecha_emision")
     @Temporal(TemporalType.DATE)
     private Date fechaEmision;
+    
+    @JoinColumns({
+        @JoinColumn(name = "cod_factura", referencedColumnName = "cod_factura")
+        , @JoinColumn(name = "nro_factura", referencedColumnName = "nro_factura")})
+    @ManyToOne(optional = false)
+    private Facturas facturas;
 
     public Recibos() {
     }
@@ -151,6 +158,14 @@ public class Recibos implements Serializable {
 
     public void setFechaEmision(Date fechaEmision) {
         this.fechaEmision = fechaEmision;
+    }
+    
+    public Facturas getFacturas() {
+        return facturas;
+    }
+
+    public void setFacturas(Facturas facturas) {
+        this.facturas = facturas;
     }
 
     @Override

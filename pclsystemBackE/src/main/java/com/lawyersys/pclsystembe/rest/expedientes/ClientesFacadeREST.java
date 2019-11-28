@@ -80,7 +80,7 @@ public class ClientesFacadeREST {
             } else if (elem.getTipoCliente().equals("2") && elem.getRuc().equals("")) {
                throw new FaltaCargarElemento("Error. Cargar el ruc."); 
             } else {
-               throw new FaltaCargarElemento("Error. Tipo de cliente no existe.");
+//               throw new FaltaCargarElemento("Error. Tipo de cliente no existe.");
             }
             abmManager.create(Clientes.class, elem);
             Log.escribir("INFORMACION", username + " Accion: Crear cliente: " + elem.getNombre());
@@ -108,7 +108,7 @@ public class ClientesFacadeREST {
             } else if (elem.getTipoCliente().equals("2") && elem.getRuc().equals("")) {
                throw new FaltaCargarElemento("Error. Cargar el ruc."); 
             } else {
-               throw new FaltaCargarElemento("Error. Tipo de cliente no existe.");
+//               throw new FaltaCargarElemento("Error. Tipo de cliente no existe.");
             }
             abmManager.edit(Clientes.class, elem);
             Log.escribir("INFORMACION", username + " Accion: Modificar cliente: " + elem.getNombre());

@@ -288,8 +288,20 @@ public class ABMManagerFacturacion {
 
     public <S> void actualizarRecibosAFacturados (ArrayList<Integer> listaCodRecibos) throws SQLException, Exception {
         
-        Query q = em.createNativeQuery("UPDATE recibos"
+//        Query q = em.createNativeQuery("UPDATE recibos"
+//                + " SET facturado = true"
+//                + " WHERE cod_recibo = (?1);");
+        
+        
+        Query q = em.createNamedQuery("Facturas.findUltimaFactura");
+        List<Facturas> ultimaFacturaAux = q.setMaxResults(1).getResultList();
+        Facturas ultimaFactura = (Facturas) ultimaFacturaAux.get(0);
+        
+        q = em.createNativeQuery("UPDATE recibos"
                 + " SET facturado = true"
+                + ","
+                + "     cod_factura = " + ultimaFactura.getFacturasPK().getCodFactura() + ","
+                + "     nro_factura = '" + ultimaFactura.getFacturasPK().getNroFactura() + "'"
                 + " WHERE cod_recibo = (?1);");
             
         for (Integer codRecibo : listaCodRecibos) {
