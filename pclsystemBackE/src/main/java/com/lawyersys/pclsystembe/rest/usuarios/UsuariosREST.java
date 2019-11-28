@@ -6,6 +6,8 @@ import com.lawyersys.pclsystembe.abm.ABMManagerUsuarios;
 import com.lawyersys.pclsystembacke.entities.Usuarios;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
+import com.lawyersys.pclsystembe.utilidades.Mail;
+import com.lawyersys.pclsystembe.utilidades.RandomText;
 import com.lawyersys.pclsystembe.utilidades.Seguridad;
 import java.io.IOException;
 import java.util.List;
@@ -34,6 +36,8 @@ public class UsuariosREST {
     
     @EJB
     private ABMManagerUsuarios abmManager;
+    
+    Mail mail = new Mail();
 
     public UsuariosREST() {
     }
@@ -110,7 +114,7 @@ public class UsuariosREST {
                 elem.setContrasenha(Seguridad.getMd5(elem.getContrasenha()));
             }            
             abmManager.edit(Usuarios.class, elem);
-        return Response.ok().build();
+            return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Usuarios.class);
         }
@@ -152,6 +156,29 @@ public class UsuariosREST {
             ObjectMapper mapper = new ObjectMapper();
             String resp = mapper.writeValueAsString(elem);
             return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Usuarios.class);
+        }
+ 
+    }
+    
+    @GET
+    @Path("recuperar-contrasenha/{usuario}")
+    public Response recuperarContrasenha(@PathParam("usuario") String usuarioARecuperar ) throws JsonProcessingException {
+        try {
+            List<Usuarios> elem = (List<Usuarios>) (Object) abmManager.traerUsuarioPorNombreUsuario(usuarioARecuperar);
+            Usuarios usuario = elem.get(0);
+            
+            String nuevaContrasenha = RandomText.generateRandomString(8);
+            usuario.setContrasenha(Seguridad.getMd5(nuevaContrasenha));
+            
+            abmManager.edit(Usuarios.class, usuario);
+            
+            mail.enviaStartTLS(usuario.getCorreoElectronico(), "Lawyersys - recuperacion de clave", 
+                    "Su contrasenha nueva en el sistema sera: " + nuevaContrasenha);
+            
+            
+            return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Usuarios.class);
         }
