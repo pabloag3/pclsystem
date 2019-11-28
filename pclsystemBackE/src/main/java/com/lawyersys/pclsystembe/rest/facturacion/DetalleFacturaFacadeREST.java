@@ -88,27 +88,27 @@ public class DetalleFacturaFacadeREST {
         }
     }
 
-    @PUT
-    @Path("actualizar/{id}")
-    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            DetalleFactura elem = mapper.readValue(entity, DetalleFactura.class);
-            if ( elem.getDescripcion() == null ) {
-                throw new FaltaCargarElemento("Error. Cargar descripcion.");
-            }
-            if ( elem.getMonto() == 0 ) {
-                throw new FaltaCargarElemento("Error. Cargar monto.");
-            }
-            if ( elem.getPorcentajeIva() == 0 ) {
-                throw new FaltaCargarElemento("Error. Cargar porcentaje de IVA.");
-            }
-            abmManager.edit(DetalleFactura.class, elem);
-            return Response.ok().build();
-        } catch (Exception e) {
-            return ErrorManager.manejarError(e, DetalleFactura.class);
-        }
-    }
+//    @PUT
+//    @Path("actualizar/{id}")
+//    public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
+//        try {
+//            ObjectMapper mapper = new ObjectMapper();
+//            DetalleFactura elem = mapper.readValue(entity, DetalleFactura.class);
+//            if ( elem.getDescripcion() == null ) {
+//                throw new FaltaCargarElemento("Error. Cargar descripcion.");
+//            }
+//            if ( elem.getMonto() == 0 ) {
+//                throw new FaltaCargarElemento("Error. Cargar monto.");
+//            }
+//            if ( elem.getPorcentajeIva() == 0 ) {
+//                throw new FaltaCargarElemento("Error. Cargar porcentaje de IVA.");
+//            }
+//            abmManager.edit(DetalleFactura.class, elem);
+//            return Response.ok().build();
+//        } catch (Exception e) {
+//            return ErrorManager.manejarError(e, DetalleFactura.class);
+//        }
+//    }
 
     @GET
     @Path("traer/{id}")
