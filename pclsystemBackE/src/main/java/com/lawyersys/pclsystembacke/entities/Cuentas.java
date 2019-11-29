@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Cuentas.findByEstado", query = "SELECT c FROM Cuentas c WHERE c.estado = :estado")
     , @NamedQuery(name = "Cuentas.findByDescripcion", query = "SELECT c FROM Cuentas c WHERE c.descripcion = :descripcion")
     , @NamedQuery(name = "Cuentas.findByCodCaso", query = "SELECT c FROM Cuentas c WHERE c.codCaso.codCaso = :codCaso")
+    , @NamedQuery(name = "Cuentas.traerCuentasPendientes", query = "SELECT c FROM Cuentas c WHERE c.estado = false")
 })
 public class Cuentas implements Serializable {
 

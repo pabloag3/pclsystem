@@ -68,6 +68,11 @@ public class ABMManagerFacturacion {
         return q.getResultList();
     }
     
+    public List<Object> traerCuentasPendientesACobrar() {
+        Query q = em.createNamedQuery("Cuentas.traerCuentasPendientes");
+        return q.getResultList();
+    }
+    
     public List<Object> traerFacturasDeCuenta(String codCuenta) {
         Query q = em.createNativeQuery("SELECT * \n"
                 + "FROM facturas f\n"

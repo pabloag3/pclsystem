@@ -100,6 +100,19 @@ public class CuentasFacadeREST {
             return ErrorManager.manejarError(e, Cuentas.class);
         }
     }
+    
+    @GET
+    @Path("traer-cuentas-pendientes-de-cliente")
+    public Response traerCuentasDeCliente() throws JsonProcessingException {
+        try {
+            List<Cuentas> elem = (List<Cuentas>) (Object) abmManager.traerCuentasPendientesACobrar();
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Cuentas.class);
+        }
+    }
 
     @GET
     @Path("listar")
