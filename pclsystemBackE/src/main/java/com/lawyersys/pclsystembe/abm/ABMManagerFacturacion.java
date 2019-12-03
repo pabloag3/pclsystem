@@ -185,14 +185,35 @@ public class ABMManagerFacturacion {
             factura.setFechaEmision(new Date());
             
             // capturo el ultimo pago realizado para la generacion de la factura
-            q = em.createNamedQuery("Pagos.findUltimoPago");
-            List<Pagos> ultimoPagoAux = q.setMaxResults(1).getResultList();
-            Pagos ultimoPago = (Pagos) ultimoPagoAux.get(0);
-            factura.setCodPago(ultimoPago);
+//            q = em.createNamedQuery("Pagos.findUltimoPago");
+//            List<Pagos> ultimoPagoAux = q.setMaxResults(1).getResultList();
+//            Pagos ultimoPago = (Pagos) ultimoPagoAux.get(0);
+//            factura.setCodPago(ultimoPago);
             
             factura.setVigente(true);
             
             em.persist(factura);
+            
+            
+            System.out.println("codFactura: " + secuenciaSiguiente + " nroFactura: " + nroFactura);
+            
+            //se cambia de estado el ultimo recibo generado
+            q = em.createNativeQuery("SELECT cod_recibo FROM recibos\n" +
+                    "ORDER BY cod_recibo desc LIMIT 1;");
+            int nroUltimoRecibo = Integer.parseInt(q.getSingleResult().toString());
+            System.out.println("ultimo recibo: " + nroUltimoRecibo);
+            
+            q = em.createNamedQuery("Facturas.findUltimaFactura");
+            List<Facturas> ultimaFacturaAux = q.setMaxResults(1).getResultList();
+            Facturas ultimaFactura = (Facturas) ultimaFacturaAux.get(0);
+
+            q = em.createNativeQuery("UPDATE recibos"
+                    + " SET facturado = true"
+                    + ","
+                    + "     cod_factura = " + ultimaFactura.getFacturasPK().getCodFactura() + ","
+                    + "     nro_factura = '" + ultimaFactura.getFacturasPK().getNroFactura() + "'"
+                    + " WHERE cod_recibo = " + nroUltimoRecibo + ";");
+            q.executeUpdate();
             
             q = em.createNativeQuery("UPDATE timbrados"
                     + " SET nro_sec_actual = nro_sec_actual + 1"
@@ -225,18 +246,28 @@ public class ABMManagerFacturacion {
         } else if (clazz == Recibos.class) {
             Recibos recibo = (Recibos) elem;
             
-            // capturo el ultimo pago realizado para la generacion del recibo
-            Query q = em.createNamedQuery("Pagos.findUltimoPago");
-            List<Pagos> ultimoPagoAux = q.setMaxResults(1).getResultList();
-            Pagos ultimoPago = (Pagos) ultimoPagoAux.get(0);
+//            // capturo el ultimo pago realizado para la generacion del recibo
+//            Query q = em.createNamedQuery("Pagos.findUltimoPago");
+//            List<Pagos> ultimoPagoAux = q.setMaxResults(1).getResultList();
+//            Pagos ultimoPago = (Pagos) ultimoPagoAux.get(0);
+//            recibo.setCodPago(ultimoPago);
 
-            recibo.setCodPago(ultimoPago);
-            
             recibo.setFacturado(false);
             
             recibo.setFechaEmision(new Date());
             
             em.persist(recibo);
+            
+            Query q = em.createNativeQuery("SELECT cod_recibo FROM recibos\n"
+                    + "ORDER BY cod_recibo DESC LIMIT 1;");
+            int codUltimoRecibo = Integer.parseInt(q.getSingleResult().toString());
+
+            q = em.createNativeQuery("UPDATE pagos\n"
+                    + "SET cod_recibo = " + codUltimoRecibo + "\n"
+                    + "WHERE cod_recibo is null"
+            );
+            System.out.println("actualizados: " + q.executeUpdate());
+            
         }
     }
     
@@ -278,10 +309,10 @@ public class ABMManagerFacturacion {
         factura.setVigente(true);
         em.persist(factura);
         
-        q = em.createNativeQuery("UPDATE recibos"
-                + " SET facturado = true"
-                + " WHERE cod_pago = " + factura.getCodPago().getCodPago() + ";");
-        q.executeUpdate();
+//        q = em.createNativeQuery("UPDATE recibos"
+//                + " SET facturado = true"
+//                + " WHERE cod_pago = " + factura.getCodPago().getCodPago() + ";");
+//        q.executeUpdate();
         
         q = em.createNativeQuery("UPDATE timbrados"
                     + " SET nro_sec_actual = nro_sec_actual + 1"

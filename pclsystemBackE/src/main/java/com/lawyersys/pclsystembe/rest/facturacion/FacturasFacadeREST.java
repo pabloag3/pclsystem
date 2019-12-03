@@ -119,9 +119,9 @@ public class FacturasFacadeREST {
             if ( elem.getCedulaEmisor().getCedula() == null ) {
                 throw new FaltaCargarElemento("Error. Cargar cedula del emisor.");
             }
-            if ( elem.getCodPago().getCodPago() == null ) {
-                throw new FaltaCargarElemento("Error. Cargar codigo del pago.");
-            }
+//            if ( elem.getCodPago().getCodPago() == null ) {
+//                throw new FaltaCargarElemento("Error. Cargar codigo del pago.");
+//            }
             abmManager.crearFacturaDeRecibo(elem);
             return Response.ok().build();
         } catch (Exception e) {

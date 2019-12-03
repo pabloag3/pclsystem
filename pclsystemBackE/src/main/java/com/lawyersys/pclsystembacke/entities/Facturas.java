@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -7,7 +5,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -26,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Pablo Aguilar
+ * @author tatoa
  */
 @Entity
 @Table(name = "facturas")
@@ -38,10 +35,11 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Facturas.findByFechaEmision", query = "SELECT f FROM Facturas f WHERE f.fechaEmision = :fechaEmision")
     , @NamedQuery(name = "Facturas.findByMontoTotal", query = "SELECT f FROM Facturas f WHERE f.montoTotal = :montoTotal")
     , @NamedQuery(name = "Facturas.findByArchivo", query = "SELECT f FROM Facturas f WHERE f.archivo = :archivo")
+    , @NamedQuery(name = "Facturas.findByVigente", query = "SELECT f FROM Facturas f WHERE f.vigente = :vigente")
     , @NamedQuery(name = "Facturas.findUltimaFactura", query = "SELECT f FROM Facturas f ORDER BY f.facturasPK.codFactura DESC")
 })
 public class Facturas implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     
     @EmbeddedId
@@ -75,17 +73,9 @@ public class Facturas implements Serializable {
     @ManyToOne(optional = false)
     private Empleados cedulaEmisor;
     
-    @JoinColumn(name = "cod_pago", referencedColumnName = "cod_pago")
-    @ManyToOne(optional = false)
-    private Pagos codPago;
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "facturas")
+    @OneToMany(mappedBy = "facturas")
     @JsonIgnore
     private List<Recibos> recibosList;
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "facturas")
-    @JsonIgnore
-    private List<DetalleFactura> detalleFacturaList;
 
     public Facturas() {
     }
@@ -94,10 +84,11 @@ public class Facturas implements Serializable {
         this.facturasPK = facturasPK;
     }
 
-    public Facturas(FacturasPK facturasPK, Date fechaEmision, int montoTotal) {
+    public Facturas(FacturasPK facturasPK, Date fechaEmision, int montoTotal, boolean vigente) {
         this.facturasPK = facturasPK;
         this.fechaEmision = fechaEmision;
         this.montoTotal = montoTotal;
+        this.vigente = vigente;
     }
 
     public Facturas(int codFactura, String nroFactura) {
@@ -136,13 +127,12 @@ public class Facturas implements Serializable {
         this.archivo = archivo;
     }
 
-    @XmlTransient
-    public List<DetalleFactura> getDetalleFacturaList() {
-        return detalleFacturaList;
+    public boolean getVigente() {
+        return vigente;
     }
 
-    public void setDetalleFacturaList(List<DetalleFactura> detalleFacturaList) {
-        this.detalleFacturaList = detalleFacturaList;
+    public void setVigente(boolean vigente) {
+        this.vigente = vigente;
     }
 
     public Clientes getCodCliente() {
@@ -161,22 +151,6 @@ public class Facturas implements Serializable {
         this.cedulaEmisor = cedulaEmisor;
     }
 
-    public Pagos getCodPago() {
-        return codPago;
-    }
-
-    public void setCodPago(Pagos codPago) {
-        this.codPago = codPago;
-    }
-    
-    public boolean getVigente() {
-        return vigente;
-    }
-
-    public void setVigente(boolean vigente) {
-        this.vigente = vigente;
-    }
-    
     @XmlTransient
     public List<Recibos> getRecibosList() {
         return recibosList;
