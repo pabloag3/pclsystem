@@ -105,8 +105,9 @@ public class FacturasFacadeREST {
     }
     
     @POST
-    @Path("crear-factura-de-recibo")
-    public Response crearFacturaDeRecibo(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
+    @Path("guardar-factura-directo/{username}")
+    public Response guardarFacturaDirecto(@PathParam("username") String username,
+            @RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Facturas elem = mapper.readValue(entity, Facturas.class);   
@@ -119,15 +120,42 @@ public class FacturasFacadeREST {
             if ( elem.getCedulaEmisor().getCedula() == null ) {
                 throw new FaltaCargarElemento("Error. Cargar cedula del emisor.");
             }
-//            if ( elem.getCodPago().getCodPago() == null ) {
-//                throw new FaltaCargarElemento("Error. Cargar codigo del pago.");
-//            }
-            abmManager.crearFacturaDeRecibo(elem);
+            abmManager.guardarFacturaDirecto(elem);
+            
+            List<Facturas> ultimaFactura = (List<Facturas>) (Object) abmManager.traerUltimaFactura();
+            
+            Log.escribir("INFORMACION", username + " Accion: Crear factura numero: " + ultimaFactura.get(0).getFacturasPK().getNroFactura()
+                    + " de emisor: " + ultimaFactura.get(0).getCedulaEmisor());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, Facturas.class);
         }
     }
+    
+//    @POST
+//    @Path("crear-factura-de-recibo")
+//    public Response crearFacturaDeRecibo(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
+//        try {
+//            ObjectMapper mapper = new ObjectMapper();
+//            Facturas elem = mapper.readValue(entity, Facturas.class);   
+//            if ( elem.getCodCliente().getCodCliente() == 0 ) {
+//                throw new FaltaCargarElemento("Error. Cargar cliente.");
+//            }
+//            if ( elem.getMontoTotal() == 0 ) {
+//                throw new FaltaCargarElemento("Error. Cargar monto total.");
+//            }
+//            if ( elem.getCedulaEmisor().getCedula() == null ) {
+//                throw new FaltaCargarElemento("Error. Cargar cedula del emisor.");
+//            }
+////            if ( elem.getCodPago().getCodPago() == null ) {
+////                throw new FaltaCargarElemento("Error. Cargar codigo del pago.");
+////            }
+//            abmManager.crearFacturaDeRecibo(elem);
+//            return Response.ok().build();
+//        } catch (Exception e) {
+//            return ErrorManager.manejarError(e, Facturas.class);
+//        }
+//    }
 
     @PUT
     @Path("actualizar/{id}/{username}")

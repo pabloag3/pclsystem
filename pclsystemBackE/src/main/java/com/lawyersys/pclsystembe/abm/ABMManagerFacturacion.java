@@ -185,12 +185,6 @@ public class ABMManagerFacturacion {
             
             factura.setFechaEmision(new Date());
             
-            // capturo el ultimo pago realizado para la generacion de la factura
-//            q = em.createNamedQuery("Pagos.findUltimoPago");
-//            List<Pagos> ultimoPagoAux = q.setMaxResults(1).getResultList();
-//            Pagos ultimoPago = (Pagos) ultimoPagoAux.get(0);
-//            factura.setCodPago(ultimoPago);
-            
             factura.setVigente(true);
             
             em.persist(factura);
@@ -220,7 +214,7 @@ public class ABMManagerFacturacion {
                     + " SET nro_sec_actual = nro_sec_actual + 1"
                     + " WHERE cedula = '" + factura.getCedulaEmisor().getCedula() + "'"
                     + " AND vigente = TRUE;");
-            q.executeUpdate();            
+            q.executeUpdate();
         } else if (clazz == DetalleFactura.class) {
             DetalleFactura detalleFactura = (DetalleFactura) elem;
             
@@ -246,12 +240,6 @@ public class ABMManagerFacturacion {
             em.persist(detalleFactura);
         } else if (clazz == Recibos.class) {
             Recibos recibo = (Recibos) elem;
-            
-//            // capturo el ultimo pago realizado para la generacion del recibo
-//            Query q = em.createNamedQuery("Pagos.findUltimoPago");
-//            List<Pagos> ultimoPagoAux = q.setMaxResults(1).getResultList();
-//            Pagos ultimoPago = (Pagos) ultimoPagoAux.get(0);
-//            recibo.setCodPago(ultimoPago);
 
             recibo.setFacturado(false);
             
@@ -272,10 +260,11 @@ public class ABMManagerFacturacion {
         }
     }
     
-    public <S> void crearFacturaDeRecibo (Facturas factura) throws SQLException, Exception {
-        
+    public <S> void guardarFacturaDirecto(S elem) throws SQLException, Exception {
+        Facturas factura = (Facturas) elem;
+
         // preparamos la pk de factura
-            
+
         // traemos el siguiente valor del codigo de factura
         Query q = em.createNativeQuery("select nextval('facturas_cod_factura_seq');");
         int secuenciaSiguiente = ((BigInteger) q.getSingleResult()).intValue();
@@ -295,7 +284,7 @@ public class ABMManagerFacturacion {
         String nroPuntoExpedicion = q.getSingleResult().toString();
         nroPuntoExpedicion = String.format("%3s", nroPuntoExpedicion).replace(' ','0');
 
-        q = em.createNativeQuery("SELECT t.nro_sec_actual + 1 FROM timbrados t"
+        q = em.createNativeQuery("SELECT t.nro_sec_actual FROM timbrados t"
                 + " WHERE t.cedula = '" + factura.getCedulaEmisor().getCedula() + "'"
                 + " AND t.vigente = TRUE"
                 + " LIMIT 1;");
@@ -305,30 +294,74 @@ public class ABMManagerFacturacion {
         String nroFactura = nroEstablecimiento + "-" + nroPuntoExpedicion + "-" + nroSecActual;
 
         factura.setFacturasPK(new FacturasPK(secuenciaSiguiente+1, nroFactura));
-        
+
         factura.setFechaEmision(new Date());
+
         factura.setVigente(true);
+
         em.persist(factura);
-        
-//        q = em.createNativeQuery("UPDATE recibos"
-//                + " SET facturado = true"
-//                + " WHERE cod_pago = " + factura.getCodPago().getCodPago() + ";");
-//        q.executeUpdate();
-        
+
+        System.out.println("codFactura: " + secuenciaSiguiente + " nroFactura: " + nroFactura);
+
         q = em.createNativeQuery("UPDATE timbrados"
-                    + " SET nro_sec_actual = nro_sec_actual + 1"
-                    + " WHERE cedula = '" + factura.getCedulaEmisor().getCedula() + "'"
-                    + " AND vigente = TRUE;");
-            q.executeUpdate();    
-        
+                + " SET nro_sec_actual = nro_sec_actual + 1"
+                + " WHERE cedula = '" + factura.getCedulaEmisor().getCedula() + "'"
+                + " AND vigente = TRUE;");
+        q.executeUpdate();         
     }
+    
+//    public <S> void crearFacturaDeRecibo (Facturas factura) throws SQLException, Exception {
+//        
+//        // preparamos la pk de factura
+//            
+//        // traemos el siguiente valor del codigo de factura
+//        Query q = em.createNativeQuery("select nextval('facturas_cod_factura_seq');");
+//        int secuenciaSiguiente = ((BigInteger) q.getSingleResult()).intValue();
+//
+//        // armamos la secuencia de numeros pertenecientes al numero de factura
+//        q = em.createNativeQuery("SELECT t.nro_establecimiento FROM timbrados t"
+//                + " WHERE t.cedula = '" + factura.getCedulaEmisor().getCedula() + "'"
+//                + " AND t.vigente = TRUE"
+//                + " LIMIT 1;");
+//        String nroEstablecimiento = q.getSingleResult().toString();
+//        nroEstablecimiento = String.format("%3s", nroEstablecimiento).replace(' ','0');
+//
+//        q = em.createNativeQuery("SELECT t.nro_punto_expedicion FROM timbrados t"
+//                + " WHERE t.cedula = '" + factura.getCedulaEmisor().getCedula() + "'"
+//                + " AND t.vigente = TRUE"
+//                + " LIMIT 1;");
+//        String nroPuntoExpedicion = q.getSingleResult().toString();
+//        nroPuntoExpedicion = String.format("%3s", nroPuntoExpedicion).replace(' ','0');
+//
+//        q = em.createNativeQuery("SELECT t.nro_sec_actual + 1 FROM timbrados t"
+//                + " WHERE t.cedula = '" + factura.getCedulaEmisor().getCedula() + "'"
+//                + " AND t.vigente = TRUE"
+//                + " LIMIT 1;");
+//        String nroSecActual = q.getSingleResult().toString();
+//        nroSecActual = String.format("%7s", nroSecActual).replace(' ','0');
+//
+//        String nroFactura = nroEstablecimiento + "-" + nroPuntoExpedicion + "-" + nroSecActual;
+//
+//        factura.setFacturasPK(new FacturasPK(secuenciaSiguiente+1, nroFactura));
+//        
+//        factura.setFechaEmision(new Date());
+//        factura.setVigente(true);
+//        em.persist(factura);
+//        
+////        q = em.createNativeQuery("UPDATE recibos"
+////                + " SET facturado = true"
+////                + " WHERE cod_pago = " + factura.getCodPago().getCodPago() + ";");
+////        q.executeUpdate();
+//        
+//        q = em.createNativeQuery("UPDATE timbrados"
+//                    + " SET nro_sec_actual = nro_sec_actual + 1"
+//                    + " WHERE cedula = '" + factura.getCedulaEmisor().getCedula() + "'"
+//                    + " AND vigente = TRUE;");
+//            q.executeUpdate();    
+//        
+//    }
 
     public <S> void actualizarRecibosAFacturados (ArrayList<Integer> listaCodRecibos) throws SQLException, Exception {
-        
-//        Query q = em.createNativeQuery("UPDATE recibos"
-//                + " SET facturado = true"
-//                + " WHERE cod_recibo = (?1);");
-        
         
         Query q = em.createNamedQuery("Facturas.findUltimaFactura");
         List<Facturas> ultimaFacturaAux = q.setMaxResults(1).getResultList();
