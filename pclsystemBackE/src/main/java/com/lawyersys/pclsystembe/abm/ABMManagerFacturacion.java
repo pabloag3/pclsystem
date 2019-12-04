@@ -74,18 +74,19 @@ public class ABMManagerFacturacion {
     }
     
     public List<Object> traerFacturasDeCuenta(String codCuenta) {
-        Query q = em.createNativeQuery("SELECT * \n"
+        Query q = em.createNativeQuery("SELECT distinct(f.*)\n"
                 + "FROM facturas f\n"
-                + "JOIN pagos p ON p.cod_pago = f.cod_pago\n"
-                + "WHERE p.cod_cuenta = (?1);", Facturas.class);
+                + "JOIN recibos r ON r.cod_factura = f.cod_factura\n"
+                + "JOIN pagos p ON p.cod_recibo = r.cod_recibo\n"
+                + "WHERE p.cod_cuenta = (?1)", Facturas.class);
         q.setParameter(1, Integer.parseInt(codCuenta));
         return q.getResultList();
     }
     
     public List<Object> traerRecibosDeCuenta(String codCuenta) {
-        Query q = em.createNativeQuery("SELECT * \n"
+            Query q = em.createNativeQuery("SELECT distinct(r.*)\n"
                 + "FROM recibos r\n"
-                + "JOIN pagos p ON p.cod_pago = r.cod_pago\n"
+                + "JOIN pagos p ON p.cod_recibo = r.cod_recibo\n"
                 + "WHERE p.cod_cuenta = (?1);", Recibos.class);
         q.setParameter(1, Integer.parseInt(codCuenta));
         return q.getResultList();
