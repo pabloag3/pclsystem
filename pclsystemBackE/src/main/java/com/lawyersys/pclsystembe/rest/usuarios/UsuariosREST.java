@@ -2,6 +2,7 @@ package com.lawyersys.pclsystembe.rest.usuarios;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lawyersys.pclsystembacke.entities.Empleados;
 import com.lawyersys.pclsystembe.abm.ABMManagerUsuarios;
 import com.lawyersys.pclsystembacke.entities.Usuarios;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
@@ -49,8 +50,14 @@ public class UsuariosREST {
             ObjectMapper mapper = new ObjectMapper();
             Usuarios elem = mapper.readValue(entity, Usuarios.class);
             
-            List<Usuarios> usuarioAuxList = (List<Usuarios>) (Object) abmManager.traerUsuarioPorNombreUsuario(elem.getUsuario());
+            // valida que el empleado exista en el sistema
+            List<Empleados> empleadoAuxList = (List<Empleados>) (Object) abmManager.find("Empleados", elem.getCedula().getCedula());
+            if (empleadoAuxList.isEmpty()) {
+                throw new FaltaCargarElemento("Error. El empleado no existe.");
+            }
             
+            // valida que el nombre de usuario no exista en el sistema
+            List<Usuarios> usuarioAuxList = (List<Usuarios>) (Object) abmManager.traerUsuarioPorNombreUsuario(elem.getUsuario());
             if (!usuarioAuxList.isEmpty()) {
                 Usuarios usuarioAux = usuarioAuxList.get(0);
                 if ( usuarioAux.getUsuario().contains(elem.getUsuario()) ) {
@@ -84,15 +91,12 @@ public class UsuariosREST {
     public Response edit(@RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            Usuarios elem = mapper.readValue(entity, Usuarios.class);  
+            Usuarios elem = mapper.readValue(entity, Usuarios.class);
             
-            List<Usuarios> usuarioAuxList = (List<Usuarios>) (Object) abmManager.traerUsuarioPorNombreUsuario(elem.getUsuario());
-            
-            if (!usuarioAuxList.isEmpty()) {
-                Usuarios usuarioAux = usuarioAuxList.get(0);
-                if ( usuarioAux.getUsuario().contains(elem.getUsuario()) ) {
-                    throw new FaltaCargarElemento("Error. Usuario ya existe.");
-                }
+             // valida que el empleado exista en el sistema
+            List<Empleados> empleadoAuxList = (List<Empleados>) (Object) abmManager.find("Empleados", elem.getCedula().getCedula());
+            if (empleadoAuxList.isEmpty()) {
+                throw new FaltaCargarElemento("Error. El empleado no existe.");
             }
             
             if ( elem.getCedula() == null ) {
