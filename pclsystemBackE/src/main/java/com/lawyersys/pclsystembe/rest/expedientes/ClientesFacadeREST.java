@@ -158,7 +158,7 @@ public class ClientesFacadeREST {
     }
     
     @GET
-    @Path("/reporte-clientes-a-cobrar/{formato}")
+    @Path("/archivo-reporte-clientes-a-cobrar/{formato}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response traerReporteClientesACobrar(
             @PathParam("formato") String formato

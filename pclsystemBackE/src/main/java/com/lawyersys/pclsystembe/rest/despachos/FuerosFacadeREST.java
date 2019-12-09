@@ -6,6 +6,7 @@ import com.lawyersys.pclsystembacke.entities.Fueros;
 import com.lawyersys.pclsystembe.abm.ABMManagerDespachos;
 import com.lawyersys.pclsystembe.dtos.ExpedientesPorFueroDTO;
 import com.lawyersys.pclsystembe.dtos.GastoPorFueroPorMesDTO;
+import com.lawyersys.pclsystembe.dtos.IngresoPorFueroPorMesDTO;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
 import java.io.ByteArrayOutputStream;
@@ -149,9 +150,197 @@ public class FuerosFacadeREST {
     }
     
     @GET
-    @Path("/reporte-monto-por-fuero/{formato}")
+    @Path("/archivo-reporte-gasto-por-fuero-por-mes/{formato}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response traerReporteClientesACobrar(
+    public Response archivoGastoPorFueroPorMes(
+            @PathParam("formato") String formato
+    ) throws JRException, ClassNotFoundException, SQLException, IOException {
+        
+        try {
+            
+            if (!formato.equals("pdf") && !formato.equals("docx") && !formato.equals("xlsx")) {
+                throw new FaltaCargarElemento("Error. El formato de archivo no es aceptado.");
+            }
+            
+            // EMPIEZA A GENERAR EL ARCHIVO DEL REPORTE
+            // compilar el archivo del reporte jasper
+            String sourceFileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\GastoPorFueroPorMes.jrxml";
+            String jasperReport =  JasperCompileManager.compileReportToFile(sourceFileName);
+            
+            // mapea los parametros que pasara al archivo jasper
+            Map parameters = new HashMap();
+            
+            // establece la conexion a la base de datos
+            String cadenaConexion = "jdbc:postgresql://localhost:5432/lawyersys";
+            Class.forName("org.postgresql.Driver");
+            Connection connection = DriverManager.getConnection(cadenaConexion, "postgres", "postgres");
+            
+            //Aqui se llena el reporte (se ejecuta la consulta)
+            JasperPrint print = new JasperPrint();
+            print = JasperFillManager.fillReport(jasperReport, parameters, connection);
+            
+            ResponseBuilder response = null;
+            String fileName = "";
+            
+            if (formato.equals("pdf")) {
+                
+                byte[] pdfBytes = JasperExportManager.exportReportToPdf(print);
+                fileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\GastoPorFueroPorMes.pdf";
+                writeFile(pdfBytes, fileName);
+                
+            } else if (formato.equals("docx")) {
+                
+                fileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\GastoPorFueroPorMes.docx";
+                
+                JRDocxExporter exporter = new JRDocxExporter();
+                exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
+                exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, fileName);
+                exporter.exportReport();
+                
+                File file = new File(fileName);
+                byte[] fileContent = Files.readAllBytes(file.toPath());
+                writeFile(fileContent, fileName);
+                
+            } else if (formato.equals("xlsx")) {
+                
+                fileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\GastoPorFueroPorMes.xlsx";
+                
+                SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
+                configuration.setOnePagePerSheet(true);
+                configuration.setIgnoreGraphics(false);
+                
+                try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    OutputStream fileOutputStream = new FileOutputStream(fileName)) {
+                    Exporter exporter = new JRXlsxExporter();
+                    exporter.setExporterInput(new SimpleExporterInput(print));
+                    exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(byteArrayOutputStream));
+                    exporter.setConfiguration(configuration);
+                    exporter.exportReport();
+                    byteArrayOutputStream.writeTo(fileOutputStream);
+                }
+                
+                File file = new File(fileName);
+                byte[] fileContent = Files.readAllBytes(file.toPath());
+                fileName = fileName;
+                writeFile(fileContent, fileName);
+                
+            }
+            
+            response = Response.ok((Object) new File(fileName));
+            response.header("Content-Disposition", "attachment;filename=" + fileName);
+            return response.build();
+            
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Fueros.class);
+        }
+
+    }
+    
+    @GET
+    @Path("reporte-ingreso-por-fuero-por-mes")
+    public Response ingresoPorFueroPorMes() throws JsonProcessingException {
+        try {
+            List<IngresoPorFueroPorMesDTO> elem = (List<IngresoPorFueroPorMesDTO>) (Object) abmManager.ingresoPorFueroPorMes();
+            
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Fueros.class);
+        }
+    }
+    
+    @GET
+    @Path("/archivo-reporte-ingreso-por-fuero-por-mes/{formato}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response archivoIngresoPorFueroPorMes(
+            @PathParam("formato") String formato
+    ) throws JRException, ClassNotFoundException, SQLException, IOException {
+        
+        try {
+            
+            if (!formato.equals("pdf") && !formato.equals("docx") && !formato.equals("xlsx")) {
+                throw new FaltaCargarElemento("Error. El formato de archivo no es aceptado.");
+            }
+            
+            // EMPIEZA A GENERAR EL ARCHIVO DEL REPORTE
+            // compilar el archivo del reporte jasper
+            String sourceFileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\IngresoPorFueroPorMes.jrxml";
+            String jasperReport =  JasperCompileManager.compileReportToFile(sourceFileName);
+            
+            // mapea los parametros que pasara al archivo jasper
+            Map parameters = new HashMap();
+            
+            // establece la conexion a la base de datos
+            String cadenaConexion = "jdbc:postgresql://localhost:5432/lawyersys";
+            Class.forName("org.postgresql.Driver");
+            Connection connection = DriverManager.getConnection(cadenaConexion, "postgres", "postgres");
+            
+            //Aqui se llena el reporte (se ejecuta la consulta)
+            JasperPrint print = new JasperPrint();
+            print = JasperFillManager.fillReport(jasperReport, parameters, connection);
+            
+            ResponseBuilder response = null;
+            String fileName = "";
+            
+            if (formato.equals("pdf")) {
+                
+                byte[] pdfBytes = JasperExportManager.exportReportToPdf(print);
+                fileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\IngresoPorFueroPorMes.pdf";
+                writeFile(pdfBytes, fileName);
+                
+            } else if (formato.equals("docx")) {
+                
+                fileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\IngresoPorFueroPorMes.docx";
+                
+                JRDocxExporter exporter = new JRDocxExporter();
+                exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
+                exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, fileName);
+                exporter.exportReport();
+                
+                File file = new File(fileName);
+                byte[] fileContent = Files.readAllBytes(file.toPath());
+                writeFile(fileContent, fileName);
+                
+            } else if (formato.equals("xlsx")) {
+                
+                fileName = "C:\\pclSystemFiles\\jasperFiles\\reporte\\IngresoPorFueroPorMes.xlsx";
+                
+                SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
+                configuration.setOnePagePerSheet(true);
+                configuration.setIgnoreGraphics(false);
+                
+                try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    OutputStream fileOutputStream = new FileOutputStream(fileName)) {
+                    Exporter exporter = new JRXlsxExporter();
+                    exporter.setExporterInput(new SimpleExporterInput(print));
+                    exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(byteArrayOutputStream));
+                    exporter.setConfiguration(configuration);
+                    exporter.exportReport();
+                    byteArrayOutputStream.writeTo(fileOutputStream);
+                }
+                
+                File file = new File(fileName);
+                byte[] fileContent = Files.readAllBytes(file.toPath());
+                fileName = fileName;
+                writeFile(fileContent, fileName);
+                
+            }
+            
+            response = Response.ok((Object) new File(fileName));
+            response.header("Content-Disposition", "attachment;filename=" + fileName);
+            return response.build();
+            
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Fueros.class);
+        }
+
+    }
+    
+    @GET
+    @Path("/archivo-reporte-monto-por-fuero/{formato}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response traerMontoTotalPorFuero(
             @PathParam("formato") String formato
     ) throws JRException, ClassNotFoundException, SQLException, IOException {
         
