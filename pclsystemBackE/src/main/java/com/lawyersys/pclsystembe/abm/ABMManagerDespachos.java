@@ -10,6 +10,7 @@ import com.lawyersys.pclsystembacke.entities.Ujieres;
 import com.lawyersys.pclsystembe.dtos.ExpedientesPorFueroDTO;
 import com.lawyersys.pclsystembe.dtos.GastoPorFueroPorMesDTO;
 import com.lawyersys.pclsystembe.dtos.IngresoPorFueroPorMesDTO;
+import com.lawyersys.pclsystembe.dtos.TiempoDeServiciosPorFueroDTO;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,7 @@ public class ABMManagerDespachos {
                 + "FROM fueros f\n"
                 + "LEFT OUTER JOIN despachos d ON d.cod_fuero = f.cod_fuero\n"
                 + "LEFT OUTER JOIN expedientes e ON e.cod_despacho = d.cod_despacho\n"
+                + "WHERE date_part('month', age(current_date, e.fecha)) <= 12\n"
                 + "GROUP BY f.cod_fuero, f.tipo_fuero;");
         resultado = (List<Object[]>)q.getResultList();
         
@@ -56,6 +58,41 @@ public class ABMManagerDespachos {
                 String tipoFuero = linea[1].toString();
                 int cantExpedientes = Integer.parseInt(linea[2].toString());
                 epf = new ExpedientesPorFueroDTO(codFuero, tipoFuero, cantExpedientes);
+                listaFinal.add(epf);
+            }
+        }
+        
+        return listaFinal;
+        
+    }
+    
+    public List<TiempoDeServiciosPorFueroDTO> tiempoDeServicioPorFuero() {
+        
+        List<TiempoDeServiciosPorFueroDTO> listaFinal = new ArrayList<TiempoDeServiciosPorFueroDTO>();
+        
+        List<Object[]> resultado = new ArrayList<Object[]>();
+        
+        Query q = em.createNativeQuery("SELECT f.cod_fuero, f.tipo_fuero, MAX(ex.fecha_fin - ex.fecha)/30 AS meses\n"
+                + "FROM fueros f\n"
+                + "JOIN despachos des ON des.cod_fuero = f.cod_fuero\n"
+                + "JOIN expedientes ex ON ex.cod_despacho = des.cod_despacho\n"
+                + "WHERE ex.fecha_fin IS NOT NULL\n"
+                + "GROUP BY f.cod_fuero, f.tipo_fuero\n"
+                + ";");
+        resultado = (List<Object[]>)q.getResultList();
+        
+        if (resultado == null || resultado.isEmpty()) {
+            listaFinal = new ArrayList<TiempoDeServiciosPorFueroDTO>();
+        }
+        else {
+            for (Object[] linea : resultado) {
+                TiempoDeServiciosPorFueroDTO epf;
+                
+                int codFuero = Integer.parseInt(linea[0].toString());
+                String tipoFuero = linea[1].toString();
+                int meses = Integer.parseInt(linea[2].toString());
+                
+                epf = new TiempoDeServiciosPorFueroDTO(codFuero, tipoFuero, meses);
                 listaFinal.add(epf);
             }
         }

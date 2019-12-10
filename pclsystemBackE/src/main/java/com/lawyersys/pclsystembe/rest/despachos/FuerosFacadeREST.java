@@ -7,6 +7,7 @@ import com.lawyersys.pclsystembe.abm.ABMManagerDespachos;
 import com.lawyersys.pclsystembe.dtos.ExpedientesPorFueroDTO;
 import com.lawyersys.pclsystembe.dtos.GastoPorFueroPorMesDTO;
 import com.lawyersys.pclsystembe.dtos.IngresoPorFueroPorMesDTO;
+import com.lawyersys.pclsystembe.dtos.TiempoDeServiciosPorFueroDTO;
 import com.lawyersys.pclsystembe.error.FaltaCargarElemento;
 import com.lawyersys.pclsystembe.utilidades.ErrorManager;
 import java.io.ByteArrayOutputStream;
@@ -126,6 +127,20 @@ public class FuerosFacadeREST {
     public Response cantExpedientesPorFuero() throws JsonProcessingException {
         try {
             List<ExpedientesPorFueroDTO> elem = (List<ExpedientesPorFueroDTO>) (Object) abmManager.cantExpedientesPorFuero();
+            
+            ObjectMapper mapper = new ObjectMapper();
+            String resp = mapper.writeValueAsString(elem);
+            return Response.ok(resp).build();
+        } catch (Exception e) {
+            return ErrorManager.manejarError(e, Fueros.class);
+        }
+    }
+    
+    @GET
+    @Path("reporte-mayor-tiempo-de-servicio-por-fuero")
+    public Response tiempoDeServicioPorFuero() throws JsonProcessingException {
+        try {
+            List<TiempoDeServiciosPorFueroDTO> elem = (List<TiempoDeServiciosPorFueroDTO>) (Object) abmManager.tiempoDeServicioPorFuero();
             
             ObjectMapper mapper = new ObjectMapper();
             String resp = mapper.writeValueAsString(elem);
