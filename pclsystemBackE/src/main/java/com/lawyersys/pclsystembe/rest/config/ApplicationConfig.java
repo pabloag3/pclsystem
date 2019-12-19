@@ -57,6 +57,7 @@ public class ApplicationConfig extends Application {
         resources.add(com.lawyersys.pclsystembe.rest.usuarios.RolesUsuarioREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.usuarios.TimbradosFacadeREST.class);
         resources.add(com.lawyersys.pclsystembe.rest.usuarios.UsuariosREST.class);
+        resources.add(com.lawyersyspclsystembe.rest.manuales.ManualesFacadeREST.class);
     }
     
 }
