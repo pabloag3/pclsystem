@@ -114,7 +114,8 @@ public class ABMManagerDespachos {
             "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM dc.fecha) = 1\n" +
-            "		AND ff.cod_fuero = f.cod_fuero\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" + 
+            "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"ENERO\",\n" +
             "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
             "	FROM detalle_cuenta dc\n" +
@@ -123,6 +124,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM dc.fecha) = 2\n" +
             "		AND ff.cod_fuero = f.cod_fuero	\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"FEBRERO\",\n" +
             "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
             "	FROM detalle_cuenta dc\n" +
@@ -131,6 +133,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM dc.fecha) = 3\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"MARZO\",\n" +
             "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
             "	FROM detalle_cuenta dc\n" +
@@ -139,6 +142,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM dc.fecha) = 4\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"ABRIL\",\n" +
             "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
             "	FROM detalle_cuenta dc\n" +
@@ -147,6 +151,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM dc.fecha) = 5\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"MAYO\",\n" +
             "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
             "	FROM detalle_cuenta dc\n" +
@@ -155,6 +160,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM dc.fecha) = 6\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"JUNIO\",\n" +
             "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
             "	FROM detalle_cuenta dc\n" +
@@ -163,6 +169,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM dc.fecha) = 7\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"JULIO\",\n" +
             "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
             "	FROM detalle_cuenta dc\n" +
@@ -171,6 +178,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM dc.fecha) = 8\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"AGOSTO\",\n" +
             "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
             "	FROM detalle_cuenta dc\n" +
@@ -179,6 +187,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM dc.fecha) = 9\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"SEPTIEMBRE\",\n" +
             "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
             "	FROM detalle_cuenta dc\n" +
@@ -187,6 +196,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM dc.fecha) = 10\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"OCTUBRE\",\n" +
             "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
             "	FROM detalle_cuenta dc\n" +
@@ -195,6 +205,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM dc.fecha) = 11\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"NOVIEMBRE\",\n" +
             "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
             "	FROM detalle_cuenta dc\n" +
@@ -203,6 +214,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM dc.fecha) = 12\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"DICIEMBRE\"	\n" +
             "FROM fueros f\n" +
             "LEFT OUTER JOIN despachos des ON des.cod_fuero = f.cod_fuero\n" +
@@ -259,6 +271,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 1\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+            "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"ENERO\",\n" +
             "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
             "	FROM pagos p\n" +
@@ -267,6 +280,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 2\n" +
             "		AND ff.cod_fuero = f.cod_fuero	\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"FEBRERO\",\n" +
             "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
             "	FROM pagos p\n" +
@@ -275,6 +289,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 3\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"MARZO\",\n" +
             "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
             "	FROM pagos p\n" +
@@ -283,6 +298,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 4\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"ABRIL\",\n" +
             "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
             "	FROM pagos p\n" +
@@ -291,6 +307,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 5\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"MAYO\",\n" +
             "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
             "	FROM pagos p\n" +
@@ -299,6 +316,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 6\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"JUNIO\",\n" +
             "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
             "	FROM pagos p\n" +
@@ -307,6 +325,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 7\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"JULIO\",\n" +
             "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
             "	FROM pagos p\n" +
@@ -315,6 +334,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 8\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"AGOSTO\",\n" +
             "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
             "	FROM pagos p\n" +
@@ -323,6 +343,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 9\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"SEPTIEMBRE\",\n" +
             "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
             "	FROM pagos p\n" +
@@ -331,6 +352,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 10\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"OCTUBRE\",\n" +
             "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
             "	FROM pagos p\n" +
@@ -339,6 +361,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 11\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"NOVIEMBRE\",\n" +
             "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
             "	FROM pagos p\n" +
@@ -347,6 +370,7 @@ public class ABMManagerDespachos {
             "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
             "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 12\n" +
             "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
             "	) AS \"DICIEMBRE\"	\n" +
             "FROM fueros f\n" +
             "LEFT OUTER JOIN despachos des ON des.cod_fuero = f.cod_fuero\n" +
