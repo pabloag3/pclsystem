@@ -158,7 +158,7 @@ public class ActividadesFacadeREST {
     }
     
     @GET
-    @Path("/reporte-actividades-a-vencer/{formato}")
+    @Path("/archivo-reporte-actividades-a-vencer/{formato}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response traerActividadesAVencer(
             @PathParam("formato") String formato
@@ -245,7 +245,7 @@ public class ActividadesFacadeREST {
     }
     
     @GET
-    @Path("/reporte-presentacion-notificacion-a-vencer/{formato}")
+    @Path("/archivo-reporte-presentacion-notificacion-a-vencer/{formato}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response traerPresentacionesNotificacionesAVencer(
             @PathParam("formato") String formato
@@ -333,7 +333,7 @@ public class ActividadesFacadeREST {
     }
     
     @GET
-    @Path("/reporte-audiencias-del-mes/{formato}")
+    @Path("/archivo-reporte-audiencias-del-mes/{formato}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response traerAudienciasDelMes(
             @PathParam("formato") String formato

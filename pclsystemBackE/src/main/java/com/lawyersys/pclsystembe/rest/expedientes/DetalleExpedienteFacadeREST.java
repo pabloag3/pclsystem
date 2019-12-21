@@ -84,7 +84,7 @@ public class DetalleExpedienteFacadeREST {
             if ( elem.getDescripcion()== null ) {
                 throw new FaltaCargarElemento("Error. Cargar descripcion.");
             }
-            if ( elem.getCodTipoActuacion().getCodTipoActuacion() == null ) {
+            if ( elem.getCodTipoActuacion().getCodTipoActuacion() == null  || elem.getCodTipoActuacion().getCodTipoActuacion() == 0 ) {
                 throw new FaltaCargarElemento("Error. Cargar tipo de actuacion.");
             }
             if ( elem.getCodDespacho().getCodDespacho() == null ) {
@@ -215,7 +215,7 @@ public class DetalleExpedienteFacadeREST {
             if ( elem.getCodDespacho().getCodDespacho() == null ) {
                 throw new FaltaCargarElemento("Error. Cargar despacho.");
             }
-            if ( elem.getCodTipoActuacion().getCodTipoActuacion() == null ) {
+            if ( elem.getCodTipoActuacion().getCodTipoActuacion() == null  || elem.getCodTipoActuacion().getCodTipoActuacion() == 0 ) {
                 throw new FaltaCargarElemento("Error. Cargar tipo de actuacion.");
             }
             if ( elem.getFecha() == null ) {

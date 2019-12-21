@@ -8,6 +8,9 @@ import com.lawyersys.pclsystembacke.entities.Fueros;
 import com.lawyersys.pclsystembacke.entities.Jueces;
 import com.lawyersys.pclsystembacke.entities.Ujieres;
 import com.lawyersys.pclsystembe.dtos.ExpedientesPorFueroDTO;
+import com.lawyersys.pclsystembe.dtos.GastoPorFueroPorMesDTO;
+import com.lawyersys.pclsystembe.dtos.IngresoPorFueroPorMesDTO;
+import com.lawyersys.pclsystembe.dtos.TiempoDeServiciosPorFueroDTO;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +42,9 @@ public class ABMManagerDespachos {
         
         Query q = em.createNativeQuery("SELECT f.cod_fuero, f.tipo_fuero, count(e.*)\n"
                 + "FROM fueros f\n"
-                + "JOIN despachos d ON d.cod_fuero = f.cod_fuero\n"
-                + "JOIN expedientes e ON e.cod_despacho = d.cod_despacho\n"
+                + "LEFT OUTER JOIN despachos d ON d.cod_fuero = f.cod_fuero\n"
+                + "LEFT OUTER JOIN expedientes e ON e.cod_despacho = d.cod_despacho\n"
+                + "WHERE date_part('month', age(current_date, e.fecha)) <= 12\n"
                 + "GROUP BY f.cod_fuero, f.tipo_fuero;");
         resultado = (List<Object[]>)q.getResultList();
         
@@ -55,6 +59,353 @@ public class ABMManagerDespachos {
                 int cantExpedientes = Integer.parseInt(linea[2].toString());
                 epf = new ExpedientesPorFueroDTO(codFuero, tipoFuero, cantExpedientes);
                 listaFinal.add(epf);
+            }
+        }
+        
+        return listaFinal;
+        
+    }
+    
+    public List<TiempoDeServiciosPorFueroDTO> tiempoDeServicioPorFuero() {
+        
+        List<TiempoDeServiciosPorFueroDTO> listaFinal = new ArrayList<TiempoDeServiciosPorFueroDTO>();
+        
+        List<Object[]> resultado = new ArrayList<Object[]>();
+        
+        Query q = em.createNativeQuery("SELECT f.cod_fuero, f.tipo_fuero, MAX(ex.fecha_fin - ex.fecha)/30 AS meses\n"
+                + "FROM fueros f\n"
+                + "JOIN despachos des ON des.cod_fuero = f.cod_fuero\n"
+                + "JOIN expedientes ex ON ex.cod_despacho = des.cod_despacho\n"
+                + "WHERE ex.fecha_fin IS NOT NULL\n"
+                + "GROUP BY f.cod_fuero, f.tipo_fuero\n"
+                + ";");
+        resultado = (List<Object[]>)q.getResultList();
+        
+        if (resultado == null || resultado.isEmpty()) {
+            listaFinal = new ArrayList<TiempoDeServiciosPorFueroDTO>();
+        }
+        else {
+            for (Object[] linea : resultado) {
+                TiempoDeServiciosPorFueroDTO epf;
+                
+                int codFuero = Integer.parseInt(linea[0].toString());
+                String tipoFuero = linea[1].toString();
+                int meses = Integer.parseInt(linea[2].toString());
+                
+                epf = new TiempoDeServiciosPorFueroDTO(codFuero, tipoFuero, meses);
+                listaFinal.add(epf);
+            }
+        }
+        
+        return listaFinal;
+        
+    }
+    
+    public List<GastoPorFueroPorMesDTO> gastoPorFueroPorMes() {
+        
+        List<GastoPorFueroPorMesDTO> listaFinal = new ArrayList<GastoPorFueroPorMesDTO>();
+        
+        List<Object[]> resultado = new ArrayList<Object[]>();
+        
+        Query q = em.createNativeQuery("SELECT f.cod_fuero, f.tipo_fuero, \n" +
+            "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
+            "	FROM detalle_cuenta dc\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = dc.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM dc.fecha) = 1\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" + 
+            "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"ENERO\",\n" +
+            "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
+            "	FROM detalle_cuenta dc\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = dc.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM dc.fecha) = 2\n" +
+            "		AND ff.cod_fuero = f.cod_fuero	\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"FEBRERO\",\n" +
+            "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
+            "	FROM detalle_cuenta dc\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = dc.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM dc.fecha) = 3\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"MARZO\",\n" +
+            "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
+            "	FROM detalle_cuenta dc\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = dc.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM dc.fecha) = 4\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"ABRIL\",\n" +
+            "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
+            "	FROM detalle_cuenta dc\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = dc.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM dc.fecha) = 5\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"MAYO\",\n" +
+            "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
+            "	FROM detalle_cuenta dc\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = dc.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM dc.fecha) = 6\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"JUNIO\",\n" +
+            "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
+            "	FROM detalle_cuenta dc\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = dc.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM dc.fecha) = 7\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"JULIO\",\n" +
+            "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
+            "	FROM detalle_cuenta dc\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = dc.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM dc.fecha) = 8\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"AGOSTO\",\n" +
+            "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
+            "	FROM detalle_cuenta dc\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = dc.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM dc.fecha) = 9\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"SEPTIEMBRE\",\n" +
+            "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
+            "	FROM detalle_cuenta dc\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = dc.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM dc.fecha) = 10\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"OCTUBRE\",\n" +
+            "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
+            "	FROM detalle_cuenta dc\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = dc.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM dc.fecha) = 11\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"NOVIEMBRE\",\n" +
+            "	(SELECT COALESCE(sum(dc.monto), 0)\n" +
+            "	FROM detalle_cuenta dc\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = dc.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM dc.fecha) = 12\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM dc.fecha) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"DICIEMBRE\"	\n" +
+            "FROM fueros f\n" +
+            "LEFT OUTER JOIN despachos des ON des.cod_fuero = f.cod_fuero\n" +
+            "LEFT OUTER JOIN expedientes ex ON ex.cod_despacho = des.cod_despacho\n" +
+            "LEFT OUTER JOIN detalle_cuenta dc ON dc.cod_expediente = ex.cod_expediente\n" +
+            "GROUP BY f.cod_fuero, f.tipo_fuero\n" +
+            ";");
+        resultado = (List<Object[]>)q.getResultList();
+       
+        if (resultado == null || resultado.isEmpty()) {
+            listaFinal = new ArrayList<GastoPorFueroPorMesDTO>();
+        }
+        else {
+            
+            for (Object[] linea : resultado) {
+
+                GastoPorFueroPorMesDTO gpfpm;
+                
+                int codFuero = Integer.parseInt(linea[0].toString());
+                String tipoFuero = linea[1].toString();
+                int enero = Integer.parseInt(linea[2].toString());
+                int febrero = Integer.parseInt(linea[3].toString());
+                int marzo = Integer.parseInt(linea[4].toString());
+                int abril = Integer.parseInt(linea[5].toString());
+                int mayo = Integer.parseInt(linea[6].toString());
+                int junio = Integer.parseInt(linea[7].toString());
+                int julio = Integer.parseInt(linea[8].toString());
+                int agosto = Integer.parseInt(linea[9].toString());
+                int septiembre = Integer.parseInt(linea[10].toString());
+                int octubre = Integer.parseInt(linea[11].toString());
+                int noviembre = Integer.parseInt(linea[12].toString());
+                int diciembre = Integer.parseInt(linea[13].toString());
+                
+                gpfpm = new GastoPorFueroPorMesDTO(codFuero, tipoFuero, enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre);
+                listaFinal.add(gpfpm);
+            }
+        }
+        
+        return listaFinal;
+        
+    }
+    
+    public List<IngresoPorFueroPorMesDTO> ingresoPorFueroPorMes() {
+        
+        List<IngresoPorFueroPorMesDTO> listaFinal = new ArrayList<IngresoPorFueroPorMesDTO>();
+        
+        List<Object[]> resultado = new ArrayList<Object[]>();
+        
+        Query q = em.createNativeQuery("SELECT f.cod_fuero, f.tipo_fuero, \n" +
+            "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
+            "	FROM pagos p\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = p.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 1\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+            "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"ENERO\",\n" +
+            "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
+            "	FROM pagos p\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = p.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 2\n" +
+            "		AND ff.cod_fuero = f.cod_fuero	\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"FEBRERO\",\n" +
+            "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
+            "	FROM pagos p\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = p.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 3\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"MARZO\",\n" +
+            "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
+            "	FROM pagos p\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = p.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 4\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"ABRIL\",\n" +
+            "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
+            "	FROM pagos p\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = p.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 5\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"MAYO\",\n" +
+            "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
+            "	FROM pagos p\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = p.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 6\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"JUNIO\",\n" +
+            "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
+            "	FROM pagos p\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = p.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 7\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"JULIO\",\n" +
+            "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
+            "	FROM pagos p\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = p.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 8\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"AGOSTO\",\n" +
+            "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
+            "	FROM pagos p\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = p.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 9\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"SEPTIEMBRE\",\n" +
+            "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
+            "	FROM pagos p\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = p.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 10\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"OCTUBRE\",\n" +
+            "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
+            "	FROM pagos p\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = p.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 11\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"NOVIEMBRE\",\n" +
+            "	(SELECT COALESCE(sum(p.monto_pagado), 0)\n" +
+            "	FROM pagos p\n" +
+            "	JOIN expedientes ex ON ex.cod_expediente = p.cod_expediente\n" +
+            "	JOIN despachos d ON d.cod_despacho = ex.cod_despacho\n" +
+            "	JOIN fueros ff ON ff.cod_fuero = d.cod_fuero\n" +
+            "	WHERE EXTRACT (MONTH FROM p.fecha_pago) = 12\n" +
+            "		AND ff.cod_fuero = f.cod_fuero\n" +
+                "           AND EXTRACT(YEAR FROM p.fecha_pago) = EXTRACT(YEAR FROM current_date)\n" +
+            "	) AS \"DICIEMBRE\"	\n" +
+            "FROM fueros f\n" +
+            "LEFT OUTER JOIN despachos des ON des.cod_fuero = f.cod_fuero\n" +
+            "LEFT OUTER JOIN expedientes ex ON ex.cod_despacho = des.cod_despacho\n" +
+            "LEFT OUTER JOIN pagos p ON p.cod_expediente = ex.cod_expediente\n" +
+            "GROUP BY f.cod_fuero, f.tipo_fuero" +
+            ";");
+        resultado = (List<Object[]>)q.getResultList();
+       
+        if (resultado == null || resultado.isEmpty()) {
+            listaFinal = new ArrayList<IngresoPorFueroPorMesDTO>();
+        }
+        else {
+            
+            for (Object[] linea : resultado) {
+
+                IngresoPorFueroPorMesDTO gpfpm;
+                
+                int codFuero = Integer.parseInt(linea[0].toString());
+                String tipoFuero = linea[1].toString();
+                int enero = Integer.parseInt(linea[2].toString());
+                int febrero = Integer.parseInt(linea[3].toString());
+                int marzo = Integer.parseInt(linea[4].toString());
+                int abril = Integer.parseInt(linea[5].toString());
+                int mayo = Integer.parseInt(linea[6].toString());
+                int junio = Integer.parseInt(linea[7].toString());
+                int julio = Integer.parseInt(linea[8].toString());
+                int agosto = Integer.parseInt(linea[9].toString());
+                int septiembre = Integer.parseInt(linea[10].toString());
+                int octubre = Integer.parseInt(linea[11].toString());
+                int noviembre = Integer.parseInt(linea[12].toString());
+                int diciembre = Integer.parseInt(linea[13].toString());
+                
+                gpfpm = new IngresoPorFueroPorMesDTO(codFuero, tipoFuero, enero, febrero, marzo, abril, mayo, junio, julio, agosto, septiembre, octubre, noviembre, diciembre);
+                listaFinal.add(gpfpm);
             }
         }
         

@@ -47,11 +47,23 @@ public class ABMManagerUsuarios {
         return q.getResultList();
     }
     
+    public List<Object> traerUsuarioPorNombreUsuario(String nombreUsuario) {
+        Query q = em.createNamedQuery("Usuarios.findByUsuario")
+                .setParameter("usuario", nombreUsuario);
+        return q.getResultList();
+    }
+    
     public List<Object> findEmpleadosConTimbradoVigente() {
         Query q = em.createNativeQuery("SELECT *\n"
                 + "FROM empleados e\n"
                 + "JOIN timbrados t ON t.cedula = e.cedula\n"
                 + "WHERE t.vigente = TRUE;", Empleados.class);        
+        return q.getResultList();
+    }
+    
+    public List<Object> traerTimbradoVigente(String cedula) {
+        Query q = em.createNamedQuery("Timbrados.traerTimbradoVigenteDeEmpleado")
+                .setParameter("cedula", cedula);
         return q.getResultList();
     }
     
@@ -161,7 +173,6 @@ public class ABMManagerUsuarios {
         }  else if (clazz == Timbrados.class) {
             Timbrados timbrado = (Timbrados) elem;
             
-            timbrado.setNroSecActual(timbrado.getNroSecInicio());
             
             em.merge(timbrado);
         } else if (clazz == EstadosEmpleados.class) {

@@ -1,6 +1,7 @@
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -10,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -28,7 +31,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "DetalleCuenta.findByDescripcion", query = "SELECT d FROM DetalleCuenta d WHERE d.descripcion = :descripcion")
     , @NamedQuery(name = "DetalleCuenta.findByMonto", query = "SELECT d FROM DetalleCuenta d WHERE d.monto = :monto")
     , @NamedQuery(name = "DetalleCuenta.findByEstado", query = "SELECT d FROM DetalleCuenta d WHERE d.estado = :estado")
-    , @NamedQuery(name = "DetalleCuenta.findBySaldoDetalleCta", query = "SELECT d FROM DetalleCuenta d WHERE d.saldoDetalleCta = :saldoDetalleCta")})
+    , @NamedQuery(name = "DetalleCuenta.findBySaldoDetalleCta", query = "SELECT d FROM DetalleCuenta d WHERE d.saldoDetalleCta = :saldoDetalleCta")
+    , @NamedQuery(name = "DetalleCuenta.traerUltimoDetalleCta", query = "SELECT d FROM DetalleCuenta d ORDER BY d.detalleCuentaPK.codDetalleCuenta DESC")
+})
 public class DetalleCuenta implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -64,6 +69,12 @@ public class DetalleCuenta implements Serializable {
     @JoinColumn(name = "cod_expediente", referencedColumnName = "cod_expediente")
     @ManyToOne(optional = false)
     private Expedientes codExpediente;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "fecha")
+    @Temporal(TemporalType.DATE)
+    private Date fecha;
     
     public DetalleCuenta() {
     }
@@ -138,6 +149,14 @@ public class DetalleCuenta implements Serializable {
 
     public void setCodExpediente(Expedientes codExpediente) {
         this.codExpediente = codExpediente;
+    }
+    
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     @Override

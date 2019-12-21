@@ -129,7 +129,7 @@ public class CasosFacadeREST {
     }
     
     @GET
-    @Path("/reporte-casos-por-jurisdiccion/{codJurisdiccion}/{formato}")
+    @Path("/archivo-reporte-casos-por-jurisdiccion/{codJurisdiccion}/{formato}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response traerReporteCasosPorJurisdiccion(
             @PathParam("codJurisdiccion") String codJurisdiccion,

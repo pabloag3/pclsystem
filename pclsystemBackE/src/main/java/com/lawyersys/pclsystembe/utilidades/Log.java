@@ -23,12 +23,11 @@ public class Log {
         
         // formateo la hora del evento
         LocalDateTime now = LocalDateTime.now();
-        System.out.println(dtf.format(now)); 
         
         BufferedWriter bw = null;
         FileWriter fw = null;
         
-        logger.info(mensaje);         
+//        logger.info(mensaje);         
         
         File file = new File(logFileName);
         if (!file.exists()) {

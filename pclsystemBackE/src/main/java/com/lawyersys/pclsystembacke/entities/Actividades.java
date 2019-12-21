@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author carlo
+ * @author tatoa
  */
 @Entity
 @Table(name = "actividades")
@@ -31,7 +31,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Actividades.findByCodActividad", query = "SELECT a FROM Actividades a WHERE a.codActividad = :codActividad")
     , @NamedQuery(name = "Actividades.findByDescripcion", query = "SELECT a FROM Actividades a WHERE a.descripcion = :descripcion")
     , @NamedQuery(name = "Actividades.findByObservacion", query = "SELECT a FROM Actividades a WHERE a.observacion = :observacion")
-    , @NamedQuery(name = "Actividades.findByFecha", query = "SELECT a FROM Actividades a WHERE a.fecha = :fecha")})
+    , @NamedQuery(name = "Actividades.findByFecha", query = "SELECT a FROM Actividades a WHERE a.fecha = :fecha")
+    , @NamedQuery(name = "Actividades.findByDiaNotificable", query = "SELECT a FROM Actividades a WHERE a.diaNotificable = :diaNotificable")})
 public class Actividades implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -71,6 +72,10 @@ public class Actividades implements Serializable {
     @ManyToOne(optional = false)
     private EstadosActividades codEstado;
     
+    @JoinColumn(name = "cod_expediente", referencedColumnName = "cod_expediente")
+    @ManyToOne
+    private Expedientes codExpediente;
+    
     @JoinColumn(name = "cod_tipo_actividad", referencedColumnName = "cod_tipo_actividad")
     @ManyToOne(optional = false)
     private TiposActividades codTipoActividad;
@@ -82,10 +87,11 @@ public class Actividades implements Serializable {
         this.codActividad = codActividad;
     }
 
-    public Actividades(Integer codActividad, String descripcion, Date fecha) {
+    public Actividades(Integer codActividad, String descripcion, Date fecha, int diaNotificable) {
         this.codActividad = codActividad;
         this.descripcion = descripcion;
         this.fecha = fecha;
+        this.diaNotificable = diaNotificable;
     }
 
     public Integer getCodActividad() {
@@ -120,6 +126,14 @@ public class Actividades implements Serializable {
         this.fecha = fecha;
     }
 
+    public int getDiaNotificable() {
+        return diaNotificable;
+    }
+
+    public void setDiaNotificable(int diaNotificable) {
+        this.diaNotificable = diaNotificable;
+    }
+
     public Empleados getCedulaResponsable() {
         return cedulaResponsable;
     }
@@ -136,20 +150,20 @@ public class Actividades implements Serializable {
         this.codEstado = codEstado;
     }
 
+    public Expedientes getCodExpediente() {
+        return codExpediente;
+    }
+
+    public void setCodExpediente(Expedientes codExpediente) {
+        this.codExpediente = codExpediente;
+    }
+
     public TiposActividades getCodTipoActividad() {
         return codTipoActividad;
     }
 
     public void setCodTipoActividad(TiposActividades codTipoActividad) {
         this.codTipoActividad = codTipoActividad;
-    }
-    
-    public int getDiaNotificable() {
-        return diaNotificable;
-    }
-
-    public void setDiaNotificable(int diaNotificable) {
-        this.diaNotificable = diaNotificable;
     }
 
     @Override
@@ -174,7 +188,7 @@ public class Actividades implements Serializable {
 
     @Override
     public String toString() {
-        return "com.lawyersys.pclsystembacke.Actividades[ codActividad=" + codActividad + " ]";
+        return "com.lawyersys.pclsystembacke.entities.Actividades[ codActividad=" + codActividad + " ]";
     }
-
+    
 }

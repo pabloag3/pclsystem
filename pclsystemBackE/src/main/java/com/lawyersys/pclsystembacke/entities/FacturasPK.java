@@ -1,5 +1,3 @@
-/*
- */
 package com.lawyersys.pclsystembacke.entities;
 
 import java.io.Serializable;
@@ -11,7 +9,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Pablo Aguilar
+ * @author tatoa
  */
 @Embeddable
 public class FacturasPK implements Serializable {

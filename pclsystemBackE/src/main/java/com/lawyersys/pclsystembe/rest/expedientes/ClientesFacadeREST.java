@@ -68,7 +68,9 @@ public class ClientesFacadeREST {
             @RequestBody() String entity) throws IOException, FaltaCargarElemento {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            Clientes elem = mapper.readValue(entity, Clientes.class);   
+            Clientes elem = mapper.readValue(entity, Clientes.class);
+            
+            // validadores
             if ( elem.getNombre()== null ) {
                 throw new FaltaCargarElemento("Error. Cargar descripcion.");
             }
@@ -76,12 +78,18 @@ public class ClientesFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar tipo de cliente.");
             } else if (elem.getTipoCliente().equals("1")) {
                 elem.setRuc(Ruc.Pa_Calcular_Dv_11_A(elem.getCedula()));
-                System.out.println("Ruc generado: " + elem.getRuc());
             } else if (elem.getTipoCliente().equals("2") && elem.getRuc().equals("")) {
                throw new FaltaCargarElemento("Error. Cargar el ruc."); 
             } else {
-               throw new FaltaCargarElemento("Error. Tipo de cliente no existe.");
+//               throw new FaltaCargarElemento("Error. Tipo de cliente no existe.");
             }
+            
+            // verifica que el cliente exista en el sistema
+            List<Clientes> clienteAuxList = (List<Clientes>) (Object) abmManager.traerClientePorRuc(elem.getRuc());
+            if (!clienteAuxList.isEmpty()) {
+                throw new FaltaCargarElemento("Error. El cliente ya existe.");
+            }
+            
             abmManager.create(Clientes.class, elem);
             Log.escribir("INFORMACION", username + " Accion: Crear cliente: " + elem.getNombre());
             return Response.ok().build();
@@ -108,7 +116,7 @@ public class ClientesFacadeREST {
             } else if (elem.getTipoCliente().equals("2") && elem.getRuc().equals("")) {
                throw new FaltaCargarElemento("Error. Cargar el ruc."); 
             } else {
-               throw new FaltaCargarElemento("Error. Tipo de cliente no existe.");
+//               throw new FaltaCargarElemento("Error. Tipo de cliente no existe.");
             }
             abmManager.edit(Clientes.class, elem);
             Log.escribir("INFORMACION", username + " Accion: Modificar cliente: " + elem.getNombre());
@@ -158,7 +166,7 @@ public class ClientesFacadeREST {
     }
     
     @GET
-    @Path("/reporte-clientes-a-cobrar/{formato}")
+    @Path("/archivo-reporte-clientes-a-cobrar/{formato}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response traerReporteClientesACobrar(
             @PathParam("formato") String formato

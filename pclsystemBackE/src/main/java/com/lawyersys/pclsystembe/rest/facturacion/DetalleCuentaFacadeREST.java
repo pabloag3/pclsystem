@@ -78,7 +78,10 @@ public class DetalleCuentaFacadeREST {
                 throw new FaltaCargarElemento("Error. Cargar expediente.");
             }
             abmManager.create(DetalleCuenta.class, elem);
-            Log.escribir("INFORMACION", username + " Accion: Crear detalle de cuenta: " + elem.getDescripcion());
+            
+            List<DetalleCuenta> ultimoDetalleCuenta = (List<DetalleCuenta>) (Object) abmManager.traerUltimoDetalleCuenta();
+            
+            Log.escribir("INFORMACION", username + " Accion: Crear detalle de cuenta: " + ultimoDetalleCuenta.get(0).getDetalleCuentaPK().getCodDetalleCuenta());
             return Response.ok().build();
         } catch (Exception e) {
             return ErrorManager.manejarError(e, DetalleCuenta.class);

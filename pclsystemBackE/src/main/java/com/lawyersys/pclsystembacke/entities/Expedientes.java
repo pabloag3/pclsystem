@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Pablo Aguilar
+ * @author tatoa
  */
 @Entity
 @Table(name = "expedientes")
@@ -100,13 +100,13 @@ public class Expedientes implements Serializable {
     @ManyToOne(optional = false)
     private EstadoExpediente codEstadoExpediente;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codExpediente")
+    @OneToMany(mappedBy = "codExpediente")
     @JsonIgnore
-    private List<Pagos> pagosList;
+    private List<Actividades> actividadesList;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codExpediente")
     @JsonIgnore
-    private List<DetalleCuenta> detalleCuentaList;
+    private List<Pagos> pagosList;
 
     public Expedientes() {
     }
@@ -210,7 +210,16 @@ public class Expedientes implements Serializable {
     public void setCodEstadoExpediente(EstadoExpediente codEstadoExpediente) {
         this.codEstadoExpediente = codEstadoExpediente;
     }
-    
+
+    @XmlTransient
+    public List<Actividades> getActividadesList() {
+        return actividadesList;
+    }
+
+    public void setActividadesList(List<Actividades> actividadesList) {
+        this.actividadesList = actividadesList;
+    }
+
     @XmlTransient
     public List<Pagos> getPagosList() {
         return pagosList;
@@ -218,15 +227,6 @@ public class Expedientes implements Serializable {
 
     public void setPagosList(List<Pagos> pagosList) {
         this.pagosList = pagosList;
-    }
-
-    @XmlTransient
-    public List<DetalleCuenta> getDetalleCuentaList() {
-        return detalleCuentaList;
-    }
-
-    public void setDetalleCuentaList(List<DetalleCuenta> detalleCuentaList) {
-        this.detalleCuentaList = detalleCuentaList;
     }
 
     @Override
