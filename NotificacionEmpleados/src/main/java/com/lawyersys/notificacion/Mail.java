@@ -10,6 +10,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import io.github.cdimascio.dotenv.Dotenv;
 
 
 /**
@@ -20,7 +21,7 @@ public class Mail {
     public static void main(String[] args) throws IOException {
         
         
-        
+        Dotenv dotenv = Dotenv.load();
         ArrayList<Actividad> listaActividades = new ArrayList<Actividad>();
         String emailReceptor;
         String mensaje = null;
@@ -37,8 +38,8 @@ public class Mail {
             emailReceptor = modeloEmail.treaerEmail(actividad.getCedula());
           
             mensaje = "Tiene una actividad con descripcion " + actividad.getDescripcion() + " que es del dia " + actividad.getFecha().substring(0, 10);
-            Mail mail = new Mail("lawyersyspcl@gmail.com", "abogados1472");
-            mail.enviaStartTLS("lawyersyspcl@gmail.com", emailReceptor, "Notificacion del Sistema - PCL SYSTEM", mensaje);
+            Mail mail = new Mail(dotenv.get("CORREO"), dotenv.get("CONTRASENHA"));
+            mail.enviaStartTLS(dotenv.get("CORREO"), emailReceptor, "Notificacion del Sistema - PCL SYSTEM", mensaje);
         }
     }
 

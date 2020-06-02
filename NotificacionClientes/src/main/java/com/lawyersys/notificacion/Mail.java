@@ -10,6 +10,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import io.github.cdimascio.dotenv.Dotenv;
 
 
 /**
@@ -20,9 +21,8 @@ public class Mail {
     public static void main(String[] args) throws IOException {
         
         
-        
+        Dotenv dotenv = Dotenv.load();
         ArrayList<Cuentas> listaCuentas = new ArrayList<Cuentas>();
-        String emailReceptor;
         String mensaje = null;
 
         ModeloEmail modeloEmail = new ModeloEmail();
@@ -38,8 +38,8 @@ public class Mail {
             mensaje = "Tiene una cuenta del caso con descripcion " + cuentas.getDescripcion() + "con un total de: " + cuentas.getTotal() + " y un saldo de: " + cuentas.getSaldo();
             
             
-            Mail mail = new Mail("lawyersyspcl@gmail.com", "abogados1472");
-            mail.enviaStartTLS("lawyersyspcl@gmail.com", cuentas.getCorreo(), "Notificacion del Sistema - PCL SYSTEM", mensaje);
+            Mail mail = new Mail(dotenv.get("CORREO"), dotenv.get("CONTRASENHA"));
+            mail.enviaStartTLS(dotenv.get("CORREO"), cuentas.getCorreo(), "Notificacion del Sistema - PCL SYSTEM", mensaje);
         }
     }
 

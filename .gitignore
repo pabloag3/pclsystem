@@ -2,3 +2,4 @@ pclsystemBackE/target/*
 NotificacionEmpleados/target/*
 NotificacionClientes/target/*
 pclsystemBackE/target/
+.env
