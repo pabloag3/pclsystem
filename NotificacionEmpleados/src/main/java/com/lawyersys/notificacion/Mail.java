@@ -10,48 +10,44 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import io.github.cdimascio.dotenv.Dotenv;
-
 
 /**
  *
  * @author carlo
  */
 public class Mail {
+
     public static void main(String[] args) throws IOException {
+       
         
-        
-        Dotenv dotenv = Dotenv.load();
         ArrayList<Actividad> listaActividades = new ArrayList<Actividad>();
         String emailReceptor;
         String mensaje = null;
 
         ModeloEmail modeloEmail = new ModeloEmail();
-       
-        
+
         //traer actividades
         listaActividades = modeloEmail.listarActividad();
         //traer email emisor
-       
-        
-        for (Actividad actividad: listaActividades) {
+
+        for (Actividad actividad : listaActividades) {
             emailReceptor = modeloEmail.treaerEmail(actividad.getCedula());
-          
+
             mensaje = "Tiene una actividad con descripcion " + actividad.getDescripcion() + " que es del dia " + actividad.getFecha().substring(0, 10);
-            Mail mail = new Mail(dotenv.get("CORREO"), dotenv.get("CONTRASENHA"));
-            mail.enviaStartTLS(dotenv.get("CORREO"), emailReceptor, "Notificacion del Sistema - PCL SYSTEM", mensaje);
+            Mail mail = new Mail(System.getenv("CORREO"), System.getenv("CONTRASENHA"));
+            mail.enviaStartTLS(System.getenv("CORREO"), emailReceptor, "Notificacion del Sistema - PCL SYSTEM", mensaje);
         }
     }
 
     private String usuario;
     private String pass;
 
-    public Mail(String usuario, String pass){
+    public Mail(String usuario, String pass) {
         this.usuario = usuario;
         this.pass = pass;
     }
 
-    public void enviaStartTLS(String from, String to, String subject, String text){
+    public void enviaStartTLS(String from, String to, String subject, String text) {
         final String username = usuario;
         final String password = pass;
 
@@ -62,18 +58,18 @@ public class Mail {
         props.put("mail.smtp.port", "587");
 
         Session session = Session.getInstance(props,
-            new javax.mail.Authenticator() {
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(username, password);
-                }
-            });
+                new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
 
         try {
 
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
             message.setRecipients(Message.RecipientType.TO,
-                InternetAddress.parse(to));
+                    InternetAddress.parse(to));
             message.setSubject(subject);
             message.setText(text);
 
