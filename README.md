@@ -23,3 +23,12 @@ Se crea una API Rest para la gestión de información y procesos necesarios dent
 * Java Servlet
 * Hibernate
 * JasperReports
+
+
+### Observaciones
+Para envío de correos, crear un archivo *.env* en los proyectos de Notificacion con los parámetros de *CORREO* y *CONSTRASENHA*. Este archivo debe estar ubicado en la misma carpeta donde se encuentran el resto de los archivos. Sin este archivo, la aplicación correrá con errores.
+Ejemplo:
+```
+CORREO:micorreo@dominio.com
+CONTRASENHA:micontrasenha
+```
